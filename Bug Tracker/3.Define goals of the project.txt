@@ -1,0 +1,4 @@
+We have to define the end goals of the first version of SocialWorld. 
+Lets schedule a meeting and define all the feature we will include in the project. After that we can get feedback from our mentor.
+
+Asignees : AK and IS

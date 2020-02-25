@@ -1,0 +1,5 @@
+We have to define what tables and rows will be included in our database. We have to create a model of a database representation.
+
+Asignees : IS and AK
+
+IS suggests to work with cloud NOSQL database like Firebase.
