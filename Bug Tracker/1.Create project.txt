@@ -2,3 +2,4 @@ We need to create a Java project to run the app on the web. We will use Spring.
 The project should be create in a folder in the main source control folder. The name should be similar to "socialworld-web"
 
 Asignee : IS
+Done : 100%
