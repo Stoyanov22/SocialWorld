@@ -3,3 +3,5 @@ Create a mobile application for now only for Andoid. Lets use Android KitKat 4.4
 Asignee : AK
 
 IS : I suggest that the mobile app is created on the same level with the web application with a name similar to "socialworld-mobile" or "socialworld-android"
+
+AK : Created the mobile application with blank activity. I created it with minimum android version Lollipop (API 21). Let's discuss the pros and cons of using Lollipop as minimum version.
