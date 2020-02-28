@@ -2,3 +2,13 @@ We have to define the end goals of the first version of SocialWorld.
 Lets schedule a meeting and define all the feature we will include in the project. After that we can get feedback from our mentor.
 
 Asignees : AK and IS
+
+-Social Network - needs 100% internet access
+-Every user should login to enter
+-Provides Register and login with the option "Forgot my password"
+-Provides news feed with all the posts from the people you follow
+-You can like and comment posts
+-You can edit your personal info
+-You can follow other users
+-You can share your location and see other's locations
+-You can chat with other users

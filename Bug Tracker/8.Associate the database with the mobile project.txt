@@ -1,0 +1,3 @@
+We have to associate the database with the mobile app and install all dependencies needed before impelemting any login or register logic.
+
+Asignee : AK

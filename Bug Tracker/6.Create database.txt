@@ -1,0 +1,3 @@
+We need to create a database in Firebase console. The name of the database should be "SocialWorld". The creator should give access to the other contributor.
+
+Asignee : IS
