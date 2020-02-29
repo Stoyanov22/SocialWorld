@@ -1,0 +1,4 @@
+We have to design the basic layout of the web pages. 
+This includes the header, footer, navigation and leave an open space for the main content that will differ on every page
+
+Asignee : IS

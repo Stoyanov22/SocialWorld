@@ -1,0 +1,3 @@
+We need to create expected visual representations of the pages in the web application.
+
+Asignee : IS

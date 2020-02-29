@@ -1,0 +1,3 @@
+We need to create expected visual representations of the screens in the android application.
+
+Asignee : AK
