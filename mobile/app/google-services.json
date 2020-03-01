@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "377562899475",
+    "firebase_url": "https://socialworld-b49dd.firebaseio.com",
+    "project_id": "socialworld-b49dd",
+    "storage_bucket": "socialworld-b49dd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:377562899475:android:074f5b1de01986a9910be6",
+        "android_client_info": {
+          "package_name": "com.socialworld.mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "377562899475-r8m39suhuupe2qc7e60jqkog9rl98irl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzvzOJf-TG8NbWbJ6T3u16uJ6nsw2AOY4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "377562899475-r8m39suhuupe2qc7e60jqkog9rl98irl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
