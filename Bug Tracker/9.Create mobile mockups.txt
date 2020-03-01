@@ -1,3 +1,9 @@
 We need to create expected visual representations of the screens in the android application.
 
 Asignee : AK
+
+Link : https://marvelapp.com/dei01h4
+
+TODO: 
+ * Add comments in the mock-ups. 
+ * Define Action Bar buttons for different screens
