@@ -2,6 +2,7 @@ package com.socialworld.mobile;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,20 +20,27 @@ public class LoginActivity extends AppCompatActivity {
     EditText username;
     EditText password;
     FirebaseAuth firebaseAuth;
+    Fragment loadingFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        firebaseAuth = FirebaseAuth.getInstance();
+
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
-        firebaseAuth = FirebaseAuth.getInstance();
+
+        loadingFragment = new LoadingFragment();
+
+        getSupportFragmentManager().beginTransaction().add(R.id.progress_container, loadingFragment).hide(loadingFragment).commit();
     }
 
     public void onBtnLoginClick(View v) {
         if(username.getText().length() == 0 || password.getText().length() == 0){
             Toast.makeText(LoginActivity.this, "Email and password cannot be empty", Toast.LENGTH_LONG).show();
         } else {
+            getSupportFragmentManager().beginTransaction().show(loadingFragment).commit();
             firebaseAuth.signInWithEmailAndPassword(username.getText().toString(), password.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -40,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
                         finish();
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     } else {
+                        getSupportFragmentManager().beginTransaction().hide(loadingFragment).commit();
                         Toast.makeText(LoginActivity.this, "Incorrect email or password", Toast.LENGTH_LONG).show();
                     }
                 }
