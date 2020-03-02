@@ -1,3 +1,5 @@
 We need to create a logo for our application. It is super important to have a picture representation of our software.
 
 Asignee : IS
+
+Logo added. Including it in the common files.
