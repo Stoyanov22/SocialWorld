@@ -2,3 +2,5 @@ We have to design the basic layout of the web pages.
 This includes the header, footer, navigation and leave an open space for the main content that will differ on every page
 
 Asignee : IS
+
+Landing page created. Login and Register to follow. After that we will proceed with the skeleton for the other pages. Lowering the priority.
