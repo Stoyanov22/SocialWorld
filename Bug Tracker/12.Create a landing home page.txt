@@ -1,3 +1,5 @@
 In the web we will need a landing home page which will include a high quality image with buttons for Register and Login and a short explaination about the website.
 
 Asignee : IS
+
+Langing page created. Yet to be optimized on it, but any future development will be described in other issues.
