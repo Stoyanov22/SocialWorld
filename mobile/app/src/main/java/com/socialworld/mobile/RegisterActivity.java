@@ -2,6 +2,7 @@ package com.socialworld.mobile;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ public class RegisterActivity extends AppCompatActivity {
     EditText passwordRepeat;
     FirebaseAuth firebaseAuth;
     FirebaseFirestore db;
+    Fragment loadingFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,9 @@ public class RegisterActivity extends AppCompatActivity {
         password = findViewById(R.id.password);
         passwordRepeat = findViewById(R.id.passwordRepeat);
         firebaseAuth = FirebaseAuth.getInstance();
+
+        loadingFragment = new LoadingFragment();
+        getSupportFragmentManager().beginTransaction().add(R.id.progress_container, loadingFragment).hide(loadingFragment).commit();
     }
 
     public void onBtnRegisterClick(View v) {
@@ -44,6 +49,7 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
         if (passwordRepeat.getText().toString().equals(password.getText().toString())) {
+            getSupportFragmentManager().beginTransaction().show(loadingFragment).commit();
             firebaseAuth.createUserWithEmailAndPassword(username.getText().toString(), password.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -61,10 +67,12 @@ public class RegisterActivity extends AppCompatActivity {
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
+                                getSupportFragmentManager().beginTransaction().hide(loadingFragment).commit();
                                 Toast.makeText(RegisterActivity.this, "Couldn't activity_register the user", Toast.LENGTH_LONG).show();
                             }
                         });
                     } else {
+                        getSupportFragmentManager().beginTransaction().hide(loadingFragment).commit();
                         Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                     }
                 }
