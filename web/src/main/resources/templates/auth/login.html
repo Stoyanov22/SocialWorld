@@ -15,10 +15,14 @@
     </div>
 </header>
 <section id="login">
-    <form class="special">
+    <form action="/login" method="post">
         <h1>Login</h1>
         <label>Email</label>
-        <input type="email" name="email" placeholder="Enter email...">
+        <input class="textInput" type="email" name="email" placeholder="Enter email...">
+        <label>Password</label>
+        <input class="textInput" type="password" name="password" placeholder="Enter password...">
+        <br/>
+        <input type="submit" value="Login">
     </form>
 </section>
 
