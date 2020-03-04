@@ -2,7 +2,7 @@ SUPER IMPORTANT:
 9,10
 
 Important:
-7,14
+14
 
 Normal:
 

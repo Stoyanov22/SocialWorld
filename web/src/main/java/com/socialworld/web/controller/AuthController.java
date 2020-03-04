@@ -1,15 +1,13 @@
 package com.socialworld.web.controller;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class AuthController {
@@ -24,9 +22,13 @@ public class AuthController {
     }
 
     @RequestMapping(value = {"/login"}, method = RequestMethod.POST)
-    public ModelAndView login(@RequestParam Map<String, String> body) {
+    public ModelAndView login(@RequestParam String uid, @RequestParam String email, HttpSession session) {
         ModelAndView model = new ModelAndView();
-        model.setViewName("auth/login");
+        session.setMaxInactiveInterval(1209600);
+        session.setAttribute("uid", uid);
+        session.setAttribute("email", email);
+        model.addObject("session", session);
+        model.setViewName("/");
         return model;
     }
 }
