@@ -24,8 +24,7 @@ public class AuthController {
     }
 
     @RequestMapping(value = {"/login"}, method = RequestMethod.POST)
-//    public ModelAndView login(@RequestParam(value = "email") String email, @RequestParam(value = "password") String password, @RequestParam Map<String, String> body ) {
-    public ModelAndView login(@RequestParam String token) {
+    public ModelAndView login(@RequestParam Map<String, String> body) {
         ModelAndView model = new ModelAndView();
         model.setViewName("auth/login");
         return model;
