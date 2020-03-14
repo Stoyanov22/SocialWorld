@@ -15,7 +15,10 @@ public class AuthController {
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     @RequestMapping(value = {"/login"}, method = RequestMethod.GET)
-    public ModelAndView login() {
+    public ModelAndView login(HttpSession session) {
+        if (session != null) {
+            //TODO: Send user to NewsFeed page.
+        }
         ModelAndView model = new ModelAndView();
         model.setViewName("auth/login");
         return model;
