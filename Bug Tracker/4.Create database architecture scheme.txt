@@ -4,7 +4,7 @@ Asignees : IS and AK
 
 IS suggests to work with cloud NOSQL database like Firebase.
 
-User (Through FireBaseAuth) {email, password, name, country, age, gender, profile picture, cover picture }
+User (Through FireBaseAuth) {email, password, name, country, date of birth, gender, profile picture }
 FollowedUser { user1, user2 }
 Post { Picture, Text, Date, Likes, User }
 Comment { User, Post, Date }
