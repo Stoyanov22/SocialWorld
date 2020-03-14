@@ -25,13 +25,23 @@ public class AuthController {
     }
 
     @RequestMapping(value = {"/login"}, method = RequestMethod.POST)
-    public ModelAndView login(@RequestParam String uid, @RequestParam String email, HttpSession session) {
+    public ModelAndView login(HttpSession session, @RequestParam String uid, @RequestParam String email) {
         ModelAndView model = new ModelAndView();
         session.setMaxInactiveInterval(1209600);
         session.setAttribute("uid", uid);
         session.setAttribute("email", email);
         model.addObject("session", session);
         model.setViewName("/");
+        return model;
+    }
+
+    @RequestMapping(value = {"/register"}, method = RequestMethod.GET)
+    public ModelAndView register(HttpSession session) {
+        if (session != null) {
+            //TODO: Send user to NewsFeed page.
+        }
+        ModelAndView model = new ModelAndView();
+        model.setViewName("auth/register");
         return model;
     }
 }
