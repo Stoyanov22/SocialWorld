@@ -21,7 +21,9 @@
         <!-- One "tab" for each step in the form: -->
         <div class="tab">Login Info:
             <p><input placeholder="Email..." oninput="this.className = ''" name="email"></p>
-            <p><input placeholder="Password..." oninput="this.className = ''" name="password" type="password"></p>
+            <p><input placeholder="Password..." oninput="this.className = ''" name="password" type="password" id="pass"></p>
+            <p><input placeholder="Retype password..." oninput="this.className = ''" name="rePassword" type="password" id="rePass"></p>
+            <label id="passmatch" class="passmatch">Passwords don't match!</label>
         </div>
         <div class="tab">Personal Info:
             <p><input placeholder="Name..." oninput="this.className = ''" name="name"></p>

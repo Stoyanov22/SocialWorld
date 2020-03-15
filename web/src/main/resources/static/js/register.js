@@ -54,8 +54,17 @@ function validateForm() {
       valid = false;
     }
   }
+
+  var pass = document.getElementById("pass").value;
+  var rePass = document.getElementById("rePass").value;
+  var passMatch = document.getElementById("passmatch")
+  if(pass != rePass){
+    valid = false;
+    passmatch.className = "passmatchError";
+  }
   // If the valid status is true, mark the step as finished and valid:
   if (valid) {
+    passmatch.className = "passmatch";
     document.getElementsByClassName("step")[currentTab].className += " finish";
   }
   return valid; // return the valid status

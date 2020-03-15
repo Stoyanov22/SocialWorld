@@ -1047,3 +1047,12 @@ input.invalid {
 .step.finish {
   background-color: #4CAF50;
 }
+
+.passmatch {
+  display: none;
+}
+
+.passmatchError{
+  dispaly: block;
+  color : red;
+}
