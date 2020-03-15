@@ -13,7 +13,7 @@ import java.io.FileInputStream;
 public class FirebaseConfig {
 
     @PostConstruct
-    public void init(){
+    public void init() {
         try {
             FileInputStream serviceAccount =
                     new FileInputStream("C:\\Users\\Stoyanov22\\Documents\\Programming\\Android\\SocialWorld\\Common files\\socialworld-b49dd-firebase-adminsdk-pl26c-19360b1684.json");
@@ -24,7 +24,7 @@ public class FirebaseConfig {
                     .build();
 
             FirebaseApp.initializeApp(options);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new DatabaseException("Couldn't configure the database");
         }
     }

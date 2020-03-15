@@ -1005,3 +1005,7 @@ input[type="submit"].disabled, input[type="submit"]:disabled, input[type="reset"
 .hiddenForm {
   display: none;
 }
+
+#loginForm h1{
+  color: black;
+}

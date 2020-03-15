@@ -1,5 +1,5 @@
 $("#login").click(function(){
-   $("#loginForm").toggleClass("hiddenForm");
+   $("#loginForm").toggle(1000);
 });
 
 var ui = new firebaseui.auth.AuthUI(firebase.auth());
