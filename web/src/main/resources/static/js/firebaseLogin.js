@@ -1,3 +1,7 @@
+$("#login").click(function(){
+   $("#loginForm").toggleClass("hiddenForm");
+});
+
 var ui = new firebaseui.auth.AuthUI(firebase.auth());
 
 ui.start('#firebaseui-auth-container', {
@@ -7,7 +11,7 @@ ui.start('#firebaseui-auth-container', {
       var user = authResult.user;
       $.ajax({
             type: 'POST',
-            url: "/login",
+            url: "/",
             data: {
                 uid: user.uid,
                 email: user.email,
