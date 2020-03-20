@@ -1,0 +1,4 @@
+In the web ui we need to have a news feed page. This is the main page of the web application. If there is an existing user
+session, the user has to be autoamtically redirected to this page. If not, he has to see only the home page.
+
+Asignee : IS

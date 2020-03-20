@@ -1,0 +1,10 @@
+From the web interface we should have a form for logging and registering into the system. This form should be available only
+in the home page. 
+
+Asignee : IS
+
+The form is hidden in the first entry of the screen. It is toggled on clicking on the Login button. If the user inputs an 
+email which isn't registred in the database the form will automatically move to registring a new user. After the form is 
+filled - if everything is alright a HttpSession is created and the user is redirected to his news feed.
+
+Comment : Currently it is redirecting back to Home page. The other is ready.

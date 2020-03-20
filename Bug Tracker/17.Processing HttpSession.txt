@@ -1,0 +1,5 @@
+We should create a HttpSession object for the web UI. This object will hold the data for the active user session. 
+HttpSession should have 2 attributes. One is the UID and the other one is the email. In the begging of the controller methods
+we have to check if the session still exists and redirect the user to the right URL.
+
+Asignee : IS
