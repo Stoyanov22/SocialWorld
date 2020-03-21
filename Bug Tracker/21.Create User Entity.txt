@@ -3,3 +3,6 @@ stage we can just create all the properties, methods and constructors that the o
 the properties which will navigate to the user's reference objects.
 
 Asignee : IS
+
+21.03.2020: Basic entity created. Constructors created only for the available functions. 
+Method and navigation properties are yet to be implemented.
