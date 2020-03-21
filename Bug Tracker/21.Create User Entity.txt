@@ -1,0 +1,5 @@
+We need to create an entity to hold the user object. This has to be the same for both mobile and web versions. For the first
+stage we can just create all the properties, methods and constructors that the object will need. Later on we should add
+the properties which will navigate to the user's reference objects.
+
+Asignee : IS

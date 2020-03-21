@@ -1,0 +1,5 @@
+Create an entity holding all the available countries in the application. After that when using a country we have to choose
+only the country ID. Later on we can add more functions which will help with working with countries;
+
+Asignee : IS
+

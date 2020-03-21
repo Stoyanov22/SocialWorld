@@ -5,6 +5,7 @@ Important:
 14, 16
 
 Normal:
+20,21
 
 Could be done drunk:
 11

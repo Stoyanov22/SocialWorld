@@ -1,0 +1,6 @@
+When we save pictures for users and posts we need to use a remote server for storing them. They have to be accessed from
+for both mobie and web versions. For this needs we need to find a good remote storage for files and save media there.
+
+Asignee : IS
+
+Firabase provides Cloud Storage which is worth to be tried.

@@ -1,0 +1,5 @@
+Create an entity holding all the available genders in the application. After that when using a gender we have to choose
+only the gender ID. Later on we can add more functions which will help with working with genders.
+
+Asignee : IS
+
