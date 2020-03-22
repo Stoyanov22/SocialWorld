@@ -8,16 +8,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 public class ForgotPasswordFragment extends Fragment {
-    private static final String LAST_EMAIL = "last_email";
-
-    private String lastEmail;
-
     private OnForgottenPasswordInteractionListener mListener;
-
-    EditText emailEditText;
 
     public ForgotPasswordFragment() {
         // Required empty public constructor
@@ -26,20 +19,13 @@ public class ForgotPasswordFragment extends Fragment {
     /**
      * @return A new instance of fragment ForgotPasswordFragment.
      */
-    public static ForgotPasswordFragment newInstance(String lastEmailText) {
-        ForgotPasswordFragment fragment = new ForgotPasswordFragment();
-        Bundle args = new Bundle();
-        args.putString(LAST_EMAIL, lastEmailText);
-        fragment.setArguments(args);
-        return fragment;
+    public static ForgotPasswordFragment newInstance() {
+        return new ForgotPasswordFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            lastEmail = getArguments().getString(LAST_EMAIL);
-        }
     }
 
     @Override
@@ -48,24 +34,19 @@ public class ForgotPasswordFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_forgot_password, container, false);
 
-        if (lastEmail != null) {
-            emailEditText = view.findViewById(R.id.email);
-            emailEditText.setText(lastEmail);
-        }
-
         view.findViewById(R.id.btn_reset_pass).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onResetPasswordPressed(emailEditText.getText().toString());
+                onResetPasswordPressed();
             }
         });
 
         return view;
     }
 
-    public void onResetPasswordPressed(String email) {
+    public void onResetPasswordPressed() {
         if (mListener != null) {
-            mListener.onForgottenPasswordInteraction(email);
+            mListener.onForgottenPasswordInteraction();
         }
     }
 
@@ -87,6 +68,6 @@ public class ForgotPasswordFragment extends Fragment {
     }
 
     public interface OnForgottenPasswordInteractionListener {
-        void onForgottenPasswordInteraction(String email);
+        void onForgottenPasswordInteraction();
     }
 }

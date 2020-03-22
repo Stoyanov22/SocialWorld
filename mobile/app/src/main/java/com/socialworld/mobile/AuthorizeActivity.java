@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -26,6 +27,8 @@ public class AuthorizeActivity extends AppCompatActivity implements LoginFragmen
     private RelativeLayout loadingLayout;
     private FirebaseFirestore db;
 
+    private EditText emailInput;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,13 +37,27 @@ public class AuthorizeActivity extends AppCompatActivity implements LoginFragmen
 
         loadingLayout = findViewById(R.id.loading_layout);
 
+        emailInput = findViewById(R.id.email);
+
         getSupportFragmentManager().beginTransaction().replace(R.id.authorize_fragment, LoginFragment.newInstance()).commit();
     }
 
     @Override
-    public void onLoginInteraction(String email, String password) {
+    public void onLoginInteraction(String password) {
+        if (emailInput.getText().length() == 0) {
+            Toast.makeText(getApplicationContext(), "Email cannot be empty", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (password.length() == 0) {
+            Toast.makeText(getApplicationContext(), "Password cannot be empty", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (password.length() < 6) {
+            Toast.makeText(getApplicationContext(), "The password is too short", Toast.LENGTH_LONG).show();
+            return;
+        }
         loadingLayout.setVisibility(View.VISIBLE);
-        firebaseAuth.signInWithEmailAndPassword(email, password)
+        firebaseAuth.signInWithEmailAndPassword(emailInput.getText().toString(), password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -57,6 +74,7 @@ public class AuthorizeActivity extends AppCompatActivity implements LoginFragmen
                         Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
+
     }
 
     @Override
@@ -65,20 +83,32 @@ public class AuthorizeActivity extends AppCompatActivity implements LoginFragmen
     }
 
     @Override
-    public void onGoToForgottenPasswordInteraction(String email) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.authorize_fragment, ForgotPasswordFragment.newInstance(email)).addToBackStack(null).commit();
+    public void onGoToForgottenPasswordInteraction() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.authorize_fragment, ForgotPasswordFragment.newInstance()).addToBackStack(null).commit();
     }
 
     @Override
-    public void onNewRegisterInteraction(final String email, String password) {
+    public void onNewRegisterInteraction(String password) {
+        if (emailInput.getText().length() == 0) {
+            Toast.makeText(getApplicationContext(), "Email cannot be empty", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if(password.length() == 0){
+            Toast.makeText(getApplicationContext(), "Password cannot be empty", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (password.length() < 6) {
+            Toast.makeText(getApplicationContext(), "The password is too short", Toast.LENGTH_LONG).show();
+            return;
+        }
         loadingLayout.setVisibility(View.VISIBLE);
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
+        firebaseAuth.createUserWithEmailAndPassword(emailInput.getText().toString(), password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             db = FirebaseFirestore.getInstance();
-                            UserEntity user = new UserEntity(email);
+                            UserEntity user = new UserEntity(emailInput.getText().toString());
                             db.collection("Users").add(user).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                 @Override
                                 public void onSuccess(DocumentReference documentReference) {
@@ -106,9 +136,13 @@ public class AuthorizeActivity extends AppCompatActivity implements LoginFragmen
     }
 
     @Override
-    public void onForgottenPasswordInteraction(String email) {
+    public void onForgottenPasswordInteraction() {
+        if (emailInput.getText().length() == 0) {
+            Toast.makeText(getApplicationContext(), "Email cannot be empty", Toast.LENGTH_LONG).show();
+            return;
+        }
         loadingLayout.setVisibility(View.VISIBLE);
-        firebaseAuth.sendPasswordResetEmail(email)
+        firebaseAuth.sendPasswordResetEmail(emailInput.getText().toString())
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

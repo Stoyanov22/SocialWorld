@@ -10,59 +10,81 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <EditText
-            android:id="@+id/email"
+        <TextView
             android:layout_width="wrap_content"
-            android:layout_height="66dp"
-            android:layout_marginStart="80dp"
-            android:layout_marginTop="200dp"
-            android:layout_marginEnd="80dp"
+            android:layout_height="wrap_content"
+            android:text="@string/password"
+            android:textSize="20sp"
+            android:textColor="@color/colorDarkLabel"
+            app:layout_constraintBottom_toTopOf="@+id/password"
+            app:layout_constraintStart_toStartOf="@+id/password" />
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginEnd="40dp"
             android:ems="10"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
-            android:textSize="22sp"
+            android:hint="@string/enter_pass"
+            android:inputType="textPassword"
+            android:textSize="17sp"
+            android:drawableStart="@drawable/ic_lock_password"
+            android:drawablePadding="7dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/password"
+        <TextView
             android:layout_width="wrap_content"
-            android:layout_height="66dp"
-            android:layout_marginStart="80dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="80dp"
-            android:ems="10"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:textSize="22sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/email" />
+            android:layout_height="wrap_content"
+            android:text="@string/repeat_pass"
+            android:textSize="20sp"
+            android:textColor="@color/colorDarkLabel"
+            app:layout_constraintBottom_toTopOf="@+id/password_repeat"
+            app:layout_constraintStart_toStartOf="@+id/password_repeat" />
 
         <EditText
             android:id="@+id/password_repeat"
-            android:layout_width="wrap_content"
-            android:layout_height="66dp"
-            android:layout_marginStart="80dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="80dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginEnd="40dp"
             android:ems="10"
-            android:hint="Repeat Password"
+            android:hint="@string/enter_pass"
             android:inputType="textPassword"
-            android:textSize="22sp"
+            android:drawableStart="@drawable/ic_lock_password"
+            android:drawablePadding="7dp"
+            android:textSize="17sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/password" />
 
-        <Button
-            android:id="@+id/btn_register"
+        <CheckBox
+            android:id="@+id/terms_check_box"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            android:text="Register"
+            android:layout_marginTop="20dp"
+            android:text="@string/terms_of_use"
+            app:layout_constraintStart_toStartOf="@+id/password_repeat"
+            app:layout_constraintTop_toBottomOf="@+id/password_repeat" />
+
+        <Button
+            android:id="@+id/btn_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="60dp"
+            android:layout_marginEnd="60dp"
+            android:text="@string/register"
+            android:background="@drawable/btn_authorize_dark_background"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/password_repeat" />
+            app:layout_constraintTop_toBottomOf="@+id/terms_check_box" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
