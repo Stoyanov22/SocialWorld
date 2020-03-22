@@ -1,3 +1,5 @@
 In the mobile app we need to change the layout design of the fragments: Login, Register, Forgotten password. Also we need to change the color and the design of the buttons.
 
 Assignee: AK
+
+Status: 100% Done
