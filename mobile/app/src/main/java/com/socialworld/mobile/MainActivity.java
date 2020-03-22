@@ -24,6 +24,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         firebaseAuth = FirebaseAuth.getInstance();
 
+        if (firebaseAuth.getCurrentUser() == null) {
+            Intent intent = new Intent(getApplicationContext(), AuthorizeActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
     }
@@ -42,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), AuthorizeActivity.class);
                 firebaseAuth.signOut();
                 startActivity(intent);
+                finish();
                 break;
         }
         return super.onOptionsItemSelected(item);
