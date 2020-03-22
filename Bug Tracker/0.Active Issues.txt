@@ -2,7 +2,7 @@ SUPER IMPORTANT:
 18
 
 Important:
-14, 16, 25
+14, 16
 
 Normal:
 20
