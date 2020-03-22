@@ -10,21 +10,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/password"
-            android:textSize="20sp"
-            android:textColor="@color/colorDarkLabel"
-            app:layout_constraintBottom_toTopOf="@+id/password"
-            app:layout_constraintStart_toStartOf="@+id/password" />
-
         <EditText
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="25dp"
             android:layout_marginEnd="40dp"
             android:ems="10"
             android:hint="@string/enter_pass"
@@ -36,24 +27,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/repeat_pass"
-            android:textSize="20sp"
-            android:textColor="@color/colorDarkLabel"
-            app:layout_constraintBottom_toTopOf="@+id/password_repeat"
-            app:layout_constraintStart_toStartOf="@+id/password_repeat" />
-
         <EditText
             android:id="@+id/password_repeat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="25dp"
             android:layout_marginEnd="40dp"
             android:ems="10"
-            android:hint="@string/enter_pass"
+            android:hint="@string/repeat_pass"
             android:inputType="textPassword"
             android:drawableStart="@drawable/ic_lock_password"
             android:drawablePadding="7dp"

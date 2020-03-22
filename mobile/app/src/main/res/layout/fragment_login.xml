@@ -10,21 +10,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/password"
-            android:textColor="@color/colorDarkLabel"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/password"
-            app:layout_constraintStart_toStartOf="@+id/password" />
-
         <EditText
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="25dp"
             android:layout_marginEnd="40dp"
             android:drawableStart="@drawable/ic_lock_password"
             android:drawablePadding="7dp"
