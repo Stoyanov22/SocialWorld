@@ -107,9 +107,9 @@ public class User {
                 ", uid='" + uid + '\'' +
                 ", email='" + email + '\'' +
                 ", name='" + name + '\'' +
-                ", countryId=" + CountryConstants.getCountryName(countryId) +
+                ", country=" + CountryConstants.getCountryName(countryId) +
                 ", dateOfBirth=" + dateOfBirth +
-                ", genderId=" + GenderConstants.getGenderName(genderId) +
+                ", gender=" + GenderConstants.getGenderName(genderId) +
                 '}';
     }
 
