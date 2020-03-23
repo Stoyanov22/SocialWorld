@@ -5,6 +5,11 @@
     <title>SocialWorld</title>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="stylesheet" href="css/main.css"/>
+    <!--FIREBASE-->
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-app.js"></script>
+    <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-analytics.js"></script>
     <script src="js/jquery.min.js"></script>
 </head>
 <body>
@@ -13,10 +18,19 @@
     <div class="inner">
         <!-- TODO: Width to be relative -->
         <a href="index" class="logo"><img src="images/logo.png" alt="logo" width="300"></a>
+        <nav id="nav">
+            <a href="/logout" id="logout">Logout</a>
+        </nav>
+
     </div>
 </header>
 <section id="banner">
     <h1>NEWS FEED</h1>
 </section>
+<!-- Add Firebase products that you want to use -->
+<script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-firestore.js"></script>
+<script src="js/firebaseInit.js"></script>
+<script src="js/firebaseLogout.js"></script>
 </body>
 </html>

@@ -12,6 +12,7 @@ ui.start('#firebaseui-auth-container', {
       $.ajax({
             type: 'POST',
             url: "/",
+            async: false,
             data: {
                 uid: user.uid,
                 email: user.email,

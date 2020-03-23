@@ -42,7 +42,6 @@ public class HomeController {
                 User user = new User(userRecord.getUid(), userRecord.getEmail(), userRecord.getDisplayName());
                 userService.addUser(user);
             }
-
         } catch (FirebaseAuthException e) {
             model.setViewName("home/index");
             return model;
@@ -51,7 +50,15 @@ public class HomeController {
         session.setAttribute("uid", uid);
         session.setAttribute("email", email);
         model.addObject("session", session);
-        model.setViewName("feed/index");
+        model.setViewName("redirect:/feed");
+        return model;
+    }
+
+    @RequestMapping(value = {"/logout"}, method = RequestMethod.GET)
+    public ModelAndView logout(HttpSession session) {
+        session.invalidate();
+        ModelAndView model = new ModelAndView();
+        model.setViewName("redirect:/");
         return model;
     }
 }
