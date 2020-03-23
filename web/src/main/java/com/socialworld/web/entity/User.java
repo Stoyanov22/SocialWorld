@@ -7,8 +7,6 @@ public class User {
 
     private String id;
 
-    private String uid;
-
     private String email;
 
     private String name;
@@ -25,13 +23,13 @@ public class User {
 
     }
 
-    public User(String uid, String email) {
-        this.uid = uid;
+    public User(String id, String email) {
+        this.id = id;
         this.email = email;
     }
 
-    public User(String uid, String email, String name) {
-        this.uid = uid;
+    public User(String id, String email, String name) {
+        this.id = id;
         this.email = email;
         this.name = name;
     }
@@ -42,14 +40,6 @@ public class User {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
     }
 
     public String getEmail() {
@@ -104,7 +94,6 @@ public class User {
     public String toString() {
         return "User{" +
                 "id='" + id + '\'' +
-                ", uid='" + uid + '\'' +
                 ", email='" + email + '\'' +
                 ", name='" + name + '\'' +
                 ", country=" + CountryConstants.getCountryName(countryId) +
@@ -121,7 +110,6 @@ public class User {
         return countryId == user.countryId &&
                 genderId == user.genderId &&
                 id.equals(user.id) &&
-                uid.equals(user.uid) &&
                 email.equals(user.email) &&
                 name.equals(user.name) &&
                 Objects.equals(dateOfBirth, user.dateOfBirth);
@@ -129,6 +117,6 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, uid, email, name, countryId, dateOfBirth, genderId);
+        return Objects.hash(id, email, name, countryId, dateOfBirth, genderId);
     }
 }

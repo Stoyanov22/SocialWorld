@@ -37,7 +37,7 @@ public class HomeController {
     public ModelAndView home(HttpSession session, @RequestParam String uid, @RequestParam String email) {
         ModelAndView model = new ModelAndView();
         try {
-            if(userService.getUserByEmail(email) == null){
+            if (userService.getUserByEmail(email) == null) {
                 UserRecord userRecord = firebaseAuth.getUser(uid);
                 User user = new User(userRecord.getUid(), userRecord.getEmail(), userRecord.getDisplayName());
                 userService.addUser(user);

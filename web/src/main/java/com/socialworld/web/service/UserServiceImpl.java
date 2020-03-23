@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
     public User getUserById(String id) {
         try {
             List<QueryDocumentSnapshot> dbUsers = db.collection("Users").get().get().getDocuments();
-            if(dbUsers.stream().anyMatch(u -> u.getId().equals(id))){
+            if (dbUsers.stream().anyMatch(u -> u.getId().equals(id))) {
                 return dbUsers.stream().filter(u -> u.getId().equals(id)).findFirst().get().toObject(User.class);
             } else {
                 return null;
@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
     public User getUserByEmail(String email) {
         try {
             List<QueryDocumentSnapshot> dbUsers = db.collection("Users").get().get().getDocuments();
-            if(dbUsers.stream().anyMatch(u -> u.getString("email").equals(email))){
+            if (dbUsers.stream().anyMatch(u -> u.getString("email").equals(email))) {
                 return dbUsers.stream().filter(u -> u.getString("email").equals(email)).findFirst().get().toObject(User.class);
             } else {
                 return null;
@@ -70,8 +70,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean editUser(User user) {
         Map<String, Object> editUser = new HashMap<>();
-        editUser.put("uid", user.getUid());
-        editUser.put("email", user.getEmail());
         editUser.put("name", user.getName());
         editUser.put("countryId", user.getCountryId());
         editUser.put("dateOfBirth", user.getDateOfBirth());
