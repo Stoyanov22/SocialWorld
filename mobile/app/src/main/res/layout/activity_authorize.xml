@@ -28,74 +28,26 @@
             android:focusable="true"/>
     </RelativeLayout>
 
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="40dp"
+        android:drawableStart="@drawable/ic_email"
+        android:drawablePadding="7dp"
+        android:ems="10"
+        android:hint="@string/email_hint"
+        android:inputType="textEmailAddress"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <FrameLayout
         android:id="@+id/authorize_fragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-<!--    <EditText-->
-<!--        android:id="@+id/username"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="66dp"-->
-<!--        android:layout_marginStart="80dp"-->
-<!--        android:layout_marginTop="200dp"-->
-<!--        android:layout_marginEnd="80dp"-->
-<!--        android:ems="10"-->
-<!--        android:hint="Email"-->
-<!--        android:inputType="textPersonName"-->
-<!--        android:textSize="22sp"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
-
-<!--    <EditText-->
-<!--        android:id="@+id/password"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="66dp"-->
-<!--        android:layout_marginStart="80dp"-->
-<!--        android:layout_marginTop="40dp"-->
-<!--        android:layout_marginEnd="80dp"-->
-<!--        android:ems="10"-->
-<!--        android:hint="Password"-->
-<!--        android:inputType="textPassword"-->
-<!--        android:textSize="22sp"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/username" />-->
-
-<!--    <Button-->
-<!--        android:id="@+id/btnLogin"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="80dp"-->
-<!--        android:layout_marginTop="90dp"-->
-<!--        android:onClick="onBtnLoginClick"-->
-<!--        android:text="Login"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/password" />-->
-
-<!--    <Button-->
-<!--        android:id="@+id/btnRegister"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="90dp"-->
-<!--        android:layout_marginEnd="80dp"-->
-<!--        android:onClick="onBtnRegisterClick"-->
-<!--        android:text="Register"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/password" />-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/textView"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="30dp"-->
-<!--        android:autoLink="all"-->
-<!--        android:linksClickable="true"-->
-<!--        android:text="Forgotten password"-->
-<!--        android:textColor="#271DCC"-->
-<!--        android:textColorLink="#2196F3"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/password" />-->
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/email" />
 </androidx.constraintlayout.widget.ConstraintLayout>

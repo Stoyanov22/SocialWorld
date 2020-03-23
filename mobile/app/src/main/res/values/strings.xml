@@ -1,6 +1,14 @@
 <resources>
     <string name="app_name">Social World</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="forgot_pass">Forgot Password?</string>
+    <string name="email">Email</string>
+    <string name="email_hint">Enter E-mail</string>
+    <string name="password">Password</string>
+    <string name="repeat_pass">Repeat Password</string>
+    <string name="reset_pass">Reset Password</string>
+    <string name="enter_pass">Enter Password</string>
+    <string name="create_profile">Create Profile</string>
+    <string name="terms_of_use">I accept with the Terms of use</string>
 </resources>

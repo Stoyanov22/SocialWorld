@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 
 public class LoginFragment extends Fragment {
-    private EditText emailEditText;
     private EditText passwordEditText;
 
     private OnLoginInteractionListener mListener;
@@ -39,18 +38,12 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
-
-        emailEditText = view.findViewById(R.id.email);
         passwordEditText = view.findViewById(R.id.password);
 
         view.findViewById(R.id.btn_login).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(emailEditText.getText().length() == 0 || passwordEditText.getText().length() == 0){
-                    Toast.makeText(getActivity().getApplicationContext(), "Email and password cannot be empty", Toast.LENGTH_LONG).show();
-                } else {
-                    onLoginPressed(emailEditText.getText().toString(), passwordEditText.getText().toString());
-                }
+                onLoginPressed(passwordEditText.getText().toString());
             }
         });
 
@@ -64,15 +57,15 @@ public class LoginFragment extends Fragment {
         view.findViewById(R.id.label_forgotten_pass).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onGoToForgottenPasswordPressed(emailEditText.getText().toString());
+                onGoToForgottenPasswordPressed();
             }
         });
         return view;
     }
 
-    public void onLoginPressed(String email, String password) {
+    public void onLoginPressed(String password) {
         if (mListener != null) {
-            mListener.onLoginInteraction(email, password);
+            mListener.onLoginInteraction(password);
         }
     }
 
@@ -82,9 +75,9 @@ public class LoginFragment extends Fragment {
         }
     }
 
-    public void onGoToForgottenPasswordPressed(String email) {
+    public void onGoToForgottenPasswordPressed() {
         if (mListener != null) {
-            mListener.onGoToForgottenPasswordInteraction(email);
+            mListener.onGoToForgottenPasswordInteraction();
         }
     }
 
@@ -107,10 +100,10 @@ public class LoginFragment extends Fragment {
     }
 
     public interface OnLoginInteractionListener {
-        void onLoginInteraction(String email, String password);
+        void onLoginInteraction(String password);
 
         void onGoToRegisterInteraction();
 
-        void onGoToForgottenPasswordInteraction(String email);
+        void onGoToForgottenPasswordInteraction();
     }
 }
