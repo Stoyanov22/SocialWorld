@@ -2,4 +2,4 @@ In the mobile app we need to change the layout design of the fragments: Login, R
 
 Assignee: AK
 
-Status: 100% Done
+Done : 100%;

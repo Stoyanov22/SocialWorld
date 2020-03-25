@@ -2,4 +2,4 @@ In the mobile app we need to add all text as string resource properties.
 
 Assignee: AK
 
-Status: 100% Done
+Done : 100%;

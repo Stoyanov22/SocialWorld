@@ -3,3 +3,5 @@ In the web we will need a landing home page which will include a high quality im
 Asignee : IS
 
 Langing page created. Yet to be optimized on it, but any future development will be described in other issues.
+
+Done : 100%;

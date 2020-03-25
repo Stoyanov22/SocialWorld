@@ -3,3 +3,5 @@ We need to create a logo for our application. It is super important to have a pi
 Asignee : IS
 
 Logo added. Including it in the common files.
+
+Done : 100%;

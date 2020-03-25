@@ -12,3 +12,5 @@ Asignees : AK and IS
 -You can follow other users
 -You can share your location and see other's locations
 -You can chat with other users
+
+Done : 100%;

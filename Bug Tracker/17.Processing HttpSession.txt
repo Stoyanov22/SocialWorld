@@ -3,3 +3,8 @@ HttpSession should have 2 attributes. One is the UID and the other one is the em
 we have to check if the session still exists and redirect the user to the right URL.
 
 Asignee : IS
+
+HttpSession created and passed through the model on every method in the controllers. The HttpSession object 
+contains 2 attributes: -UID and -EMAIL;
+
+Done : 100%;

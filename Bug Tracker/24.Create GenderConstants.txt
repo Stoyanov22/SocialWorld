@@ -3,3 +3,4 @@ only the gender ID. Later on we can add more functions which will help with work
 
 Asignee : IS
 
+Could be changed to enum.

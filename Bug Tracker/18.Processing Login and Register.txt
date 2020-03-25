@@ -10,3 +10,5 @@ filled - if everything is alright a HttpSession is created and the user is redir
 Comment : Currently it is redirecting back to Home page. The other is ready.
 Comment : Fixed. All redirections seem correct. The home page can only be accessed by non-authenticated users and the news 
 feed page can only be access by users with registration and active session.
+
+Done : 100%;

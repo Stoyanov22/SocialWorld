@@ -8,3 +8,5 @@ User (Through FireBaseAuth) {email, password, name, country, date of birth, gend
 FollowedUser { user1, user2 }
 Post { Picture, Text, Date, Likes, User }
 Comment { User, Post, Date }
+
+Done : 100%;

@@ -1,3 +1,5 @@
 We have to associate the database with the web application and install all dependencies needed before impelemting any login or register logic.
 
 Asignee : IS
+
+Done : 100%;
