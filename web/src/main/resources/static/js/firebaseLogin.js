@@ -11,20 +11,22 @@ ui.start('#firebaseui-auth-container', {
       var user = authResult.user;
       $.ajax({
             type: 'POST',
-            url: "/",
+            url: "/login",
             async: false,
             data: {
                 uid: user.uid,
                 email: user.email,
             },
             dataType: "json",
-            success: function(resultData) { alert("Save Complete") }
       });
+          return true;
     }
   },
   signInOptions: [
     firebase.auth.EmailAuthProvider.PROVIDER_ID
   ],
+  queryParameterForSignInSuccessUrl: 'signInSuccessUrl',
+  signInSuccessUrl: '/feed',
   credentialHelper: firebaseui.auth.CredentialHelper.NONE,
 });
 

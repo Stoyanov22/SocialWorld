@@ -33,8 +33,8 @@ public class HomeController {
         return model;
     }
 
-    @RequestMapping(value = {"/", "/index"}, method = RequestMethod.POST)
-    public ModelAndView home(HttpSession session, @RequestParam String uid, @RequestParam String email) {
+    @RequestMapping(value = {"/login"}, method = RequestMethod.POST)
+    public ModelAndView login(HttpSession session, @RequestParam String uid, @RequestParam String email) {
         ModelAndView model = new ModelAndView();
         try {
             if (userService.getUserByEmail(email) == null) {
