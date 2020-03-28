@@ -4,3 +4,7 @@ This includes the header, footer, navigation and leave an open space for the mai
 Asignee : IS
 
 Landing page created. Login and Register to follow. After that we will proceed with the skeleton for the other pages. Lowering the priority.
+Created html/css structure for the News Feed page. It is devided on two columns with the main column is called firstcolumn.
+It takes 69% of the page width. The other column is called secondpage is is taking the reminding 31%.
+
+Done : 100%;

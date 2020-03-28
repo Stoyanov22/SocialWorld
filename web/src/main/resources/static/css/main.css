@@ -17,6 +17,10 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 	display: block;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body {
 	line-height: 1;
 }
@@ -690,7 +694,7 @@ input[type="submit"].disabled, input[type="submit"]:disabled, input[type="reset"
 #header {
 	color: #fff;
 	cursor: default;
-	height: 3.25em;
+	height: 100px;
 	left: 0;
 	line-height: 3.25em;
 	position: absolute;
@@ -739,83 +743,6 @@ input[type="submit"].disabled, input[type="submit"]:disabled, input[type="reset"
 	padding-right: 0;
 }
 
-@media screen and (max-width: 736px) {
-	#navHeader a {
-		padding: 0 0.5em;
-	}
-}
-
-@media screen and (max-width: 980px) {
-	#header {
-		top: 1em;
-	}
-}
-
-@media screen and (max-width: 736px) {
-	#header #navHeader {
-		top: .5em;
-	}
-}
-
-@media screen and (max-width: 480px) {
-	#header #navHeader {
-		font-size: .9em;
-	}
-}
-
-#navHeader {
-	color: #fff;
-	cursor: default;
-	height: 5.25em;
-	left: 0;
-	line-height: 3.25em;
-	position: relative;
-	text-align: right;
-	width: 100%;
-	margin-top: 0;
-	z-index: 10001;
-    background: rgba(113, 113, 119, 0.25);
-}
-
-#navHeader .inner {
-	margin: 0 auto;
-	position: relative;
-}
-
-#navHeader .logo {
-	color: #ffffff;
-	display: inline-block;
-	font-weight: 400;
-	height: inherit;
-	left: 0;
-	line-height: inherit;
-	margin: 0;
-	padding: 0;
-	position: absolute;
-	top: 0;
-	font-size: 1em;
-}
-
-#navHeader a {
-	-moz-transition: color 0.2s ease-in-out;
-	-webkit-transition: color 0.2s ease-in-out;
-	-ms-transition: color 0.2s ease-in-out;
-	transition: color 0.2s ease-in-out;
-	display: inline-block;
-	padding: 0 0.75em;
-	color: inherit;
-	text-decoration: none;
-	font-size: 1em;
-}
-
-#navHeader a:hover {
-	color: #ffffff;
-}
-
-#navHeader a:last-child {
-	padding-right: 0;
-}
-
 /* Banner */
 
 #myVideo {
@@ -843,7 +770,7 @@ input[type="submit"].disabled, input[type="submit"]:disabled, input[type="reset"
 
 #banner:before {
 	content: '';
-	background: rgba(113, 113, 119, 0.85);
+	background: rgba(113, 113, 119, 0.5);
 	position: absolute;
 	width: 100%;
 	height: 100%;
@@ -1012,4 +939,100 @@ input[type="submit"].disabled, input[type="submit"]:disabled, input[type="reset"
 
 #loginForm p{
   color: black;
+}
+
+/* Navigation on other pages*/
+.navigationHeader {
+  text-align: right;
+  color: #fff;
+  cursor: default;
+  height: 80px;
+  left: 0;
+  line-height: 3.25em;
+  position: relative;
+  width: 100%;
+  z-index: 10001;
+  background: rgba(3, 115, 252, 0.5);
+}
+
+.navigationHeader .inner {
+	margin: 0 auto;
+	position: relative;
+}
+
+.navigationHeader .logo {
+	color: #ffffff;
+	display: inline-block;
+	font-weight: 400;
+	height: inherit;
+	left: 0;
+	line-height: inherit;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	top: 0;
+	font-size: 1em;
+}
+
+.navigationHeader a {
+	-moz-transition: color 0.2s ease-in-out;
+	-webkit-transition: color 0.2s ease-in-out;
+	-ms-transition: color 0.2s ease-in-out;
+	transition: color 0.2s ease-in-out;
+	display: inline-block;
+	padding: 0 0.75em;
+	color: inherit;
+	text-decoration: none;
+	font-size: 1em;
+}
+
+.navigationHeader a:hover {
+	color: #ffffff;
+}
+
+.navigationHeader a:last-child {
+	padding-right: 0;
+}
+
+@media screen and (max-width: 736px) {
+	.navigationHeader a {
+		padding: 0 0.5em;
+	}
+}
+
+/* Create two unequal columns that floats next to each other */
+/* Left column */
+.leftcolumn {
+  float: left;
+  width: 69%;
+}
+
+/* Right column */
+.rightcolumn {
+  float: left;
+  width: 31%;
+  background-color: #f1f1f1;
+  padding-left: 20px;
+}
+
+/* Add a card effect for articles */
+.card {
+  background-color: white;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 800px) {
+  .leftcolumn, .rightcolumn {
+    width: 100%;
+    padding: 0;
+  }
 }

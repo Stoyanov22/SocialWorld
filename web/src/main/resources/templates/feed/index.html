@@ -14,19 +14,40 @@
 </head>
 <body>
 <!-- Header -->
-<header id="header">
+<header class="navigationHeader">
     <div class="inner">
         <!-- TODO: Width to be relative -->
-        <a href="index" class="logo"><img src="images/logo.png" alt="logo" width="300"></a>
+        <a href="index" class="logo"><img src="images/logo.png" alt="logo" height="100"></a>
         <nav id="nav">
             <a href="/logout" id="logout">Logout</a>
         </nav>
-
     </div>
 </header>
-<section id="banner">
-    <h1>NEWS FEED</h1>
-</section>
+<div class="row">
+    <div class="leftcolumn">
+        <div class="card">
+            <h2>TITLE HEADING</h2>
+            <h5>Title description, Dec 7, 2017</h5>
+            <div class="fakeimg" style="height:200px;">Image</div>
+            <p>Some text..</p>
+            <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+        </div>
+    </div>
+    <div class="rightcolumn">
+        <div class="card">
+            <h2>About Me</h2>
+            <div class="fakeimg" style="height:100px;">Image</div>
+            <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
+        </div>
+        <div class="card">
+            <h3>Popular Post</h3>
+            <div class="fakeimg"><p>Image</p></div>
+            <div class="fakeimg"><p>Image</p></div>
+            <div class="fakeimg"><p>Image</p></div>
+        </div>
+    </div>
+</div>
+
 <!-- Add Firebase products that you want to use -->
 <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-firestore.js"></script>

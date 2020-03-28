@@ -7,4 +7,4 @@ Normal:
 20,24
 
 Could be done drunk:
-9,10,11
+9,10
