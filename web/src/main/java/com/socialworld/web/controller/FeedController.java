@@ -14,10 +14,10 @@ public class FeedController {
     @RequestMapping(value = {"/feed"}, method = RequestMethod.GET)
     public ModelAndView feed(HttpSession session) {
         ModelAndView model = new ModelAndView();
-        if (Objects.isNull(session.getAttribute("uid"))) {
-            model.setViewName("home/index");
-            return model;
-        }
+//        if (Objects.isNull(session.getAttribute("uid"))) {
+//            model.setViewName("home/index");
+//            return model;
+//        }
         model.setViewName("feed/index");
         return model;
     }
