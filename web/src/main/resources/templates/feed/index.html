@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>SocialWorld</title>
@@ -19,25 +19,30 @@
         <!-- TODO: Width to be relative -->
         <a href="index" class="logo"><img src="images/logo.png" alt="logo" height="100"></a>
         <nav id="nav">
-            <a href="/logout" id="logout">Logout</a>
+<!--        TODO: To be changed with icons-->
+            <a href="explore">Expolore</a>
+            <a href="friends">Friends list</a>
+            <a href="profile">My Profile</a>
         </nav>
     </div>
 </header>
 <div class="row">
     <div class="leftcolumn">
         <div class="card">
-            <h2>TITLE HEADING</h2>
+            <h2></h2>
             <h5>Title description, Dec 7, 2017</h5>
-            <div class="fakeimg" style="height:200px;">Image</div>
+            <img style="height:200px;">
             <p>Some text..</p>
             <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
         </div>
     </div>
     <div class="rightcolumn">
         <div class="card">
-            <h2>About Me</h2>
-            <div class="fakeimg" style="height:100px;">Image</div>
+            <h2 th:text="${user.name}"></h2>
+            <img th:src="${user.picture}" style="height:100px;">
+            <h4>Last Post:</h4>
             <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
+            <a href="/logout" id="logout">Logout</a>
         </div>
         <div class="card">
             <h3>Popular Post</h3>

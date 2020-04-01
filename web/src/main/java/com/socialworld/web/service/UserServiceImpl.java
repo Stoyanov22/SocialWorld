@@ -37,8 +37,8 @@ public class UserServiceImpl implements UserService {
     public User getUserById(String id) {
         try {
             List<QueryDocumentSnapshot> dbUsers = db.collection("Users").get().get().getDocuments();
-            if (dbUsers.stream().anyMatch(u -> u.getId().equals(id))) {
-                return dbUsers.stream().filter(u -> u.getId().equals(id)).findFirst().get().toObject(User.class);
+            if (dbUsers.stream().anyMatch(u -> u.getString("id").equals(id))) {
+                return dbUsers.stream().filter(u -> u.getString("id").equals(id)).findFirst().get().toObject(User.class);
             } else {
                 return null;
             }
