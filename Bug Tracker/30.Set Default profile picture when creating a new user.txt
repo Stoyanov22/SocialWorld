@@ -1,0 +1,8 @@
+We have to set a default picture for the newly created users. Currently we don't support adding a picture on register,
+so we will have to set a default on register and after that every user can change it.
+
+Asignee : IS
+
+Setting the following pictureURL as default one : https://clipartart.com/images/happy-skeleton-clipart-2.png
+
+Done : 100%;

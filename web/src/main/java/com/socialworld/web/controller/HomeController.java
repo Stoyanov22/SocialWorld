@@ -38,8 +38,11 @@ public class HomeController {
         ModelAndView model = new ModelAndView();
         try {
             if (userService.getUserByEmail(email) == null) {
+                //Creating user if not exist.
                 UserRecord userRecord = firebaseAuth.getUser(uid);
                 User user = new User(userRecord.getUid(), userRecord.getEmail(), userRecord.getDisplayName());
+                //Setting default picture to newly registred user
+                user.setPicture("https://clipartart.com/images/happy-skeleton-clipart-2.png");
                 userService.addUser(user);
             }
         } catch (FirebaseAuthException e) {
