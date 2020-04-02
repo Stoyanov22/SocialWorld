@@ -4,24 +4,19 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class UserEntity implements Serializable {
-    private int id;
+    private String id;
     private String email;
 
-    public UserEntity(int id, String email) {
+    public UserEntity(String id, String email) {
         this.id = id;
         this.email = email;
     }
 
-    public UserEntity(String email) {
-        id = 31 * Objects.hash(email);
-        this.email = email;
-    }
-
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

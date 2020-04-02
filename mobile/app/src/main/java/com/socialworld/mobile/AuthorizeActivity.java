@@ -11,13 +11,10 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.socialworld.mobile.entities.UserEntity;
 
@@ -39,6 +36,8 @@ public class AuthorizeActivity extends AppCompatActivity implements LoginFragmen
 
         emailInput = findViewById(R.id.email);
 
+        db = FirebaseFirestore.getInstance();
+
         getSupportFragmentManager().beginTransaction().replace(R.id.authorize_fragment, LoginFragment.newInstance()).commit();
     }
 
@@ -58,13 +57,11 @@ public class AuthorizeActivity extends AppCompatActivity implements LoginFragmen
         }
         loadingLayout.setVisibility(View.VISIBLE);
         firebaseAuth.signInWithEmailAndPassword(emailInput.getText().toString(), password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                            finish();
-                        }
+                    public void onSuccess(AuthResult authResult) {
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        finish();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -74,7 +71,6 @@ public class AuthorizeActivity extends AppCompatActivity implements LoginFragmen
                         Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
-
     }
 
     @Override
@@ -93,7 +89,7 @@ public class AuthorizeActivity extends AppCompatActivity implements LoginFragmen
             Toast.makeText(getApplicationContext(), "Email cannot be empty", Toast.LENGTH_LONG).show();
             return;
         }
-        if(password.length() == 0){
+        if (password.length() == 0) {
             Toast.makeText(getApplicationContext(), "Password cannot be empty", Toast.LENGTH_LONG).show();
             return;
         }
@@ -103,27 +99,26 @@ public class AuthorizeActivity extends AppCompatActivity implements LoginFragmen
         }
         loadingLayout.setVisibility(View.VISIBLE);
         firebaseAuth.createUserWithEmailAndPassword(emailInput.getText().toString(), password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            db = FirebaseFirestore.getInstance();
-                            UserEntity user = new UserEntity(emailInput.getText().toString());
-                            db.collection("Users").add(user).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                @Override
-                                public void onSuccess(DocumentReference documentReference) {
-                                    Toast.makeText(getApplicationContext(), "User registered", Toast.LENGTH_LONG).show();
-                                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                                    finish();
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    loadingLayout.setVisibility(View.INVISIBLE);
-                                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                                }
-                            });
-                        }
+                    public void onSuccess(AuthResult authResult) {
+                        UserEntity user = new UserEntity(firebaseAuth.getCurrentUser().getUid(), emailInput.getText().toString());
+                        db.collection("Users").document(firebaseAuth.getCurrentUser().getUid()).set(user)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Toast.makeText(getApplicationContext(), "User registered", Toast.LENGTH_LONG).show();
+                                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                        finish();
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        loadingLayout.setVisibility(View.INVISIBLE);
+                                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                                    }
+                                });
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -143,16 +138,14 @@ public class AuthorizeActivity extends AppCompatActivity implements LoginFragmen
         }
         loadingLayout.setVisibility(View.VISIBLE);
         firebaseAuth.sendPasswordResetEmail(emailInput.getText().toString())
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            loadingLayout.setVisibility(View.INVISIBLE);
-                            Toast.makeText(getApplicationContext(), "Email sent", Toast.LENGTH_LONG).show();
-                            FragmentManager fragmentManager = getSupportFragmentManager();
-                            fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                            fragmentManager.beginTransaction().replace(R.id.authorize_fragment, LoginFragment.newInstance()).commit();
-                        }
+                    public void onSuccess(Void aVoid) {
+                        loadingLayout.setVisibility(View.INVISIBLE);
+                        Toast.makeText(getApplicationContext(), "Email sent", Toast.LENGTH_LONG).show();
+                        FragmentManager fragmentManager = getSupportFragmentManager();
+                        fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                        fragmentManager.beginTransaction().replace(R.id.authorize_fragment, LoginFragment.newInstance()).commit();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
