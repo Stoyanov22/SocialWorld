@@ -1,6 +1,7 @@
 package com.socialworld.web.entity;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 public class User {
@@ -18,6 +19,8 @@ public class User {
     private int genderId;
 
     private String picture;
+
+    private List<Post> posts;
 
     public User() {
 
