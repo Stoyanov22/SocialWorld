@@ -1,0 +1,4 @@
+Crete a class for the Comments. This class should represent the a Comment entity from the database including the navigation
+properties for User and Comment.
+
+Asignee : IS

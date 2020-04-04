@@ -1,0 +1,6 @@
+Crete a class for the Posts. This class should represent the a Post entity from the database including the navigation
+properties for User and Comment.
+
+Asignee : IS
+
+Done 70%; Class created but yet to add the Comment class as reference.

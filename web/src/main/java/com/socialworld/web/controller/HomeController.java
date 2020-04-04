@@ -26,7 +26,7 @@ public class HomeController {
     public ModelAndView home(HttpSession session) {
         ModelAndView model = new ModelAndView();
         if (Objects.nonNull(session.getAttribute("uid"))) {
-            model.setViewName("feed/index");
+            model.setViewName("home/feed");
             return model;
         }
         model.setViewName("home/index");
@@ -54,6 +54,19 @@ public class HomeController {
         session.setAttribute("email", email);
         model.addObject("session", session);
         model.setViewName("redirect:/feed");
+        return model;
+    }
+
+    @RequestMapping(value = {"/feed"}, method = RequestMethod.GET)
+    public ModelAndView feed(HttpSession session) {
+        ModelAndView model = new ModelAndView();
+        if (Objects.isNull(session.getAttribute("uid"))) {
+            model.setViewName("home/index");
+            return model;
+        }
+        User user = userService.getUserByEmail(session.getAttribute("email").toString());
+        model.addObject("user", user);
+        model.setViewName("home/feed");
         return model;
     }
 

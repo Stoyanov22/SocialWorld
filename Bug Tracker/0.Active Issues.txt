@@ -4,7 +4,7 @@ Important:
 14, 16, 28, 29
 
 Normal:
-20,24
+20,24,31,32
 
 Could be done drunk:
 9,10
