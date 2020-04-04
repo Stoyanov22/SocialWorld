@@ -1,0 +1,9 @@
+For the Web UI we need a specific page to see and edit the currently logged user account. This page should be called My Profile.
+It should follow the template of the news feed page.
+
+Asignee : IS
+
+Page created. The left column of the page will include the user's posts and the right contains all the information for
+the user + and Edit and Logout buttons.
+
+Done : 50%; 

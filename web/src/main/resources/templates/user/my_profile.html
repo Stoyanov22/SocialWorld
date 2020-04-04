@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>SocialWorld</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="css/main.css"/>
+    <!--FIREBASE-->
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-app.js"></script>
+    <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-analytics.js"></script>
+    <script src="js/jquery.min.js"></script>
+</head>
+<body>
+<!-- Header -->
+<header class="navigationHeader">
+    <div class="inner">
+        <!-- TODO: Width to be relative -->
+        <a href="index" class="logo"><img src="images/logo.png" alt="logo" height="100"></a>
+        <nav id="nav">
+            <!--        TODO: To be changed with icons-->
+            <a href="explore">Explore</a>
+            <a href="friends">Friends list</a>
+            <a href="my_profile">My Profile</a>
+        </nav>
+    </div>
+</header>
+
+<div class="row">
+    <div class="leftcolumn">
+        <h1> My Posts </h1>
+        <div class="card">
+            <h2></h2>
+            <h5>Title description, Dec 7, 2017</h5>
+            <img style="height:200px;">
+            <p>Some text..</p>
+            <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+        </div>
+    </div>
+    <div class="rightcolumn">
+        <div class="card">
+            <h1>My Data</h1>
+            <a class="button" href="edit_profile">Edit</a>
+            <h2 th:text="${user.name}"></h2>
+            <h4 th:text="${user.email}"></h4>
+            <img th:src="${user.picture}" style="height:100px;">
+            <h4 th:text="${user.dateOfBirth}"></h4>
+            <h4 th:text="${gender}"></h4>
+            <h4 th:text="${country}"></h4>
+            <a class="button" href="/logout" id="logout">Logout</a>
+        </div>
+    </div>
+</div>
+
+<!-- Add Firebase products that you want to use -->
+<script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-firestore.js"></script>
+<script src="js/firebaseInit.js"></script>
+<script src="js/firebaseLogout.js"></script>
+</body>
+</html>

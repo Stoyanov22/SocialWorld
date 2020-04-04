@@ -1,7 +1,7 @@
 SUPER IMPORTANT:
 
 Important:
-14, 16, 28, 29
+14, 16, 28, 29, 33
 
 Normal:
 20,24,31,32
