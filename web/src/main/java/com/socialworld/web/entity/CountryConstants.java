@@ -1,5 +1,9 @@
 package com.socialworld.web.entity;
 
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
+
 public class CountryConstants {
 
     public static final int Afghanistan = 0;
@@ -724,5 +728,19 @@ public class CountryConstants {
 
     private static String replaceUnderscore(String countryName) {
         return countryName.replace("_", " ");
+    }
+
+    public static Map<Integer, String> getCountriesMap(){
+        Map<Integer, String> result = new HashMap<>();
+        CountryConstants countryConstants = new CountryConstants();
+        for(Field field : countryConstants.getClass().getDeclaredFields()){
+            try {
+                result.put(field.getInt(countryConstants), getCountryName(field.getInt(countryConstants)));
+            } catch (IllegalAccessException e) {
+                System.err.println("Couldn't load all countries!");
+            }
+        }
+
+        return result;
     }
 }
