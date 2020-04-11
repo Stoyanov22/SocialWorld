@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${user.name}"></title>
+    <title>Edit profile</title>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="stylesheet" href="css/main.css"/>
     <!--FIREBASE-->
@@ -27,29 +27,35 @@
 </header>
 
 <div class="row">
-    <div class="leftcolumn">
-        <h1> My Posts </h1>
-        <div class="card">
-            <h2></h2>
-            <h5>Title description, Dec 7, 2017</h5>
-            <img style="height:200px;">
-            <p>Some text..</p>
-            <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+    <section id="three" class="wrapper align-center">
+        <div class="image round">
+            <!-- TODO: Width to be relative -->
+            <img th:src="${user.picture}" width="150" />
         </div>
-    </div>
-    <div class="rightcolumn">
-        <div class="card">
-            <h1>My Data</h1>
-            <a class="button" href="edit_profile">Edit</a>
-            <h2 th:text="${user.name}"></h2>
-            <h4 th:text="${user.email}"></h4>
-            <img th:src="${user.picture}" style="height:100px;">
-            <h4 th:text="${user.dateOfBirth}"></h4>
-            <h4 th:text="${gender}"></h4>
-            <h4 th:text="${country}"></h4>
-            <a class="button" href="/logout" id="logout">Logout</a>
-        </div>
-    </div>
+        <header>
+            <h3 th:text="${user.email}"></h3>
+        </header>
+        <form action="/edit_profile" method="POST">
+            <label>Name</label>
+            <input type="text" name="name" th:value="${user.name}">
+            <label>Birthday</label>
+            <input type="date" name="dob" th:value="${user.dateOfBirth}">
+            <label>Gender</label>
+            <select name="genderId" th:value="${user.genderId}">
+                <option th:each="gender : ${genders}" th:value="${gender.key}"
+                        th:text="${gender.value}"
+                        th:selected="${user.genderId} == ${gender.key} ? true : false"></option>
+            </select>
+            <label>Country</label>
+            <select name="countryId" th:value="${user.countryId}">
+                <option th:each="country : ${countries}" th:value="${country.key}"
+                        th:text="${country.value}"
+                        th:selected="${user.countryId} == ${country.key} ? true : false"></option>
+            </select>
+            <label>Profile picture</label>
+
+        </form>
+    </section>
 </div>
 
 <!-- Add Firebase products that you want to use -->

@@ -38,4 +38,24 @@ public class UserController {
         }
         return model;
     }
+
+    @RequestMapping(value = {"/edit_profile"}, method = RequestMethod.GET)
+    public ModelAndView editProfile(HttpSession session) {
+        ModelAndView model = new ModelAndView();
+        if (Objects.isNull(session.getAttribute("uid"))) {
+            model.setViewName("home/index");
+            return model;
+        }
+        //TODO: change to getUserById when we update the documentID to be the UID
+        User user = userService.getUserByEmail(session.getAttribute("email").toString());
+        if (user != null) {
+            model.addObject("user", user);
+            model.addObject("genders", GenderConstants.getGendersMap());
+            model.addObject("countries", CountryConstants.getCountriesMap());
+            model.setViewName("user/edit_profile");
+        } else {
+            model.setViewName("home/index");
+        }
+        return model;
+    }
 }
