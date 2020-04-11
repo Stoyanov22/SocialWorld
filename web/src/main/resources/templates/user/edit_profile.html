@@ -5,12 +5,6 @@
     <title>Edit profile</title>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="stylesheet" href="css/main.css"/>
-    <!--FIREBASE-->
-    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
-    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-app.js"></script>
-    <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
-    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-analytics.js"></script>
-    <script src="js/jquery.min.js"></script>
 </head>
 <body>
 <!-- Header -->
@@ -30,7 +24,7 @@
     <section id="three" class="wrapper align-center">
         <div class="image round">
             <!-- TODO: Width to be relative -->
-            <img th:src="${user.picture}" width="150" />
+            <img th:src="${user.picture}" width="150"/>
         </div>
         <header>
             <h3 th:text="${user.email}"></h3>
@@ -42,26 +36,23 @@
             <input type="date" name="dob" th:value="${user.dateOfBirth}">
             <label>Gender</label>
             <select name="genderId" th:value="${user.genderId}">
-                <option th:each="gender : ${genders}" th:value="${gender.key}"
+                <option th:each="gender : ${genders}"
                         th:text="${gender.value}"
                         th:selected="${user.genderId} == ${gender.key} ? true : false"></option>
             </select>
             <label>Country</label>
             <select name="countryId" th:value="${user.countryId}">
-                <option th:each="country : ${countries}" th:value="${country.key}"
+                <option th:each="country : ${countries}"
                         th:text="${country.value}"
                         th:selected="${user.countryId} == ${country.key} ? true : false"></option>
             </select>
             <label>Profile picture</label>
 
+            <input type="submit" value="Edit">
+
         </form>
+        <a href="/my_profile">Go back</a>
     </section>
 </div>
-
-<!-- Add Firebase products that you want to use -->
-<script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-firestore.js"></script>
-<script src="js/firebaseInit.js"></script>
-<script src="js/firebaseLogout.js"></script>
 </body>
 </html>
