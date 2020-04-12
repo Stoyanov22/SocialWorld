@@ -17,6 +17,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.socialworld.mobile.entities.UserEntity;
+import com.socialworld.mobile.ui.authorize.ForgotPasswordFragment;
+import com.socialworld.mobile.ui.authorize.LoginFragment;
+import com.socialworld.mobile.ui.authorize.RegisterFragment;
 
 public class AuthorizeActivity extends AppCompatActivity implements LoginFragment.OnLoginInteractionListener, RegisterFragment.OnNewRegisterInteractionListener, ForgotPasswordFragment.OnForgottenPasswordInteractionListener {
 
@@ -60,7 +63,7 @@ public class AuthorizeActivity extends AppCompatActivity implements LoginFragmen
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                         finish();
                     }
                 })
@@ -108,7 +111,7 @@ public class AuthorizeActivity extends AppCompatActivity implements LoginFragmen
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         Toast.makeText(getApplicationContext(), "User registered", Toast.LENGTH_LONG).show();
-                                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                                         finish();
                                     }
                                 })

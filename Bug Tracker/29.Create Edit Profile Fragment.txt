@@ -1,3 +1,0 @@
-In the android app we need to create a fragment where the user can update the  information about his profile like name, picture and date of birth.
-
-Assignee: AK

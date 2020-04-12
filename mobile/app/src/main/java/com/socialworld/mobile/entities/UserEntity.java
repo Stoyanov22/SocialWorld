@@ -19,6 +19,19 @@ public class UserEntity implements Serializable {
         this.email = email;
     }
 
+    public UserEntity(String id, String email, String name, String picture, String dateOfBirth, Integer genderId, Integer countryId) {
+        this.id = id;
+        this.email = email;
+        this.name = name;
+        this.picture = picture;
+        this.dateOfBirth = dateOfBirth;
+        this.genderId = genderId;
+        this.countryId = countryId;
+    }
+
+    public UserEntity() {
+    }
+
     public String getId() {
         return id;
     }
