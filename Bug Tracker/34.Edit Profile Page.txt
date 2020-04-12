@@ -1,0 +1,8 @@
+For the Web UI we need a specific page to edit the currently logged user account. This page should be called Edit Profile.
+It should follow the template of the other pages. The fields that should be editted are Name, Birthday, Gender, Country and
+profile picture.
+
+Asignee : IS
+
+Page UI created.
+Done : 20%;
