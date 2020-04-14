@@ -19,7 +19,7 @@ ui.start('#firebaseui-auth-container', {
             },
             dataType: "json",
       });
-          return true;
+      return true;
     }
   },
   signInOptions: [

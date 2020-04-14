@@ -1,5 +1,8 @@
 package com.socialworld.web.controller;
 
+import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.Bucket;
+import com.google.firebase.cloud.StorageClient;
 import com.socialworld.web.entity.CountryConstants;
 import com.socialworld.web.entity.GenderConstants;
 import com.socialworld.web.entity.User;
@@ -13,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.Objects;
 
 @Controller
@@ -63,19 +67,12 @@ public class UserController {
 
     @RequestMapping(value = {"/edit_profile"}, method = RequestMethod.POST)
     public ModelAndView editProfile(HttpSession session, @RequestParam String name, @RequestParam String dob,
-                                    @RequestParam String genderId, @RequestParam String countryId, @RequestParam MultipartFile[] picture) {
+                                    @RequestParam String genderId, @RequestParam String countryId, @RequestParam String picture) {
         ModelAndView model = new ModelAndView();
-        if (Objects.isNull(session.getAttribute("uid"))) {
-            model.setViewName("home/index");
-            return model;
-        }
         //TODO: change to getUserById when we update the documentID to be the UID
         User user = userService.getUserByEmail(session.getAttribute("email").toString());
         if (user != null) {
-            model.addObject("user", user);
-            model.addObject("genders", GenderConstants.getGendersMap());
-            model.addObject("countries", CountryConstants.getCountriesMap());
-            model.setViewName("user/edit_profile");
+
         } else {
             model.setViewName("home/index");
         }
