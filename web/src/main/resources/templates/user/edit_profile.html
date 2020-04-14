@@ -35,7 +35,7 @@
         <header>
             <h3 th:text="${user.email}"></h3>
         </header>
-<!--        <form action="/edit_profile" method="POST" enctype='multipart/form-data'>-->
+        <form action="/edit_profile" method="POST">
             <label>Name</label>
             <input type="text" name="name" id="name" th:value="${user.name}">
             <label>Birthday</label>
@@ -57,7 +57,7 @@
             <label>Profile picture</label>
             <input type="file" name="picture" id="picture" accept="image/*"><br/>
             <input type="submit" value="Edit" id="submit">
-<!--        </form>-->
+        </form>
         <a href="/my_profile">Go back</a>
     </section>
 </div>
