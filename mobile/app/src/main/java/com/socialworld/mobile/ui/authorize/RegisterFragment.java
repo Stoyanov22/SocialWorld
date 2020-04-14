@@ -1,4 +1,4 @@
-package com.socialworld.mobile;
+package com.socialworld.mobile.ui.authorize;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.socialworld.mobile.R;
 
 public class RegisterFragment extends Fragment {
 

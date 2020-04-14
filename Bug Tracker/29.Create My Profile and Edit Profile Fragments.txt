@@ -1,0 +1,7 @@
+29.1. In the android app we need to create a fragment where the user can see the information about his profile.
+
+29.2. Also we need to create a fragment where the user can update the  information about his profile like name, picture and date of birth.
+
+Assignee: AK
+
+29.1. Done: 60%

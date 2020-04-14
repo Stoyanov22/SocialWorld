@@ -1,4 +1,4 @@
-package com.socialworld.mobile;
+package com.socialworld.mobile.ui.authorize;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.socialworld.mobile.R;
 
 public class ForgotPasswordFragment extends Fragment {
     private OnForgottenPasswordInteractionListener mListener;

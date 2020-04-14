@@ -1,0 +1,5 @@
+We need a NavigationView in the main fragment. From it we will be able to move between the fragments: MyProfileFragment, NewsFeedFragment, MyPostsFragment
+
+Assignee: AK
+
+Done: 100%
