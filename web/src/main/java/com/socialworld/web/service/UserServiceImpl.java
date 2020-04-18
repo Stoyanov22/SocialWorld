@@ -63,20 +63,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean addUser(User user) {
-        ApiFuture<WriteResult> result = db.collection("Users").document().create(user);
+        ApiFuture<WriteResult> result = db.collection("Users").document(user.getId()).create(user);
         return result.isDone();
     }
 
     @Override
     public boolean editUser(User user) {
-        Map<String, Object> editUser = new HashMap<>();
-        editUser.put("name", user.getName());
-        editUser.put("countryId", user.getCountryId());
-        editUser.put("dateOfBirth", user.getDateOfBirth());
-        editUser.put("genderId", user.getGenderId());
+        Map<String, Object> updatedUser = new HashMap<>();
+        updatedUser.put("name", user.getName());
+        updatedUser.put("countryId", user.getCountryId());
+        updatedUser.put("dateOfBirth", user.getDateOfBirth());
+        updatedUser.put("genderId", user.getGenderId());
+        if(user.getPicture() != null && !user.getPicture().isEmpty()){
+            updatedUser.put("picture", user.getPicture());
+        }
 
-        ApiFuture<WriteResult> result = db.collection("Users").document(user.getId()).set(editUser);
-        return result.isDone();
+        //Firebase wants this check
+        if(user.getId() != null && !user.getId().isEmpty()){
+            ApiFuture<WriteResult> result = db.collection("Users").document(user.getId()).set(updatedUser);
+            return result.isDone();
+        } else {
+            return false;
+        }
     }
 
     @Override
