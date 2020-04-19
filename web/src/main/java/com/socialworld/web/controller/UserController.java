@@ -65,22 +65,22 @@ public class UserController {
     }
 
     @RequestMapping(value = {"/edit_profile"}, method = RequestMethod.POST)
-    public ModelAndView editProfile(HttpSession session, @RequestParam String name, @RequestParam String dob,
+    public ModelAndView editProfile(HttpSession session, @RequestParam String name, @RequestParam String dateOfBirth,
                                     @RequestParam String genderId, @RequestParam String countryId, @RequestParam String picture) {
         ModelAndView model = new ModelAndView();
-        Date dateOfBirth = null;
-        try {
-            DateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
-            dateOfBirth = formatter.parse(dob);
-        } catch (ParseException e) {
-            System.err.println("Couldn't parse date : " + dob);
+        Date dob = null;
+        if (dateOfBirth != null && dateOfBirth != ""){
+            try {
+                DateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
+                dob = formatter.parse(dateOfBirth);
+            } catch (ParseException e) {
+                System.err.println("Couldn't parse date : " + dateOfBirth);
+            }
         }
-        User user = new User(session.getAttribute("uid").toString(), session.getAttribute("email").toString(), name, dateOfBirth, Integer.parseInt(genderId), Integer.parseInt(countryId), picture);
-        boolean isDone = userService.editUser(user);
-        if (!isDone) {
-            System.err.println("Couldn't edit user : " + user);
-        }
-        model.setViewName("user/my_profile");
+
+        User user = new User(session.getAttribute("uid").toString(), session.getAttribute("email").toString(), name, dob, Integer.parseInt(genderId), Integer.parseInt(countryId), picture);
+        userService.editUser(user);
+        model.setViewName("redirect:/my_profile");
         return model;
     }
 }

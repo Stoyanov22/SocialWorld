@@ -39,7 +39,7 @@ $(document).ready(function(){
             // Upload completed successfully, now we can get the download URL
             uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
               var name = $("#name").val();
-              var dob = $("#dob").val();
+              var dob = $("#dateOfBirth").val();
               var genderId = $("#genderId").val();
               var countryId = $("#countryId").val();
               $.ajax({
@@ -48,7 +48,7 @@ $(document).ready(function(){
                     async: false,
                     data: {
                         name: name,
-                        dob: dob,
+                        dateOfBirth: dob,
                         genderId: genderId,
                         countryId: countryId,
                         picture: downloadURL

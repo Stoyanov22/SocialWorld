@@ -1,5 +1,7 @@
 package com.socialworld.web.entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -14,6 +16,7 @@ public class User {
 
     private int countryId;
 
+    @DateTimeFormat(pattern = "yyyy-mm-dd")
     private Date dateOfBirth;
 
     private int genderId;
