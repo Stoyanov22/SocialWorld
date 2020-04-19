@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
 
         //Firebase wants this check
         if(user.getId() != null && !user.getId().isEmpty()){
-            ApiFuture<WriteResult> result = db.collection("Users").document(user.getId()).set(updatedUser);
+            ApiFuture<WriteResult> result = db.collection("Users").document(user.getId()).update(updatedUser);
             return result.isDone();
         } else {
             return false;

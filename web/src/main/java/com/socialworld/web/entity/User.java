@@ -37,6 +37,16 @@ public class User {
         this.name = name;
     }
 
+    public User(String id, String email, String name, Date dateOfBirth, int genderId, int countryId, String picture){
+        this.id = id;
+        this.email = email;
+        this.name = name;
+        this.dateOfBirth = dateOfBirth;
+        this.genderId = genderId;
+        this.countryId = countryId;
+        this.picture = picture;
+    }
+
     public String getId() {
         return id;
     }
