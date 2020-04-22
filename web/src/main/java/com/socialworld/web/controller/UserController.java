@@ -31,8 +31,7 @@ public class UserController {
             model.setViewName("home/index");
             return model;
         }
-        //TODO: change to getUserById when we update the documentID to be the UID
-        User user = userService.getUserByEmail(session.getAttribute("email").toString());
+        User user = userService.getUserById(session.getAttribute("uid").toString());
         if (user != null) {
             model.addObject("user", user);
             model.addObject("gender", GenderConstants.getGenderName(user.getGenderId()));
@@ -51,8 +50,7 @@ public class UserController {
             model.setViewName("home/index");
             return model;
         }
-        //TODO: change to getUserById when we update the documentID to be the UID
-        User user = userService.getUserByEmail(session.getAttribute("email").toString());
+        User user = userService.getUserById(session.getAttribute("uid").toString());
         if (user != null) {
             model.addObject("user", user);
             model.addObject("genders", GenderConstants.getGendersMap());

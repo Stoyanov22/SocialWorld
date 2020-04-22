@@ -37,7 +37,7 @@ public class HomeController {
     public ModelAndView login(HttpSession session, @RequestParam String uid, @RequestParam String email) {
         ModelAndView model = new ModelAndView();
         try {
-            if (userService.getUserByEmail(email) == null) {
+            if (userService.getUserById(uid) == null) {
                 //Creating user if not exist.
                 UserRecord userRecord = firebaseAuth.getUser(uid);
                 User user = new User(userRecord.getUid(), userRecord.getEmail(), userRecord.getDisplayName());
@@ -64,7 +64,7 @@ public class HomeController {
             model.setViewName("home/index");
             return model;
         }
-        User user = userService.getUserByEmail(session.getAttribute("email").toString());
+        User user = userService.getUserById(session.getAttribute("uid").toString());
         model.addObject("user", user);
         model.setViewName("home/feed");
         return model;
