@@ -63,8 +63,8 @@ public class UserController {
     }
 
     @RequestMapping(value = {"/edit_profile"}, method = RequestMethod.POST)
-    public ModelAndView editProfile(HttpSession session, @RequestParam String name, @RequestParam String dateOfBirth,
-                                    @RequestParam String genderId, @RequestParam String countryId, @RequestParam String picture) {
+    public ModelAndView editProfile(HttpSession session, @RequestParam Object name, @RequestParam String dateOfBirth,
+                                    @RequestParam String genderId, @RequestParam String countryId, @RequestParam String pictureUrl) {
         ModelAndView model = new ModelAndView();
         Date dob = null;
         if (dateOfBirth != null && dateOfBirth != ""){
@@ -76,7 +76,7 @@ public class UserController {
             }
         }
 
-        User user = new User(session.getAttribute("uid").toString(), session.getAttribute("email").toString(), name, dob, Integer.parseInt(genderId), Integer.parseInt(countryId), picture);
+        User user = new User(session.getAttribute("uid").toString(), session.getAttribute("email").toString(), name.toString(), dob, Integer.parseInt(genderId), Integer.parseInt(countryId), pictureUrl);
         userService.editUser(user);
         model.setViewName("redirect:/my_profile");
         return model;

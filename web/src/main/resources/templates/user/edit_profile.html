@@ -36,6 +36,8 @@
             <h3 th:text="${user.email}"></h3>
         </header>
         <form action="/edit_profile" method="POST">
+            <input type="hidden" id="email" th:value="${user.email}">
+            <input type="hidden" id="pictureUrl" name="pictureUrl">
             <label>Name</label>
             <input type="text" name="name" required id="name" th:value="${user.name}">
             <label>Birthday</label>

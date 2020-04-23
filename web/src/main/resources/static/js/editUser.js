@@ -2,18 +2,18 @@ var storage = firebase.storage();
 var storageRef = storage.ref();
 
 $(document).ready(function(){
-    $("form").submit(function (e) {
-        var file = $("#picture")[0];
+    $("#picture").change(function (e) {
+        var file = $(this)[0];
 
         if(file.files.length > 0){
-          e.preventDefault(); // this will prevent from submitting the form from the HTML.
+          var email = $("#email").val();
           picture = file.files[0];
           var metadata = {
             contentType: 'image/jpeg'
           };
 
           // Upload file and metadata to the object 'images/mountains.jpg'
-          var uploadTask = storageRef.child('ProfilePictures/' + name).put(picture, metadata);
+          var uploadTask = storageRef.child('ProfilePictures/' + email).put(picture, metadata);
 
           // Listen for state changes, errors, and completion of the upload.
           uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
@@ -38,23 +38,7 @@ $(document).ready(function(){
           }, function() {
             // Upload completed successfully, now we can get the download URL
             uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-              var name = $("#name").val();
-              var dob = $("#dateOfBirth").val();
-              var genderId = $("#genderId").val();
-              var countryId = $("#countryId").val();
-              $.ajax({
-                    type: 'POST',
-                    url: "/edit_profile",
-                    async: false,
-                    data: {
-                        name: name,
-                        dateOfBirth: dob,
-                        genderId: genderId,
-                        countryId: countryId,
-                        picture: downloadURL
-                    },
-                    dataType: "json",
-              });
+              $("#pictureUrl").val(downloadURL)
             });
           });
         }
