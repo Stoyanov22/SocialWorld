@@ -1,0 +1,5 @@
+We have to give the user an option to remove his account. This should be done through the Edit Profile menu.
+
+Asignee : IS
+
+Done : 100%;

@@ -36,6 +36,7 @@
             <h3 th:text="${user.email}"></h3>
         </header>
         <form action="/edit_profile" method="POST">
+            <input type="hidden" id="uid" th:value="${user.id}">
             <input type="hidden" id="email" th:value="${user.email}">
             <input type="hidden" id="pictureUrl" name="pictureUrl">
             <label>Name</label>
@@ -61,6 +62,7 @@
             <input type="submit" value="Edit" id="submit">
         </form>
         <a href="/my_profile">Go back</a>
+        <input type="submit" value="Delete" id="delete">
     </section>
 </div>
 <!-- Add Firebase products that you want to use -->
@@ -70,5 +72,6 @@
 
 <script src="js/firebaseInit.js"></script>
 <script src="js/editUser.js"></script>
+<script src="js/removeUser.js"></script>
 </body>
 </html>
