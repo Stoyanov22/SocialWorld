@@ -12,9 +12,9 @@ public interface UserService {
 
     User getUserByEmail(String email);
 
-    boolean addUser(User user);
+    void addUser(User user);
 
-    boolean editUser(User user);
+    void editUser(User user);
 
-    boolean removeUserById(String id);
+    void removeUserById(String id);
 }

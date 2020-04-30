@@ -62,13 +62,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean addUser(User user) {
-        ApiFuture<WriteResult> result = db.collection("Users").document(user.getId()).create(user);
-        return result.isDone();
+    public void addUser(User user) {
+        db.collection("Users").document(user.getId()).create(user);
     }
 
     @Override
-    public boolean editUser(User user) {
+    public void editUser(User user) {
         Map<String, Object> updatedUser = new HashMap<>();
         updatedUser.put("name", user.getName());
         updatedUser.put("countryId", user.getCountryId());
@@ -79,17 +78,13 @@ public class UserServiceImpl implements UserService {
         }
 
         //Firebase wants this check
-        if(user.getId() != null && !user.getId().isEmpty()){
-            ApiFuture<WriteResult> result = db.collection("Users").document(user.getId()).update(updatedUser);
-            return result.isDone();
-        } else {
-            return false;
+        if(user.getId() != null && !user.getId().isEmpty()) {
+            db.collection("Users").document(user.getId()).update(updatedUser);
         }
     }
 
     @Override
-    public boolean removeUserById(String id) {
-        ApiFuture<WriteResult> result = db.collection("Users").document(id).delete();
-        return result.isDone();
+    public void removeUserById(String id) {
+        db.collection("Users").document(id).delete();
     }
 }
