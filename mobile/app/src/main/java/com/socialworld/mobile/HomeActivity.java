@@ -17,8 +17,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.socialworld.mobile.entities.UserEntity;
 import com.socialworld.mobile.ui.myProfile.MyProfileFragment;
+import com.socialworld.mobile.ui.myProfile.MyProfileViewModel;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -27,7 +29,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-public class HomeActivity extends AppCompatActivity implements MyProfileFragment.OnMyProfileInteractionListener {
+public class HomeActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -35,6 +37,8 @@ public class HomeActivity extends AppCompatActivity implements MyProfileFragment
     private FirebaseFirestore db;
 
     private UserEntity user;
+
+    private MyProfileViewModel myProfileViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +51,8 @@ public class HomeActivity extends AppCompatActivity implements MyProfileFragment
             finish();
         }
 
+        myProfileViewModel = new ViewModelProvider(this).get(MyProfileViewModel.class);
+
         db = FirebaseFirestore.getInstance();
 
         final String userUid = firebaseAuth.getCurrentUser().getUid();
@@ -55,6 +61,7 @@ public class HomeActivity extends AppCompatActivity implements MyProfileFragment
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         user = documentSnapshot.toObject(UserEntity.class);
+                        myProfileViewModel.setUser(user);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -101,7 +108,6 @@ public class HomeActivity extends AppCompatActivity implements MyProfileFragment
                 || super.onSupportNavigateUp();
     }
 
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -113,10 +119,5 @@ public class HomeActivity extends AppCompatActivity implements MyProfileFragment
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public UserEntity onLoadMyProfileListener() {
-        return user;
     }
 }

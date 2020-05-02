@@ -11,6 +11,12 @@
     <string name="enter_pass">Enter Password</string>
     <string name="create_profile">Create Profile</string>
     <string name="terms_of_use">I accept with the Terms of use</string>
+    <string name="edit_profile">Edit profile</string>
+    <string name="change_profile_picture">Change Profile Picture</string>
+    <string name="date_format_hint">DD/MM/YYYY</string>
+    <string name="username_hint">Enter Username</string>
+    <string name="update_profile">Update Profile</string>
+
     <string name="title_activity_home">HomeActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -31,6 +37,8 @@
     <string name="menu_profile">My Profile</string>
 
 
-
     <string name="home_second">Home Second</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

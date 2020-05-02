@@ -3,6 +3,7 @@ package com.socialworld.mobile.entities;
 import com.google.firebase.database.annotations.NotNull;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 
 public class UserEntity implements Serializable {
@@ -10,7 +11,7 @@ public class UserEntity implements Serializable {
     private String email;
     private String name;
     private String picture;
-    private String dateOfBirth;
+    private Date dateOfBirth;
     private Integer genderId;
     private Integer countryId;
 
@@ -19,7 +20,7 @@ public class UserEntity implements Serializable {
         this.email = email;
     }
 
-    public UserEntity(String id, String email, String name, String picture, String dateOfBirth, Integer genderId, Integer countryId) {
+    public UserEntity(String id, String email, String name, String picture, Date dateOfBirth, Integer genderId, Integer countryId) {
         this.id = id;
         this.email = email;
         this.name = name;
@@ -64,11 +65,11 @@ public class UserEntity implements Serializable {
         this.picture = picture;
     }
 
-    public String getDateOfBirth() {
+    public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
+    public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -114,7 +115,7 @@ public class UserEntity implements Serializable {
                 ", email='" + email + '\'' +
                 ", name='" + name + '\'' +
                 ", picture='" + picture + '\'' +
-                ", dateOfBirth='" + dateOfBirth + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
                 ", genderId=" + genderId +
                 ", countryId=" + countryId +
                 '}';

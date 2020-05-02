@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,36 +14,27 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.socialworld.mobile.R;
 import com.socialworld.mobile.entities.UserEntity;
+
+import static androidx.navigation.Navigation.findNavController;
 
 public class MyProfileFragment extends Fragment {
 
     private MyProfileViewModel myProfileViewModel;
 
-    private OnMyProfileInteractionListener mListener;
-
     private TextView nameTv;
     private TextView countryTv;
     private TextView dateOfBirthTv;
-    private TextView emailTv;
+//    private TextView emailTv;
     private TextView numFollowersTv;
-    private TextView numFollowing;
-
-    private UserEntity user;
+    private TextView numFollowingTv;
+    private Button editProfileBtn;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         myProfileViewModel = new ViewModelProvider(requireActivity()).get(MyProfileViewModel.class);
-
-        user = onLoadMyProfile();
-        myProfileViewModel.setUser(user);
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -54,55 +45,47 @@ public class MyProfileFragment extends Fragment {
         nameTv = root.findViewById(R.id.my_profile_name);
         countryTv = root.findViewById(R.id.my_profile_country);
         dateOfBirthTv = root.findViewById(R.id.my_profile_birthday);
-        emailTv = root.findViewById(R.id.my_profile_email);
+//        emailTv = root.findViewById(R.id.my_profile_email);
         numFollowersTv = root.findViewById(R.id.my_profile_num_followers);
-        numFollowing = root.findViewById(R.id.my_profile_num_following);
+        numFollowingTv = root.findViewById(R.id.my_profile_num_following);
 
-        myProfileViewModel.getUser().observe(getViewLifecycleOwner(), new Observer<UserEntity>() {
+        myProfileViewModel.getUserLiveData().observe(getViewLifecycleOwner(), new Observer<UserEntity>() {
             @Override
             public void onChanged(UserEntity userEntity) {
-                if (userEntity.getName() != null) {
-                    nameTv.setText(userEntity.getName());
+                if (userEntity != null) {
+                    if (userEntity.getName() != null) {
+                        nameTv.setText(userEntity.getName());
+                    }
+                    if (userEntity.getCountryId() != null) {
+                        countryTv.setText(userEntity.getCountryId());
+                    }
+                    if (userEntity.getDateOfBirth() != null) {
+                        dateOfBirthTv.setText(userEntity.getDateOfBirth().toString());
+                    }
+//                    if (userEntity.getEmail() != null) {
+//                        emailTv.setText(userEntity.getEmail());
+//                    }
+                    // TODO get the count of followers and following users
+                    numFollowersTv.setText("100");
+                    numFollowingTv.setText("50");
                 }
-                if (userEntity.getCountryId() != null) {
-                    countryTv.setText(userEntity.getCountryId());
-                }
-                if (userEntity.getDateOfBirth() != null) {
-                    dateOfBirthTv.setText(userEntity.getDateOfBirth());
-                }
-                if (userEntity.getEmail() != null) {
-                    emailTv.setText(userEntity.getEmail());
-                }
-                // TODO get the count of followers and following users
-                numFollowersTv.setText("100");
-                numFollowing.setText("50");
             }
         });
+
+        editProfileBtn = root.findViewById(R.id.edit_profile_btn);
+
         return root;
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnMyProfileInteractionListener) {
-            mListener = (OnMyProfileInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnLoginInteractionListener");
-        }
-    }
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    public UserEntity onLoadMyProfile() {
-        return mListener.onLoadMyProfileListener();
-    }
-
-    public interface OnMyProfileInteractionListener {
-        UserEntity onLoadMyProfileListener();
+        editProfileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                findNavController(v).navigate(R.id.action_nav_my_profile_to_nav_edit_profile);
+            }
+        });
     }
 }

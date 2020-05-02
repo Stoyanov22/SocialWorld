@@ -18,7 +18,11 @@ public class MyProfileViewModel extends ViewModel {
         mUser.setValue(userEntity);
     }
 
-    public LiveData<UserEntity> getUser() {
+    public LiveData<UserEntity> getUserLiveData() {
         return mUser;
+    }
+
+    public UserEntity getUser() {
+        return mUser.getValue();
     }
 }
