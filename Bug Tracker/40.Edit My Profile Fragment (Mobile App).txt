@@ -1,0 +1,5 @@
+We need a new Fragment that will allow the users to edit their profiles.
+It will be accessed from My Profile Fragment.
+In the fragment the user will be able to edit Profile Picture, Name, Gender, Country and Date of birth
+
+Assignee: AK
