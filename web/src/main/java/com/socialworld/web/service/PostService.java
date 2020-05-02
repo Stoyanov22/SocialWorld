@@ -11,11 +11,9 @@ public interface PostService {
 
     List<Post> getPostsForUser(User user);
 
-    void addPost();
+    void addPost(Post post);
 
-    void getPost(String id);
-
-    void editPost(String id);
+    Post getPost(String id);
 
     void removePost(String id);
 }

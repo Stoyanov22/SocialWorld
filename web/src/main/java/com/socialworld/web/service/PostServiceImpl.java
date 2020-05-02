@@ -1,11 +1,13 @@
 package com.socialworld.web.service;
 
 import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.firebase.cloud.FirestoreClient;
 import com.socialworld.web.entity.Post;
 import com.socialworld.web.entity.User;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class PostServiceImpl implements PostService {
 
@@ -22,22 +24,26 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void addPost() {
-
+    public void addPost(Post post) {
+        db.collection("Posts").document(post.getId()).create(post);
     }
 
     @Override
-    public void getPost(String id) {
-
-    }
-
-    @Override
-    public void editPost(String id) {
-
+    public Post getPost(String id) {
+        try {
+            List<QueryDocumentSnapshot> dbPosts = db.collection("Posts").get().get().getDocuments();
+            if (dbPosts.stream().anyMatch(p -> p.getId().equals(id))) {
+                return dbPosts.stream().filter(p -> p.getId().equals(id)).findFirst().get().toObject(Post.class);
+            } else {
+                return null;
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            return null;
+        }
     }
 
     @Override
     public void removePost(String id) {
-
+        db.collection("Posts").document(id).delete();
     }
 }
