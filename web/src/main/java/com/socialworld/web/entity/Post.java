@@ -15,13 +15,13 @@ public class Post {
 
     private int likes;
 
-    private User user;
+    private String userId;
 
     public Post() {
 
     }
 
-    public Post(Date date){
+    public Post(Date date) {
         this.date = date;
     }
 
@@ -65,12 +65,12 @@ public class Post {
         this.likes = likes;
     }
 
-    public User getUser() {
-        return user;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     @Override
@@ -81,7 +81,7 @@ public class Post {
                 ", picture='" + picture + '\'' +
                 ", date=" + date +
                 ", likes=" + likes +
-                ", user=" + user +
+                ", userId=" + userId +
                 '}';
     }
 
@@ -94,11 +94,12 @@ public class Post {
                 id.equals(post.id) &&
                 Objects.equals(text, post.text) &&
                 Objects.equals(picture, post.picture) &&
-                date.equals(post.date);
+                date.equals(post.date) &&
+                userId.equals(post.userId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, text, picture, date, likes);
+        return Objects.hash(id, text, picture, date, likes, userId);
     }
 }
