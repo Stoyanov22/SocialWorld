@@ -6,8 +6,10 @@ import com.google.firebase.cloud.FirestoreClient;
 import com.socialworld.web.entity.Post;
 import com.socialworld.web.entity.User;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 public class PostServiceImpl implements PostService {
 
@@ -15,7 +17,21 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<Post> getPostsByUserId(String userId) {
-        return null;
+        try {
+            List<QueryDocumentSnapshot> dbPosts = db.collection("Posts").get().get().getDocuments();
+            if (dbPosts.stream().anyMatch(u -> u.getString("userId").equals(userId))) {
+                List<QueryDocumentSnapshot> snapshotPosts = dbPosts.stream().filter(u -> u.getString("userId").equals(userId)).collect(Collectors.toList());
+                List<Post> result = new ArrayList<>();
+                for (QueryDocumentSnapshot post : snapshotPosts) {
+                    result.add(post.toObject(Post.class));
+                }
+                return result;
+            } else {
+                return null;
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            return null;
+        }
     }
 
     @Override
