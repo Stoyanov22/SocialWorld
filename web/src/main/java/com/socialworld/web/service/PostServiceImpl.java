@@ -5,12 +5,14 @@ import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.firebase.cloud.FirestoreClient;
 import com.socialworld.web.entity.Post;
 import com.socialworld.web.entity.User;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
+@Service
 public class PostServiceImpl implements PostService {
 
     private Firestore db = FirestoreClient.getFirestore();

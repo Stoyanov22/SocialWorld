@@ -3,7 +3,9 @@ package com.socialworld.web.controller;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
+import com.socialworld.web.entity.Post;
 import com.socialworld.web.entity.User;
+import com.socialworld.web.service.PostService;
 import com.socialworld.web.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.Objects;
 
 @Controller
@@ -20,6 +23,10 @@ public class HomeController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PostService postService;
+
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     @RequestMapping(value = {"/", "/index"}, method = RequestMethod.GET)
@@ -75,6 +82,19 @@ public class HomeController {
         session.invalidate();
         ModelAndView model = new ModelAndView();
         model.setViewName("redirect:/");
+        return model;
+    }
+
+    @RequestMapping(value = {"/createPost"}, method = RequestMethod.POST)
+    public ModelAndView createPost(HttpSession session, @RequestParam String postText, @RequestParam String pictureUrl){
+        ModelAndView model = new ModelAndView();
+        if (Objects.isNull(session.getAttribute("uid"))) {
+            model.setViewName("home/index");
+            return model;
+        }
+        Post post = new Post(postText, pictureUrl, new Date(), 0, session.getAttribute("uid").toString());
+        postService.addPost(post);
+        model.setViewName("redirect:/feed");
         return model;
     }
 }
