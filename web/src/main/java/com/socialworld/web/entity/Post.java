@@ -25,6 +25,16 @@ public class Post {
         this.date = date;
     }
 
+    //Creation constructor - sets ID
+    public Post(String text, String picture, Date date, int likes, String userId){
+        this.id = String.valueOf(Objects.hash(text, picture, date, likes, userId));
+        this.text = text;
+        this.picture = picture;
+        this.date = date;
+        this.likes = likes;
+        this.userId = userId;
+    }
+
     public String getId() {
         return id;
     }
