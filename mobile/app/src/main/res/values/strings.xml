@@ -11,7 +11,9 @@
     <string name="enter_pass">Enter Password</string>
     <string name="create_profile">Create Profile</string>
     <string name="terms_of_use">I accept with the Terms of use</string>
+    <string name="loading">Loading</string>
     <string name="edit_profile">Edit profile</string>
+    <string name="logout">Logout</string>
     <string name="change_profile_picture">Change Profile Picture</string>
     <string name="date_format_hint">DD/MM/YYYY</string>
     <string name="username_hint">Enter Username</string>

@@ -50,6 +50,10 @@
         android:name="com.socialworld.mobile.ui.myProfile.EditMyProfileFragment"
         android:label="@string/edit_profile"
         tools:layout="@layout/fragment_edit_my_profile">
-
+        <action
+            android:id="@+id/action_nav_edit_profile_to_nav_my_profile"
+            app:destination="@id/nav_my_profile"
+            app:popUpTo="@+id/nav_my_profile"
+            app:popUpToInclusive="true"/>
     </fragment>
 </navigation>

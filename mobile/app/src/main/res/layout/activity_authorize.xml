@@ -6,28 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".AuthorizeActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/loading_layout"
-        android:background="@color/colorLoadingBackground"
-        android:visibility="invisible"
-        android:elevation="20dp">
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"/>
-        <TextView
-            android:id="@+id/loading_background"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clickable="true"
-            android:focusable="true"/>
-    </RelativeLayout>
-
     <EditText
         android:id="@+id/email"
         android:layout_width="match_parent"

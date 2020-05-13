@@ -1,14 +1,13 @@
 package com.socialworld.mobile;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -24,8 +23,9 @@ import com.socialworld.mobile.ui.authorize.RegisterFragment;
 public class AuthorizeActivity extends AppCompatActivity implements LoginFragment.OnLoginInteractionListener, RegisterFragment.OnNewRegisterInteractionListener, ForgotPasswordFragment.OnForgottenPasswordInteractionListener {
 
     private FirebaseAuth firebaseAuth;
-    private RelativeLayout loadingLayout;
     private FirebaseFirestore db;
+
+    private AlertDialog loadingDialog;
 
     private EditText emailInput;
 
@@ -35,7 +35,10 @@ public class AuthorizeActivity extends AppCompatActivity implements LoginFragmen
         setContentView(R.layout.activity_authorize);
         firebaseAuth = FirebaseAuth.getInstance();
 
-        loadingLayout = findViewById(R.id.loading_layout);
+        AlertDialog.Builder builderLoading = new AlertDialog.Builder(AuthorizeActivity.this);
+        builderLoading.setCancelable(false); // if you want user to wait for some process to finish,
+        builderLoading.setView(R.layout.loading_dialog);
+        loadingDialog = builderLoading.create();
 
         emailInput = findViewById(R.id.email);
 
@@ -58,7 +61,7 @@ public class AuthorizeActivity extends AppCompatActivity implements LoginFragmen
             Toast.makeText(getApplicationContext(), "The password is too short", Toast.LENGTH_LONG).show();
             return;
         }
-        loadingLayout.setVisibility(View.VISIBLE);
+        loadingDialog.show();
         firebaseAuth.signInWithEmailAndPassword(emailInput.getText().toString(), password)
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
@@ -70,7 +73,7 @@ public class AuthorizeActivity extends AppCompatActivity implements LoginFragmen
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        loadingLayout.setVisibility(View.INVISIBLE);
+                        loadingDialog.hide();
                         Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
@@ -100,7 +103,7 @@ public class AuthorizeActivity extends AppCompatActivity implements LoginFragmen
             Toast.makeText(getApplicationContext(), "The password is too short", Toast.LENGTH_LONG).show();
             return;
         }
-        loadingLayout.setVisibility(View.VISIBLE);
+        loadingDialog.show();
         firebaseAuth.createUserWithEmailAndPassword(emailInput.getText().toString(), password)
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
@@ -118,7 +121,7 @@ public class AuthorizeActivity extends AppCompatActivity implements LoginFragmen
                                 .addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        loadingLayout.setVisibility(View.INVISIBLE);
+                                        loadingDialog.hide();
                                         Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                                     }
                                 });
@@ -127,7 +130,7 @@ public class AuthorizeActivity extends AppCompatActivity implements LoginFragmen
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        loadingLayout.setVisibility(View.INVISIBLE);
+                        loadingDialog.hide();
                         Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
@@ -139,12 +142,12 @@ public class AuthorizeActivity extends AppCompatActivity implements LoginFragmen
             Toast.makeText(getApplicationContext(), "Email cannot be empty", Toast.LENGTH_LONG).show();
             return;
         }
-        loadingLayout.setVisibility(View.VISIBLE);
+        loadingDialog.show();
         firebaseAuth.sendPasswordResetEmail(emailInput.getText().toString())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        loadingLayout.setVisibility(View.INVISIBLE);
+                        loadingDialog.hide();
                         Toast.makeText(getApplicationContext(), "Email sent", Toast.LENGTH_LONG).show();
                         FragmentManager fragmentManager = getSupportFragmentManager();
                         fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
@@ -154,7 +157,7 @@ public class AuthorizeActivity extends AppCompatActivity implements LoginFragmen
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        loadingLayout.setVisibility(View.INVISIBLE);
+                        loadingDialog.hide();
                         Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
