@@ -1,6 +1,6 @@
 package com.socialworld.mobile.ui.myProfile;
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +14,13 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.socialworld.mobile.AuthorizeActivity;
 import com.socialworld.mobile.R;
 import com.socialworld.mobile.entities.UserEntity;
+
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import static androidx.navigation.Navigation.findNavController;
 
@@ -26,15 +31,18 @@ public class MyProfileFragment extends Fragment {
     private TextView nameTv;
     private TextView countryTv;
     private TextView dateOfBirthTv;
-//    private TextView emailTv;
     private TextView numFollowersTv;
     private TextView numFollowingTv;
     private Button editProfileBtn;
+
+    private FirebaseAuth firebaseAuth;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         myProfileViewModel = new ViewModelProvider(requireActivity()).get(MyProfileViewModel.class);
+
+        firebaseAuth = FirebaseAuth.getInstance();
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -45,7 +53,6 @@ public class MyProfileFragment extends Fragment {
         nameTv = root.findViewById(R.id.my_profile_name);
         countryTv = root.findViewById(R.id.my_profile_country);
         dateOfBirthTv = root.findViewById(R.id.my_profile_birthday);
-//        emailTv = root.findViewById(R.id.my_profile_email);
         numFollowersTv = root.findViewById(R.id.my_profile_num_followers);
         numFollowingTv = root.findViewById(R.id.my_profile_num_following);
 
@@ -56,15 +63,14 @@ public class MyProfileFragment extends Fragment {
                     if (userEntity.getName() != null) {
                         nameTv.setText(userEntity.getName());
                     }
-                    if (userEntity.getCountryId() != null) {
-                        countryTv.setText(userEntity.getCountryId());
+                    if (userEntity.getCountryCode() != null) {
+                        countryTv.setText(userEntity.getCountryCode());
                     }
                     if (userEntity.getDateOfBirth() != null) {
-                        dateOfBirthTv.setText(userEntity.getDateOfBirth().toString());
+                        final String myFormat = "dd/MM/yyyy";
+                        final SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.UK);
+                        dateOfBirthTv.setText(sdf.format(userEntity.getDateOfBirth()));
                     }
-//                    if (userEntity.getEmail() != null) {
-//                        emailTv.setText(userEntity.getEmail());
-//                    }
                     // TODO get the count of followers and following users
                     numFollowersTv.setText("100");
                     numFollowingTv.setText("50");
@@ -73,6 +79,16 @@ public class MyProfileFragment extends Fragment {
         });
 
         editProfileBtn = root.findViewById(R.id.edit_profile_btn);
+
+        root.findViewById(R.id.logout_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(requireContext(), AuthorizeActivity.class);
+                firebaseAuth.signOut();
+                startActivity(intent);
+                requireActivity().finish();
+            }
+        });
 
         return root;
     }

@@ -15,8 +15,9 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 import com.socialworld.mobile.entities.UserEntity;
-import com.socialworld.mobile.ui.myProfile.MyProfileFragment;
+import com.socialworld.mobile.ui.myProfile.EditMyProfileFragment;
 import com.socialworld.mobile.ui.myProfile.MyProfileViewModel;
 
 import androidx.annotation.NonNull;
@@ -29,7 +30,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements EditMyProfileFragment.OnUpdateMyProfileInteractionListener {
 
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -37,6 +38,7 @@ public class HomeActivity extends AppCompatActivity {
     private FirebaseFirestore db;
 
     private UserEntity user;
+    private String userUid;
 
     private MyProfileViewModel myProfileViewModel;
 
@@ -44,32 +46,33 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        myProfileViewModel = new ViewModelProvider(this).get(MyProfileViewModel.class);
+        db = FirebaseFirestore.getInstance();
+
         firebaseAuth = FirebaseAuth.getInstance();
         if (firebaseAuth.getCurrentUser() == null) {
             Intent intent = new Intent(getApplicationContext(), AuthorizeActivity.class);
             startActivity(intent);
             finish();
+        } else {
+            userUid = firebaseAuth.getCurrentUser().getUid();
+            db.collection("Users").document(userUid).get()
+                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            user = documentSnapshot.toObject(UserEntity.class);
+                            myProfileViewModel.setUser(user);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    });
+
         }
-
-        myProfileViewModel = new ViewModelProvider(this).get(MyProfileViewModel.class);
-
-        db = FirebaseFirestore.getInstance();
-
-        final String userUid = firebaseAuth.getCurrentUser().getUid();
-        db.collection("Users").document(userUid).get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        user = documentSnapshot.toObject(UserEntity.class);
-                        myProfileViewModel.setUser(user);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                });
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -94,12 +97,12 @@ public class HomeActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.toolbar_profile, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.toolbar_profile, menu);
+//        return true;
+//    }
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -108,16 +111,33 @@ public class HomeActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
+//    @Override
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.logout:
+//                Intent intent = new Intent(getApplicationContext(), AuthorizeActivity.class);
+//                firebaseAuth.signOut();
+//                startActivity(intent);
+//                finish();
+//                break;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
+
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.logout:
-                Intent intent = new Intent(getApplicationContext(), AuthorizeActivity.class);
-                firebaseAuth.signOut();
-                startActivity(intent);
-                finish();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
+    public void onUpdateMyProfileInteraction() {
+        db.collection("Users").document(userUid).set(myProfileViewModel.getUser(), SetOptions.merge())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
     }
 }
