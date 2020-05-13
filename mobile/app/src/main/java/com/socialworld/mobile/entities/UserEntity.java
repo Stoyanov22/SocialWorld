@@ -12,22 +12,22 @@ public class UserEntity implements Serializable {
     private String name;
     private String picture;
     private Date dateOfBirth;
+    private String countryCode;
     private Integer genderId;
-    private Integer countryId;
 
     public UserEntity(@NotNull String id, @NotNull String email) {
         this.id = id;
         this.email = email;
     }
 
-    public UserEntity(String id, String email, String name, String picture, Date dateOfBirth, Integer genderId, Integer countryId) {
+    public UserEntity(String id, String email, String name, String picture, Date dateOfBirth, Integer genderId, String countryCode) {
         this.id = id;
         this.email = email;
         this.name = name;
         this.picture = picture;
         this.dateOfBirth = dateOfBirth;
         this.genderId = genderId;
-        this.countryId = countryId;
+        this.countryCode = countryCode;
     }
 
     public UserEntity() {
@@ -73,20 +73,20 @@ public class UserEntity implements Serializable {
         this.dateOfBirth = dateOfBirth;
     }
 
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
+    }
+
     public Integer getGenderId() {
         return genderId;
     }
 
     public void setGenderId(Integer genderId) {
         this.genderId = genderId;
-    }
-
-    public Integer getCountryId() {
-        return countryId;
-    }
-
-    public void setCountryId(Integer countryId) {
-        this.countryId = countryId;
     }
 
     @Override
@@ -99,13 +99,13 @@ public class UserEntity implements Serializable {
                 Objects.equals(name, that.name) &&
                 Objects.equals(picture, that.picture) &&
                 Objects.equals(dateOfBirth, that.dateOfBirth) &&
-                Objects.equals(genderId, that.genderId) &&
-                Objects.equals(countryId, that.countryId);
+                Objects.equals(countryCode, that.countryCode) &&
+                Objects.equals(genderId, that.genderId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, name, picture, dateOfBirth, genderId, countryId);
+        return Objects.hash(id, email, name, picture, dateOfBirth, countryCode, genderId);
     }
 
     @Override
@@ -116,8 +116,8 @@ public class UserEntity implements Serializable {
                 ", name='" + name + '\'' +
                 ", picture='" + picture + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
+                ", countryCode='" + countryCode + '\'' +
                 ", genderId=" + genderId +
-                ", countryId=" + countryId +
                 '}';
     }
 }
