@@ -5,5 +5,6 @@ Asignee : IS
 
 Page created. The left column of the page will include the user's posts and the right contains all the information for
 the user + and Edit and Logout buttons.
+My posts Added.
 
-Done : 50%; 
+Done : 60%; 

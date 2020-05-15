@@ -1,0 +1,5 @@
+We need a separate service with the operations we are going to implement for working with Posts.
+
+Asignee : IS
+
+Done:80%

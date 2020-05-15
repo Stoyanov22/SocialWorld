@@ -5,4 +5,4 @@ profile picture.
 Asignee : IS
 
 Page UI created.
-Done : 20%;
+Done : 100%;

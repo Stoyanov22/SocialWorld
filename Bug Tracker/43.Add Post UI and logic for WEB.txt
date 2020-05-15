@@ -1,0 +1,6 @@
+In the Feed page we need to add an option which allows the user to create a post. He should be able to attach a photo and 
+write text. After he submits the post we should store a new Post object in the firestore and a photo reference in the storage.
+
+Asignee : IS
+
+Done : 100%;

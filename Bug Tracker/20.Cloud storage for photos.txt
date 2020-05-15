@@ -4,3 +4,5 @@ for both mobie and web versions. For this needs we need to find a good remote st
 Asignee : IS
 
 Firabase provides Cloud Storage which is worth to be tried.
+
+Done : 100%;
