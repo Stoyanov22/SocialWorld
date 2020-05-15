@@ -1,0 +1,7 @@
+We should show all the user's posts in My Profile Page. He should be able to read and to delete them.
+
+Asignee : IS
+
+Posts shown in the left column of the page.
+
+Done : 60%;

@@ -17,7 +17,7 @@
 <header class="navigationHeader">
     <div class="inner">
         <!-- TODO: Width to be relative -->
-        <a href="index" class="logo"><img src="images/logo.png" alt="logo" height="100"></a>
+        <a href="/index" class="logo"><img src="images/logo.png" alt="logo" height="100"></a>
         <nav id="nav">
             <a href="explore">Explore</a>
             <a href="friends">Friends list</a>
@@ -29,12 +29,11 @@
 <div class="row">
     <div class="leftcolumn">
         <h1> My Posts </h1>
-        <div class="card">
-            <h2></h2>
-            <h5>Title description, Dec 7, 2017</h5>
-            <img style="height:200px;">
-            <p>Some text..</p>
-            <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+        <div th:each="post : ${posts}" class="card">
+            <h2 th:text="${post.text}"></h2>
+            <h5 th:text="${post.date}"></h5>
+            <img th:src="${post.picture}" style="height:200px;">
+            <h6 th:text="${post.likes}"></h6>
         </div>
     </div>
     <div class="rightcolumn">

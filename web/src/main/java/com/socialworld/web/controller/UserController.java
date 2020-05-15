@@ -4,7 +4,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.socialworld.web.entity.CountryConstants;
 import com.socialworld.web.entity.GenderConstants;
+import com.socialworld.web.entity.Post;
 import com.socialworld.web.entity.User;
+import com.socialworld.web.service.PostService;
 import com.socialworld.web.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,13 +20,19 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
+
 
 @Controller
 public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PostService postService;
+
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     @RequestMapping(value = {"/my_profile"}, method = RequestMethod.GET)
@@ -36,9 +44,11 @@ public class UserController {
         }
         User user = userService.getUserById(session.getAttribute("uid").toString());
         if (user != null) {
+            List<Post> posts = postService.getPostsByUserId(user.getId());
             model.addObject("user", user);
             model.addObject("gender", GenderConstants.getGenderName(user.getGenderId()));
             model.addObject("country", CountryConstants.getCountryName(user.getCountryId()));
+            model.addObject("posts", posts);
             model.setViewName("user/my_profile");
         } else {
             model.setViewName("home/index");
@@ -70,7 +80,7 @@ public class UserController {
                                     @RequestParam String genderId, @RequestParam String countryId, @RequestParam String pictureUrl) {
         ModelAndView model = new ModelAndView();
         Date dob = null;
-        if (dateOfBirth != null && dateOfBirth != ""){
+        if (dateOfBirth != null && dateOfBirth != "") {
             try {
                 DateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
                 dob = formatter.parse(dateOfBirth);
