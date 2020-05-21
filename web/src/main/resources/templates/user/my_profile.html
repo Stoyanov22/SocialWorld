@@ -34,6 +34,7 @@
             <h5 th:text="${post.date}"></h5>
             <img th:src="${post.picture}" style="height:200px;">
             <h6 th:text="${post.likes}"></h6>
+            <input type="button" th:id="${post.id}" class="removeBtn" value="Delete">
         </div>
     </div>
     <div class="rightcolumn">
