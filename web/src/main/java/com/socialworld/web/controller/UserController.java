@@ -108,4 +108,9 @@ public class UserController {
         model.setViewName("redirect:/index");
         return model;
     }
+
+    @RequestMapping(value = {"/remove_post"}, method = RequestMethod.POST)
+    public void removePost(HttpSession session, @RequestParam String postId) {
+        postService.removePost(postId);
+    }
 }
