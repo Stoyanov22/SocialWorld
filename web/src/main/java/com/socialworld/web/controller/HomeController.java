@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
-import java.util.Date;
-import java.util.Objects;
+import java.util.*;
 
 @Controller
 public class HomeController {
@@ -92,7 +91,7 @@ public class HomeController {
             model.setViewName("home/index");
             return model;
         }
-        Post post = new Post(postText, pictureUrl, new Date(), 0, session.getAttribute("uid").toString());
+        Post post = new Post(postText, pictureUrl, new Date(), new ArrayList<>(), session.getAttribute("uid").toString());
         postService.addPost(post);
         model.setViewName("redirect:/feed");
         return model;

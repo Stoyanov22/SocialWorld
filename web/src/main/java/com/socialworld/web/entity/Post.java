@@ -1,9 +1,11 @@
 package com.socialworld.web.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
+import java.util.List;
 
-public class Post {
+public class Post implements Serializable {
 
     private String id;
 
@@ -13,7 +15,7 @@ public class Post {
 
     private Date date;
 
-    private int likes;
+    private List<String> userLikes;
 
     private String userId;
 
@@ -26,12 +28,12 @@ public class Post {
     }
 
     //Creation constructor - sets ID
-    public Post(String text, String picture, Date date, int likes, String userId){
-        this.id = String.valueOf(Objects.hash(text, picture, date, likes, userId));
+    public Post(String text, String picture, Date date, List<String> userLikes, String userId){
+        this.id = String.valueOf(Objects.hash(text, picture, date, userLikes, userId));
         this.text = text;
         this.picture = picture;
         this.date = date;
-        this.likes = likes;
+        this.userLikes = userLikes;
         this.userId = userId;
     }
 
@@ -67,12 +69,12 @@ public class Post {
         this.date = date;
     }
 
-    public int getLikes() {
-        return likes;
+    public List<String> getUserLikes() {
+        return userLikes;
     }
 
-    public void setLikes(int likes) {
-        this.likes = likes;
+    public void setUserLikes(List<String> userLikes) {
+        this.userLikes = userLikes;
     }
 
     public String getUserId() {
@@ -90,8 +92,8 @@ public class Post {
                 ", text='" + text + '\'' +
                 ", picture='" + picture + '\'' +
                 ", date=" + date +
-                ", likes=" + likes +
-                ", userId=" + userId +
+                ", userLikes=" + userLikes +
+                ", userId='" + userId + '\'' +
                 '}';
     }
 
@@ -100,16 +102,16 @@ public class Post {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Post post = (Post) o;
-        return likes == post.likes &&
-                id.equals(post.id) &&
+        return id.equals(post.id) &&
                 Objects.equals(text, post.text) &&
                 Objects.equals(picture, post.picture) &&
                 date.equals(post.date) &&
+                userLikes.equals(post.userLikes) &&
                 userId.equals(post.userId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, text, picture, date, likes, userId);
+        return Objects.hash(id, text, picture, date, userLikes, userId);
     }
 }

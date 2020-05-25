@@ -33,7 +33,7 @@
             <h2 th:text="${post.text}"></h2>
             <h5 th:text="${post.date}"></h5>
             <img th:src="${post.picture}" style="height:200px;">
-            <h6 th:text="${post.likes}"></h6>
+            <h6 th:text="${#lists.size(post.userLikes)}"></h6>
             <input type="button" th:id="${post.id}" class="removePost" value="Delete">
         </div>
     </div>
