@@ -4,4 +4,5 @@
 
 Assignee: AK
 
-29.1. Done: 60%
+29.1. Done: 100%
+29.2. Done: 100%

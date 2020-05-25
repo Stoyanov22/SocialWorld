@@ -7,3 +7,5 @@ Link : https://marvelapp.com/dei01h4
 TODO: 
  * Add comments in the mock-ups. 
  * Define Action Bar buttons for different screens
+
+Done: 100%

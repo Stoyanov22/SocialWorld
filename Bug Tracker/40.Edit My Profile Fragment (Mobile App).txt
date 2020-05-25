@@ -3,3 +3,5 @@ It will be accessed from My Profile Fragment.
 In the fragment the user will be able to edit Profile Picture, Name, Gender, Country and Date of birth
 
 Assignee: AK
+
+Done: 80%

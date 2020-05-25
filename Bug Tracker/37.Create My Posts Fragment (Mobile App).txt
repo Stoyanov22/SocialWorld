@@ -1,3 +1,6 @@
 We need to configure a fragment where the user can see all posts he added.
+From there the user will be able to add new post (28).
 
 Assignee: AK
+
+Done: 25%

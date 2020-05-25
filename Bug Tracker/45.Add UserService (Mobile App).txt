@@ -1,0 +1,3 @@
+We need to configure service in the Android App for handling business logic of Users
+
+Assignee: AK

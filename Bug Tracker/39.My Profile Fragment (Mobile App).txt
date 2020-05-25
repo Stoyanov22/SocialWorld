@@ -1,3 +1,5 @@
 We need a fragment in the Android App for showing the User's Profile information. From there the user will have the possibility to edit his profile.
 
 Assignee: AK
+
+Done: 90%

@@ -3,3 +3,5 @@ We need to create expected visual representations of the pages in the web applic
 Asignee : IS
 
 Link to mockups : https://marvelapp.com/4d3851d/screen/66992627
+
+Done: 100%

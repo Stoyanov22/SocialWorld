@@ -1,3 +1,7 @@
-We need a Fragment for adding new posts, where the user will input all the required information for a new post. It will be accessed from the NewsFeedFragment (36.)
+We need to add a dialog fragment that will allow the user to create new posts.
+The dialog will have an option to add Text for the post and picture.
+It will be accessed from MyPostsFragment (37)
 
 Assignee: AK
+
+Done: 75%
