@@ -31,9 +31,9 @@
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="com.socialworld.mobile.ui.gallery.GalleryFragment"
+        android:name="com.socialworld.mobile.ui.myPosts.MyPostsFragment"
         android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        tools:layout="@layout/fragment_my_posts" />
 
     <fragment
         android:id="@+id/nav_my_profile"
