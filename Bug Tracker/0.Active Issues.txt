@@ -1,10 +1,10 @@
 SUPER IMPORTANT:
 
 Important:
-16, 28, 33, 36, 37, 39, 40, 42
+16, 28, 33, 36, 37, 39, 40, 42, 47
 
 Normal:
-31,32
+31, 32, 45, 46
 
 Could be done drunk:
 41

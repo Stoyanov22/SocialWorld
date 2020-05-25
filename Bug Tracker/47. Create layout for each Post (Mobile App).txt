@@ -1,0 +1,3 @@
+We need to create a layout for each post that will be displayed in the Recycler views in HomeFragment and MyPostsFragment.
+
+Assignee: AK
