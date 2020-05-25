@@ -2,6 +2,7 @@ package com.socialworld.web.entity;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -23,7 +24,10 @@ public class User {
 
     private String picture;
 
-    private List<Post> posts;
+    private List<String> followedUsers;
+
+    private List<String> followers;
+
 
     public User() {
 
@@ -32,15 +36,19 @@ public class User {
     public User(String id, String email) {
         this.id = id;
         this.email = email;
+        followedUsers = new ArrayList<>();
+        followers = new ArrayList<>();
     }
 
     public User(String id, String email, String name) {
         this.id = id;
         this.email = email;
         this.name = name;
+        followedUsers = new ArrayList<>();
+        followers = new ArrayList<>();
     }
 
-    public User(String id, String email, String name, Date dateOfBirth, int genderId, int countryId, String picture){
+    public User(String id, String email, String name, Date dateOfBirth, int genderId, int countryId, String picture) {
         this.id = id;
         this.email = email;
         this.name = name;
@@ -104,6 +112,22 @@ public class User {
 
     public void setPicture(String picture) {
         this.picture = picture;
+    }
+
+    public List<String> getFollowedUsers() {
+        return followedUsers;
+    }
+
+    public void setFollowedUsers(List<String> followedUsers) {
+        this.followedUsers = followedUsers;
+    }
+
+    public List<String> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(List<String> followers) {
+        this.followers = followers;
     }
 
     @Override
