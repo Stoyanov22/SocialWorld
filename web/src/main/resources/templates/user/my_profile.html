@@ -29,12 +29,12 @@
 <div class="row">
     <div class="leftcolumn">
         <h1> My Posts </h1>
-        <div th:each="post : ${posts}" class="card">
+        <div th:each="post : ${posts}" th:id="${'post' + post.id}" class="card">
             <h2 th:text="${post.text}"></h2>
             <h5 th:text="${post.date}"></h5>
             <img th:src="${post.picture}" style="height:200px;">
-            <h6 th:text="${post.likes}"></h6>
-            <input type="button" th:id="${post.id}" class="removeBtn" value="Delete">
+            <h6 th:text="${#lists.size(post.userLikes)}"></h6>
+            <input type="button" th:id="${post.id}" class="removePost" value="Delete">
         </div>
     </div>
     <div class="rightcolumn">
@@ -57,5 +57,6 @@
 <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-firestore.js"></script>
 <script src="js/firebaseInit.js"></script>
 <script src="js/firebaseLogout.js"></script>
+<script src="js/removePost.js"></script>
 </body>
 </html>

@@ -60,6 +60,47 @@ body, input, select, textarea {
 	line-height: 1.65;
 }
 
+input[type="text"],
+	input[type="password"],
+	input[type="email"],
+	input[type="tel"],
+	select,
+	textarea {
+		-moz-appearance: none;
+		-webkit-appearance: none;
+		-ms-appearance: none;
+		appearance: none;
+		background: rgba(3, 115, 252, 0.5);;
+		border-radius: 10px;
+		border: none;
+		border: solid 2px #3f51b5;
+		color: #fff;
+		display: block;
+		outline: 0;
+		padding: 0 1em;
+		text-decoration: none;
+		width: 100%;
+	}
+
+		input[type="text"]:invalid,
+		input[type="password"]:invalid,
+		input[type="email"]:invalid,
+		input[type="tel"]:invalid,
+		select:invalid,
+		textarea:invalid {
+			box-shadow: none;
+		}
+
+		input[type="text"]:focus,
+		input[type="password"]:focus,
+		input[type="email"]:focus,
+		input[type="tel"]:focus,
+		select:focus,
+		textarea:focus {
+			border-color: #4bae77;
+			box-shadow: 0 0 0 1px #4bae77;
+		}
+
 @media screen and (max-width: 1680px) {
 	body, input, select, textarea {
 		font-size: 12pt;
@@ -91,7 +132,7 @@ body, input, select, textarea {
 }
 
 a {
-	color: #6cc091;
+	color: rgba(3, 115, 252, 0.5);;
 	text-decoration: underline;
 }
 
@@ -598,8 +639,8 @@ input[type="submit"], input[type="reset"], input[type="button"], button, .button
 	-ms-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 	transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 	background-color: transparent;
-	box-shadow: inset 0 0 0 3px #6cc091;
-	color: #6cc091 !important;
+	box-shadow: inset 0 0 0 3px rgba(3, 115, 252, 0.5);;
+	color: rgba(3, 115, 252, 0.5); !important;
 	border-radius: 30px;
 	border: 0;
 	cursor: pointer;
@@ -665,7 +706,7 @@ input[type="submit"].alt.icon:before, input[type="reset"].alt.icon:before, input
 }
 
 input[type="submit"].special, input[type="reset"].special, input[type="button"].special, button.special, .button.special {
-	background-color: #6cc091;
+	background-color: rgba(3, 115, 252, 0.5);;
 	color: #ffffff !important;
 }
 
@@ -805,7 +846,7 @@ input[type="submit"].disabled, input[type="submit"]:disabled, input[type="reset"
 }
 
 #banner .icon {
-	color: #6cc091;
+	color: rgba(3, 115, 252, 0.5);;
 	font-size: 2em;
 }
 
@@ -1038,4 +1079,11 @@ input[type="submit"].disabled, input[type="submit"]:disabled, input[type="reset"
     width: 100%;
     padding: 0;
   }
+}
+
+/* Search */
+.search-field{
+    height: 50px;
+    width: 60%;
+    margin-top: 50px;
 }

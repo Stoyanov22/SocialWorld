@@ -17,4 +17,8 @@ public interface UserService {
     void editUser(User user);
 
     void removeUserById(String id);
+
+    List<User> findUsersByName(String name);
+
+    void followUser(User user, User followedUser);
 }

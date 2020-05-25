@@ -1,7 +1,10 @@
 package com.socialworld.web.service;
 
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
+import com.google.cloud.firestore.QuerySnapshot;
 import com.google.firebase.cloud.FirestoreClient;
 import com.socialworld.web.entity.User;
 import org.springframework.stereotype.Service;
@@ -22,7 +25,7 @@ public class UserServiceImpl implements UserService {
         try {
             List<QueryDocumentSnapshot> dbUsers = db.collection("Users").get().get().getDocuments();
             List<User> result = new ArrayList<>();
-            for (QueryDocumentSnapshot user : dbUsers) {
+            for (DocumentSnapshot user : dbUsers) {
                 result.add(user.toObject(User.class));
             }
             return result;
@@ -71,12 +74,12 @@ public class UserServiceImpl implements UserService {
         updatedUser.put("countryId", user.getCountryId());
         updatedUser.put("dateOfBirth", user.getDateOfBirth());
         updatedUser.put("genderId", user.getGenderId());
-        if(user.getPicture() != null && !user.getPicture().isEmpty()){
+        if (user.getPicture() != null && !user.getPicture().isEmpty()) {
             updatedUser.put("picture", user.getPicture());
         }
 
-        //Firebase wants this check
-        if(user.getId() != null && !user.getId().isEmpty()) {
+        //Firebase requires this check
+        if (user.getId() != null && !user.getId().isEmpty()) {
             db.collection("Users").document(user.getId()).update(updatedUser);
         }
     }
@@ -84,5 +87,40 @@ public class UserServiceImpl implements UserService {
     @Override
     public void removeUserById(String id) {
         db.collection("Users").document(id).delete();
+    }
+
+    @Override
+    public List<User> findUsersByName(String name) {
+        List<User> result = new ArrayList<>();
+        try {
+            List<QueryDocumentSnapshot> queryDocumentSnapshots = db.collection("Users").get().get().getDocuments();
+            for (DocumentSnapshot document : queryDocumentSnapshots) {
+                if(document.getString("name").toLowerCase().contains(name.toLowerCase())){
+                    result.add(document.toObject(User.class));
+                }
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            return null;
+        }
+        return result;
+    }
+
+    @Override
+    public void followUser(User user, User followedUser) {
+        List<String> followedUsers = user.getFollowedUsers();
+        followedUsers.add(followedUser.getId());
+        Map<String, Object> updatedUser = new HashMap<>();
+        updatedUser.put("followedUsers", followedUsers);
+
+        List<String> followers = followedUser.getFollowers();
+        followers.add(user.getId());
+        Map<String, Object> updatedFollowedUser = new HashMap<>();
+        updatedFollowedUser.put("followers", followers);
+
+        //Firebase requires this check
+        if (user.getId() != null && !user.getId().isEmpty()) {
+            db.collection("Users").document(user.getId()).update(updatedUser);
+            db.collection("Users").document(followedUser.getId()).update(updatedFollowedUser);
+        }
     }
 }

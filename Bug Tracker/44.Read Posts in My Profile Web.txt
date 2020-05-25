@@ -3,5 +3,6 @@ We should show all the user's posts in My Profile Page. He should be able to rea
 Asignee : IS
 
 Posts shown in the left column of the page.
+Posts are deleting and fading out in the web without refreshing the page.
 
-Done : 60%;
+Done : 100%;
