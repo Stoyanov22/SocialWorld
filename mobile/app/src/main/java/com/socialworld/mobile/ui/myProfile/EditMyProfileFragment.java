@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
@@ -26,15 +25,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.socialworld.mobile.R;
 import com.socialworld.mobile.entities.UserEntity;
+import com.socialworld.mobile.models.GlideApp;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -204,27 +200,112 @@ public class EditMyProfileFragment extends Fragment {
         switch (requestCode) {
             case CAPTURE_IMAGE:
                 Bitmap image = (Bitmap) data.getExtras().get("data");
-//                Uri tempUri = getImageUri(requireContext(), image);
                 profileImage.setImageBitmap(image);
+//                Bitmap photo = (Bitmap) data.getExtras().get("data");
+//                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+//                photo.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+//                String path = MediaStore.Images.Media.insertImage(, photo, "Title", null);
+////                Uri tempUri = getImageUri(requireContext(), image);
+//
+//                //File object of camera image
+//                File file = new File(Environment.getExternalStorageDirectory(), "MyPhoto.jpg");
+//
+//                //Uri of camera image
+//                Uri uri = FileProvider.getUriForFile(requireContext(), requireContext().getPackageName() + ".provider", file);
+//                profileImage.setImageURI(uri);
+
+//                createDirectoryAndSaveFile(image, "new_image_soc_world.jpeg");
+
+//                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+//                image.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+//                String path = MediaStore.Images.Media.insertImage(requireContext().getContentResolver(), image, "Title", null);
+////                Uri.parse(path);
+
+//                File file = new File(Environment.getExternalStorageDirectory() + "/dirName", "new_image.jpg");
+//                if (file.exists ()) file.delete ();
+//                try {
+//                    FileOutputStream out = new FileOutputStream(file);
+//                    image.compress(Bitmap.CompressFormat.JPEG, 50, out);
+//                    out.flush();
+//                    out.close();
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+
+//                GlideApp
+//                        .with(requireContext())
+//                        .load(Uri.parse(path))
+//                        .into(profileImage);
                 break;
             case PICK_IMAGE:
-                Uri imageUri = data.getData();
+                final Uri imageUri = data.getData();
                 if (imageUri != null) {
-                    profilePicRef.child(myProfileViewModel.getUser().getEmail()).putFile(imageUri)
-                            .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                            if(task.isSuccessful()) {
-                                Toast.makeText(requireContext(), "Profile picture was saved", Toast.LENGTH_LONG).show();
-                                task.getResult().getStorage().getDownloadUrl().toString();
-                            }
-                        }
-                    });
-                    profileImage.setImageURI(imageUri);
+                    GlideApp
+                            .with(requireContext())
+                            .load(imageUri)
+                            .into(profileImage);
+
+//                    profilePicRef.child(myProfileViewModel.getUser().getEmail()).putFile(imageUri)
+//                            .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+//                                @Override
+//                                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+//                                    if (task.isSuccessful()) {
+//                                        Toast.makeText(requireContext(), "Profile picture was saved", Toast.LENGTH_LONG).show();
+//
+//                                    }
+//                                }
+//                            });
                 }
                 break;
         }
     }
+
+//    private void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName) {
+
+//        String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+//        String pictureFile = "ZOFTINO_" + timeStamp;
+//        File storageDir = Environment.getExternalStorageDirectory();
+//        File image = null;
+//        try {
+//            image = File.createTempFile(pictureFile,  ".jpg", storageDir);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        pictureFilePath = image.getAbsolutePath();
+//
+//        File direct = new File(Environment.getExternalStorageDirectory() + "/DirName");
+//
+//        if (!direct.exists()) {
+//            File wallpaperDirectory = new File("/sdcard/DirName/");
+//            wallpaperDirectory.mkdirs();
+//        }
+//
+//        File file = new File("/sdcard/DirName/", fileName);
+//        if (file.exists()) {
+//            file.delete();
+//        }
+//        try {
+//            FileOutputStream out = new FileOutputStream(file);
+//            imageToSave.compress(Bitmap.CompressFormat.JPEG, 100, out);
+//            out.flush();
+//            out.close();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        Uri fileUri = Uri.fromFile(image);
+//
+//        profilePicRef.child(myProfileViewModel.getUser().getEmail()).putFile(fileUri)
+//                            .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+//                                @Override
+//                                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+//                                    if (task.isSuccessful()) {
+//                                        Toast.makeText(requireContext(), "Profile picture was saved", Toast.LENGTH_LONG).show();
+//
+//                                    }
+//                                }
+//                            });
+//    }
 
 //    public Uri getImageUri(Context inContext, Bitmap inImage) {
 //        Bitmap OutImage = Bitmap.createScaledBitmap(inImage, 1000, 1000,true);
