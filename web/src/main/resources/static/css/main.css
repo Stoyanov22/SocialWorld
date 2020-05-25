@@ -73,7 +73,7 @@ input[type="text"],
 		background: rgba(3, 115, 252, 0.5);;
 		border-radius: 10px;
 		border: none;
-		border: solid 2px #8dcca9;
+		border: solid 2px #3f51b5;
 		color: #fff;
 		display: block;
 		outline: 0;
@@ -1079,4 +1079,11 @@ input[type="submit"].disabled, input[type="submit"]:disabled, input[type="reset"
     width: 100%;
     padding: 0;
   }
+}
+
+/* Search */
+.search-field{
+    height: 50px;
+    width: 60%;
+    margin-top: 50px;
 }
