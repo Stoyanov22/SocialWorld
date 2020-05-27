@@ -13,15 +13,20 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.paging.PagedList;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.firebase.ui.firestore.SnapshotParser;
+import com.firebase.ui.firestore.paging.FirestorePagingOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.socialworld.mobile.R;
@@ -37,7 +42,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView postsRecView;
     private RecyclerView.LayoutManager postsLayoutManager;
     private PostAdapter postAdapter;
-    private List<PostEntity> posts;
+//    private List<PostEntity> posts;
 
     private FirebaseFirestore db;
 
@@ -59,32 +64,56 @@ public class HomeFragment extends Fragment {
         postsLayoutManager = new LinearLayoutManager(requireContext());
         postsRecView.setLayoutManager(postsLayoutManager);
 
-        posts = new ArrayList<>();
-        db.collection("Posts").get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//        posts = new ArrayList<>();
+//        db.collection("Posts").get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        for (QueryDocumentSnapshot postSnapshot : Objects.requireNonNull(task.getResult())) {
+//                            posts.add(postSnapshot.toObject(PostEntity.class));
+//                        }
+//                        postAdapter = new PostAdapter(posts);
+//                        postAdapter.setOnPostItemClickListener(new PostAdapter.OnPostItemClickListener() {
+//                            @Override
+//                            public void onEditClick(int position) {
+//
+//                            }
+//                        });
+//
+//                        postsRecView.setAdapter(postAdapter);
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+//                    }
+//                });
+
+        // Query from FirebaseFirestore
+        Query query = db.collection("Posts");
+
+        PagedList.Config config = new PagedList.Config.Builder()
+                .setInitialLoadSizeHint(10)
+                .setPageSize(3)
+                .build();
+
+        // Options
+        FirestorePagingOptions<PostEntity> options = new FirestorePagingOptions.Builder<PostEntity>()
+                .setLifecycleOwner(this)
+                .setQuery(query, config, new SnapshotParser<PostEntity>() {
+                    @NonNull
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        for (QueryDocumentSnapshot postSnapshot : Objects.requireNonNull(task.getResult())) {
-                            posts.add(postSnapshot.toObject(PostEntity.class));
-                        }
-                        postAdapter = new PostAdapter(posts);
-                        postAdapter.setOnPostItemClickListener(new PostAdapter.OnPostItemClickListener() {
-                            @Override
-                            public void onEditClick(int position) {
-
-                            }
-                        });
-
-                        postsRecView.setAdapter(postAdapter);
+                    public PostEntity parseSnapshot(@NonNull DocumentSnapshot snapshot) {
+                        PostEntity post = snapshot.toObject(PostEntity.class);
+                        return post;
                     }
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                });
+                .build();
 
+        // Adapter
+        postAdapter = new PostAdapter(options);
+        postsRecView.setAdapter(postAdapter);
 
 //        homeViewModel =
 //                ViewModelProviders.of(this).get(HomeViewModel.class);

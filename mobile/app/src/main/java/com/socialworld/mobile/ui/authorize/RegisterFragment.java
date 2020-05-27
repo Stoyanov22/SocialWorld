@@ -52,11 +52,11 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (!passwordRepeat.getText().toString().equals(password.getText().toString())) {
-                    Toast.makeText(getActivity().getApplicationContext(), "Passwords don't match!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(requireContext(), "Passwords don't match!", Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (!termsCheckBox.isChecked()) {
-                    Toast.makeText(getActivity().getApplicationContext(), "Please agree with the terms of use", Toast.LENGTH_LONG).show();
+                    Toast.makeText(requireContext(), "Please agree with the terms of use", Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -67,7 +67,7 @@ public class RegisterFragment extends Fragment {
         return view;
     }
 
-    public void onNewRegisterPressed(String password) {
+    private void onNewRegisterPressed(String password) {
         if (mListener != null) {
             mListener.onNewRegisterInteraction(password);
         }

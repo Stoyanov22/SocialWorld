@@ -64,19 +64,19 @@ public class LoginFragment extends Fragment {
         return view;
     }
 
-    public void onLoginPressed(String password) {
+    private void onLoginPressed(String password) {
         if (mListener != null) {
             mListener.onLoginInteraction(password);
         }
     }
 
-    public void onGoToRegisterPressed() {
+    private void onGoToRegisterPressed() {
         if (mListener != null) {
             mListener.onGoToRegisterInteraction();
         }
     }
 
-    public void onGoToForgottenPasswordPressed() {
+    private void onGoToForgottenPasswordPressed() {
         if (mListener != null) {
             mListener.onGoToForgottenPasswordInteraction();
         }

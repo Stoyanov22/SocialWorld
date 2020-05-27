@@ -10,7 +10,7 @@ public class MyPostsViewModel extends ViewModel {
 
     public MyPostsViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is gallery fragment");
+        mText.setValue("This is my posts fragment");
     }
 
     public LiveData<String> getText() {

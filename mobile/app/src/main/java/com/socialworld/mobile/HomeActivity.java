@@ -11,7 +11,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
+import com.socialworld.mobile.entities.PostEntity;
 import com.socialworld.mobile.entities.UserEntity;
+import com.socialworld.mobile.ui.myPosts.AddNewPostDialog;
 import com.socialworld.mobile.ui.myProfile.EditMyProfileFragment;
 import com.socialworld.mobile.ui.myProfile.MyProfileViewModel;
 
@@ -25,7 +27,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-public class HomeActivity extends AppCompatActivity implements EditMyProfileFragment.OnUpdateMyProfileInteractionListener{
+public class HomeActivity extends AppCompatActivity implements EditMyProfileFragment.OnUpdateMyProfileInteractionListener, AddNewPostDialog.OnAddNewPostInteractionListener {
 
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -84,7 +86,7 @@ public class HomeActivity extends AppCompatActivity implements EditMyProfileFrag
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_my_profile)
+                R.id.nav_home, R.id.nav_my_posts, R.id.nav_my_profile)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -132,6 +134,24 @@ public class HomeActivity extends AppCompatActivity implements EditMyProfileFrag
                     @Override
                     public void onFailure(@NonNull Exception e) {
 
+                    }
+                });
+    }
+
+    @Override
+    public void addNewPost(PostEntity post) {
+        db.collection("Posts").document(post.getId()).set(post)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getApplicationContext(), "Post added", Toast.LENGTH_LONG).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+//                        loadingDialog.hide();
+                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
     }

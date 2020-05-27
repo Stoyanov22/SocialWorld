@@ -30,9 +30,9 @@
 <!--    </fragment>-->
 
     <fragment
-        android:id="@+id/nav_gallery"
+        android:id="@+id/nav_my_posts"
         android:name="com.socialworld.mobile.ui.myPosts.MyPostsFragment"
-        android:label="@string/menu_gallery"
+        android:label="@string/menu_my_posts"
         tools:layout="@layout/fragment_my_posts" />
 
     <fragment

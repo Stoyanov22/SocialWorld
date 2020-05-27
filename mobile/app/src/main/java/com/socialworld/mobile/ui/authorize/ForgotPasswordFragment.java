@@ -46,7 +46,7 @@ public class ForgotPasswordFragment extends Fragment {
         return view;
     }
 
-    public void onResetPasswordPressed() {
+    private void onResetPasswordPressed() {
         if (mListener != null) {
             mListener.onForgottenPasswordInteraction();
         }

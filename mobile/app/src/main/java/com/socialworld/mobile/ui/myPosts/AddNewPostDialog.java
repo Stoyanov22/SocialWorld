@@ -32,25 +32,25 @@ public class AddNewPostDialog extends AppCompatDialogFragment {
         View view = inflater.inflate(R.layout.fragment_add_post_dialog, null);
 
         builder.setView(view)
-                .setTitle("New Post")
-                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                .setTitle(R.string.new_post)
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
                     }
                 })
-                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String postText = postEditText.getText().toString();
 
-                        PostEntity post = new PostEntity("id","userId","pic", postText, new Date());
+                        PostEntity post = new PostEntity(postText,"userId","pic", postText, new Date());
 
                         mListener.addNewPost(post);
                     }
                 });
 
-        postEditText = view.findViewById(R.id.new_post_text);
+        postEditText = view.findViewById(R.id.new_post_edit_text);
 
         return builder.create();
     }
