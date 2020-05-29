@@ -10,6 +10,7 @@ import com.socialworld.web.service.PostService;
 import com.socialworld.web.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -112,5 +113,32 @@ public class UserController {
     @RequestMapping(value = {"/remove_post"}, method = RequestMethod.POST)
     public void removePost(HttpSession session, @RequestParam String postId) {
         postService.removePost(postId);
+    }
+
+    @RequestMapping(value = {"/profile/{userId}"}, method = RequestMethod.GET)
+    public ModelAndView userProfile(HttpSession session, @PathVariable String userId) {
+        ModelAndView model = new ModelAndView();
+        if (Objects.isNull(session.getAttribute("uid"))) {
+            model.setViewName("home/index");
+            return model;
+        }
+        if (userId.equals(session.getAttribute("uid"))) {
+            model.setViewName("redirect:/my_profile");
+            return model;
+        } else {
+            User user = userService.getUserById(userId);
+            if (user != null) {
+                List<Post> posts = postService.getPostsByUserId(user.getId());
+                model.addObject("user", user);
+                model.addObject("gender", GenderConstants.getGenderName(user.getGenderId()));
+                model.addObject("country", CountryConstants.getCountryName(user.getCountryId()));
+                model.addObject("posts", posts);
+                model.setViewName("user/user_profile");
+                return model;
+            } else {
+                model.setViewName("user/explore");
+                return model;
+            }
+        }
     }
 }

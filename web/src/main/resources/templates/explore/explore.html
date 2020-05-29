@@ -14,7 +14,6 @@
         <!-- TODO: Width to be relative -->
         <a href="index" class="logo"><img src="images/logo.png" alt="logo" height="100"></a>
         <nav id="nav">
-            <!--        TODO: To be changed with icons-->
             <a href="explore">Explore</a>
             <a href="friends">Friends list</a>
             <a href="my_profile">My Profile</a>
@@ -28,7 +27,8 @@
     </form>
 </div>
 <div class="row">
-    <a th:each="user : ${users}" th:href="${'/user/' + user.id}" th:text="${user.name}"></a>
+    <a href="profile/M9m2FYQNkAXnJ8bCX5RNcOwFpim1">Testeee</a>
+    <a th:each="user : ${users}" th:href="${'profile/' + user.id}" th:text="${user.name}"></a>
 </div>
 </body>
 </html>

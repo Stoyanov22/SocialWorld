@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${user.name}"></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="../css/main.css"/>
+    <script src="../js/jquery.min.js"></script>
+</head>
+<body>
+<!-- Header -->
+<header class="navigationHeader">
+    <div class="inner">
+        <!-- TODO: Width to be relative -->
+        <a href="/index" class="logo"><img src="../images/logo.png" alt="logo" height="100"></a>
+        <nav id="nav">
+            <a href="explore">Explore</a>
+            <a href="friends">Friends list</a>
+            <a href="my_profile">My Profile</a>
+        </nav>
+    </div>
+</header>
+
+<div class="row">
+    <div class="leftcolumn">
+        <h1> Posts </h1>
+        <div th:each="post : ${posts}" th:id="${'post' + post.id}" class="card">
+            <h2 th:text="${post.text}"></h2>
+            <h5 th:text="${post.date}"></h5>
+            <img th:src="${post.picture}" style="height:200px;">
+            <h6 th:text="${#lists.size(post.userLikes)}"></h6>
+        </div>
+    </div>
+    <div class="rightcolumn">
+        <div class="card">
+            <h2 th:text="${user.name}"></h2>
+            <h4 th:text="${user.email}"></h4>
+            <img th:src="${user.picture}" style="height:100px;">
+            <h4 th:text="${user.dateOfBirth}"></h4>
+            <h4 th:text="${gender}"></h4>
+            <h4 th:text="${country}"></h4>
+        </div>
+    </div>
+</div>
+</body>
+</html>
