@@ -49,16 +49,10 @@ public class AuthorizeActivity extends AppCompatActivity implements LoginFragmen
 
     @Override
     public void onLoginInteraction(String password) {
-        if (emailInput.getText().length() == 0) {
-            Toast.makeText(getApplicationContext(), "Email cannot be empty", Toast.LENGTH_LONG).show();
+        if (!isEmailValid()) {
             return;
         }
-        if (password.length() == 0) {
-            Toast.makeText(getApplicationContext(), "Password cannot be empty", Toast.LENGTH_LONG).show();
-            return;
-        }
-        if (password.length() < 6) {
-            Toast.makeText(getApplicationContext(), "The password is too short", Toast.LENGTH_LONG).show();
+        if (!isPasswordValid(password)) {
             return;
         }
         loadingDialog.show();
@@ -91,16 +85,10 @@ public class AuthorizeActivity extends AppCompatActivity implements LoginFragmen
 
     @Override
     public void onNewRegisterInteraction(String password) {
-        if (emailInput.getText().length() == 0) {
-            Toast.makeText(getApplicationContext(), "Email cannot be empty", Toast.LENGTH_LONG).show();
+        if (!isEmailValid()) {
             return;
         }
-        if (password.length() == 0) {
-            Toast.makeText(getApplicationContext(), "Password cannot be empty", Toast.LENGTH_LONG).show();
-            return;
-        }
-        if (password.length() < 6) {
-            Toast.makeText(getApplicationContext(), "The password is too short", Toast.LENGTH_LONG).show();
+        if (!isPasswordValid(password)) {
             return;
         }
         loadingDialog.show();
@@ -113,7 +101,7 @@ public class AuthorizeActivity extends AppCompatActivity implements LoginFragmen
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-                                        Toast.makeText(getApplicationContext(), "User registered", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getApplicationContext(), R.string.user_registered, Toast.LENGTH_LONG).show();
                                         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                                         finish();
                                     }
@@ -138,8 +126,7 @@ public class AuthorizeActivity extends AppCompatActivity implements LoginFragmen
 
     @Override
     public void onForgottenPasswordInteraction() {
-        if (emailInput.getText().length() == 0) {
-            Toast.makeText(getApplicationContext(), "Email cannot be empty", Toast.LENGTH_LONG).show();
+        if (!isEmailValid()) {
             return;
         }
         loadingDialog.show();
@@ -148,7 +135,7 @@ public class AuthorizeActivity extends AppCompatActivity implements LoginFragmen
                     @Override
                     public void onSuccess(Void aVoid) {
                         loadingDialog.hide();
-                        Toast.makeText(getApplicationContext(), "Email sent", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), R.string.reset_pass_email_sent, Toast.LENGTH_LONG).show();
                         FragmentManager fragmentManager = getSupportFragmentManager();
                         fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                         fragmentManager.beginTransaction().replace(R.id.authorize_fragment, LoginFragment.newInstance()).commit();
@@ -161,5 +148,25 @@ public class AuthorizeActivity extends AppCompatActivity implements LoginFragmen
                         Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
+    }
+
+    private boolean isEmailValid() {
+        if (emailInput.getText().length() == 0) {
+            Toast.makeText(getApplicationContext(), R.string.email_can_not_be_empty, Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isPasswordValid(String password) {
+        if (password.length() == 0) {
+            Toast.makeText(getApplicationContext(), R.string.pass_can_not_be_empty, Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (password.length() < 6) {
+            Toast.makeText(getApplicationContext(), R.string.pass_too_short, Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
     }
 }

@@ -3,6 +3,7 @@ package com.socialworld.mobile.ui.authorize;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -52,11 +53,11 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (!passwordRepeat.getText().toString().equals(password.getText().toString())) {
-                    Toast.makeText(requireContext(), "Passwords don't match!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(requireContext(), R.string.passwords_mismatch, Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (!termsCheckBox.isChecked()) {
-                    Toast.makeText(requireContext(), "Please agree with the terms of use", Toast.LENGTH_LONG).show();
+                    Toast.makeText(requireContext(), R.string.please_confirm_terms, Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -74,7 +75,7 @@ public class RegisterFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (context instanceof OnNewRegisterInteractionListener) {
             mListener = (OnNewRegisterInteractionListener) context;
