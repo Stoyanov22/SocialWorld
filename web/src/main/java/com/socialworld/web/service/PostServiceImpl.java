@@ -8,6 +8,7 @@ import com.socialworld.web.entity.User;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
@@ -38,7 +39,30 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<Post> getPostsForUser(User user) {
-        return null;
+        List<String> friends = user.getFollowedUsers();
+        List<Post> result = new ArrayList<>();
+        if (friends != null) {
+            for (String friend : friends) {
+                try {
+                    List<QueryDocumentSnapshot> dbPosts = db.collection("Posts").get().get().getDocuments();
+                    if (dbPosts.stream().anyMatch(u -> u.getString("userId").equals(friend))) {
+                        List<QueryDocumentSnapshot> snapshotPosts = dbPosts.stream().filter(u -> u.getString("userId").equals(friend)).collect(Collectors.toList());
+                        for (QueryDocumentSnapshot post : snapshotPosts) {
+                            result.add(post.toObject(Post.class));
+                        }
+                        return result;
+                    } else {
+                        return null;
+                    }
+                } catch (InterruptedException | ExecutionException e) {
+                    return null;
+                }
+            }
+            result.sort((Comparator.comparing(Post::getDate)));
+            return result;
+        } else {
+            return null;
+        }
     }
 
     @Override

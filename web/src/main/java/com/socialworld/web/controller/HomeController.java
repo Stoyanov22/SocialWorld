@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 @Controller
 public class HomeController {
@@ -71,7 +74,10 @@ public class HomeController {
             return model;
         }
         User user = userService.getUserById(session.getAttribute("uid").toString());
+        List<Post> posts = postService.getPostsForUser(user);
+        model.addObject("posts", posts);
         model.addObject("user", user);
+        model.addObject("userService", userService);
         model.setViewName("home/feed");
         return model;
     }
@@ -85,7 +91,7 @@ public class HomeController {
     }
 
     @RequestMapping(value = {"/createPost"}, method = RequestMethod.POST)
-    public ModelAndView createPost(HttpSession session, @RequestParam String postText, @RequestParam String pictureUrl){
+    public ModelAndView createPost(HttpSession session, @RequestParam String postText, @RequestParam String pictureUrl) {
         ModelAndView model = new ModelAndView();
         if (Objects.isNull(session.getAttribute("uid"))) {
             model.setViewName("home/index");
