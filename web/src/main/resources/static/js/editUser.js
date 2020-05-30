@@ -6,14 +6,14 @@ $(document).ready(function(){
         var file = $(this)[0];
 
         if(file.files.length > 0){
-          var email = $("#email").val();
+          var uid = $("#uid").val();
           picture = file.files[0];
           var metadata = {
             contentType: 'image/jpeg'
           };
 
           // Upload file and metadata to the object 'images/mountains.jpg'
-          var uploadTask = storageRef.child('ProfilePictures/' + email).put(picture, metadata);
+          var uploadTask = storageRef.child('ProfilePictures/' + uid).put(picture, metadata);
 
           // Listen for state changes, errors, and completion of the upload.
           uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'

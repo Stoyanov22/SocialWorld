@@ -30,7 +30,7 @@
     <div class="leftcolumn">
         <div class="create-post">
             <form action="/createPost" method="post">
-                <input type="hidden" id="email" th:value="${user.email}">
+                <input type="hidden" id="uid" th:value="${user.id}">
                 <input type="hidden" id="pictureUrl" name="pictureUrl">
                 <input type="file" name="postPhoto" id="postPhoto" accept="image/*">
                 <textarea rows="3" required name="postText" id="postText" placeholder="What is on your mind ?"></textarea>
