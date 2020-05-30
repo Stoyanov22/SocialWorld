@@ -7,9 +7,7 @@ import com.socialworld.web.entity.Post;
 import com.socialworld.web.entity.User;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
@@ -87,5 +85,27 @@ public class PostServiceImpl implements PostService {
     @Override
     public void removePost(String id) {
         db.collection("Posts").document(id).delete();
+    }
+
+    @Override
+    public void like(String postId, String userId) {
+        Map<String, Object> updatedPost = new HashMap<>();
+        Post post = getPost(postId);
+        List<String> likes = post.getUserLikes();
+        if (likes != null) {
+            if(likes.contains(userId)){
+                likes.remove(userId);
+            }
+            likes.add(userId);
+        } else {
+            likes = new ArrayList<>();
+            likes.add(userId);
+        }
+        updatedPost.put("userLikes", likes);
+
+        //Firebase requires this check
+        if (post.getId() != null && !post.getId().isEmpty()) {
+            db.collection("Posts").document(post.getId()).update(updatedPost);
+        }
     }
 }

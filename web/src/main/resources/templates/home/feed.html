@@ -43,6 +43,9 @@
             <h5 th:text="${post.date}"></h5>
             <img th:src="${post.picture}" style="height:200px;">
             <h6 th:text="${#lists.size(post.userLikes)}"></h6>
+            <img src="images/tick.png" th:id="${post.id}" class="like" alt="like" >
+            <input type="text" id="comment" name="comment">
+            <input type="submit" id="submitComment" value="Comment">
         </div>
     </div>
     <div class="rightcolumn">
@@ -54,10 +57,9 @@
             <a href="/logout" id="logout">Logout</a>
         </div>
         <div class="card">
-            <h3>Popular Post</h3>
-            <div class="fakeimg"><p>Image</p></div>
-            <div class="fakeimg"><p>Image</p></div>
-            <div class="fakeimg"><p>Image</p></div>
+            <img src="images/logo.png" alt="logo" height="100">
+            <img src="images/logo.png" alt="logo" height="100">
+            <img src="images/logo.png" alt="logo" height="100">
         </div>
     </div>
 </div>
@@ -69,5 +71,6 @@
 <script src="js/firebaseInit.js"></script>
 <script src="js/firebaseLogout.js"></script>
 <script src="js/createPost.js"></script>
+<script src="js/like.js"></script>
 </body>
 </html>

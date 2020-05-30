@@ -1082,8 +1082,14 @@ input[type="submit"].disabled, input[type="submit"]:disabled, input[type="reset"
 }
 
 /* Search */
-.search-field{
+.search-field {
     height: 50px;
     width: 60%;
     margin-top: 50px;
+}
+
+/* Like */
+.like {
+    width: 100px;
+    height: 100px;
 }
