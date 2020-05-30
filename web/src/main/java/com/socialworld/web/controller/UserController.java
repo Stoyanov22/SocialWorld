@@ -133,6 +133,11 @@ public class UserController {
                 model.addObject("gender", GenderConstants.getGenderName(user.getGenderId()));
                 model.addObject("country", CountryConstants.getCountryName(user.getCountryId()));
                 model.addObject("posts", posts);
+                if(user.getFollowers().contains(session.getAttribute("uid").toString())){
+                    model.addObject("isFollowed", true);
+                } else {
+                    model.addObject("isFollowed", false);
+                }
                 model.setViewName("user/user_profile");
                 return model;
             } else {

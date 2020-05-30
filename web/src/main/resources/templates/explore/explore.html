@@ -27,7 +27,6 @@
     </form>
 </div>
 <div class="row">
-    <a href="profile/M9m2FYQNkAXnJ8bCX5RNcOwFpim1">Testeee</a>
     <a th:each="user : ${users}" th:href="${'profile/' + user.id}" th:text="${user.name}"></a>
 </div>
 </body>

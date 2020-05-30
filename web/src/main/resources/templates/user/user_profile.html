@@ -39,6 +39,12 @@
             <h4 th:text="${user.dateOfBirth}"></h4>
             <h4 th:text="${gender}"></h4>
             <h4 th:text="${country}"></h4>
+            <div th:if="${isFollowed}">
+                <input type="button" id="unfollow" value="Unfollow">
+            </div>
+            <div th:unless="${isFollowed}">
+                <input type="button" id="follow" value="Follow">
+            </div>
         </div>
     </div>
 </div>
