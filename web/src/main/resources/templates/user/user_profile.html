@@ -14,9 +14,9 @@
         <!-- TODO: Width to be relative -->
         <a href="/index" class="logo"><img src="../images/logo.png" alt="logo" height="100"></a>
         <nav id="nav">
-            <a href="explore">Explore</a>
-            <a href="friends">Friends list</a>
-            <a href="my_profile">My Profile</a>
+            <a href="/explore">Explore</a>
+            <a href="/friends">Friends list</a>
+            <a href="/my_profile">My Profile</a>
         </nav>
     </div>
 </header>
@@ -39,6 +39,7 @@
             <h4 th:text="${user.dateOfBirth}"></h4>
             <h4 th:text="${gender}"></h4>
             <h4 th:text="${country}"></h4>
+            <input type="hidden" id="uid" th:value="${user.id}">
             <div th:if="${isFollowed}">
                 <input type="button" id="unfollow" value="Unfollow">
             </div>
@@ -48,5 +49,6 @@
         </div>
     </div>
 </div>
+<script src="../js/followUser.js"></script>
 </body>
 </html>

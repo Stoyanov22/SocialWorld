@@ -21,4 +21,7 @@ public interface UserService {
     List<User> findUsersByName(String name);
 
     void followUser(User user, User followedUser);
+
+    void unfollowUser(User user, User unfollowedUser);
+
 }

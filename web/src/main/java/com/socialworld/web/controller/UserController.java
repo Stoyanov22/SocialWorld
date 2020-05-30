@@ -10,6 +10,7 @@ import com.socialworld.web.service.PostService;
 import com.socialworld.web.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -133,7 +134,7 @@ public class UserController {
                 model.addObject("gender", GenderConstants.getGenderName(user.getGenderId()));
                 model.addObject("country", CountryConstants.getCountryName(user.getCountryId()));
                 model.addObject("posts", posts);
-                if(user.getFollowers().contains(session.getAttribute("uid").toString())){
+                if (user.getFollowers() != null && user.getFollowers().contains(session.getAttribute("uid").toString())) {
                     model.addObject("isFollowed", true);
                 } else {
                     model.addObject("isFollowed", false);
@@ -145,5 +146,23 @@ public class UserController {
                 return model;
             }
         }
+    }
+
+    @RequestMapping(value = {"/follow_user"}, method = RequestMethod.POST)
+    public ModelAndView followUser(HttpSession session, @RequestParam String followedId) {
+        ModelAndView model = new ModelAndView();
+        User user = userService.getUserById(session.getAttribute("uid").toString());
+        User followedUser = userService.getUserById(followedId);
+        userService.followUser(user, followedUser);
+        return userProfile(session, followedId);
+    }
+
+    @RequestMapping(value = {"/unfollow_user"}, method = RequestMethod.POST)
+    public ModelAndView unfolloweUser(HttpSession session, @RequestParam String unfollowedId) {
+        ModelAndView model = new ModelAndView();
+        User user = userService.getUserById(session.getAttribute("uid").toString());
+        User unfollowedUser = userService.getUserById(unfollowedId);
+        userService.unfollowUser(user, unfollowedUser);
+        return userProfile(session, unfollowedId);
     }
 }

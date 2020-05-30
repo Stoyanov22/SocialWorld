@@ -1,10 +1,8 @@
 package com.socialworld.web.service;
 
-import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
-import com.google.cloud.firestore.QuerySnapshot;
 import com.google.firebase.cloud.FirestoreClient;
 import com.socialworld.web.entity.User;
 import org.springframework.stereotype.Service;
@@ -95,7 +93,7 @@ public class UserServiceImpl implements UserService {
         try {
             List<QueryDocumentSnapshot> queryDocumentSnapshots = db.collection("Users").get().get().getDocuments();
             for (DocumentSnapshot document : queryDocumentSnapshots) {
-                if(document.getString("name").toLowerCase().contains(name.toLowerCase())){
+                if (document.getString("name").toLowerCase().contains(name.toLowerCase())) {
                     result.add(document.toObject(User.class));
                 }
             }
@@ -108,11 +106,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public void followUser(User user, User followedUser) {
         List<String> followedUsers = user.getFollowedUsers();
+        if(followedUsers == null){
+            followedUsers = new ArrayList<>();
+        }
         followedUsers.add(followedUser.getId());
         Map<String, Object> updatedUser = new HashMap<>();
         updatedUser.put("followedUsers", followedUsers);
 
         List<String> followers = followedUser.getFollowers();
+        if(followers == null){
+            followers = new ArrayList<>();
+        }
         followers.add(user.getId());
         Map<String, Object> updatedFollowedUser = new HashMap<>();
         updatedFollowedUser.put("followers", followers);
@@ -121,6 +125,25 @@ public class UserServiceImpl implements UserService {
         if (user.getId() != null && !user.getId().isEmpty()) {
             db.collection("Users").document(user.getId()).update(updatedUser);
             db.collection("Users").document(followedUser.getId()).update(updatedFollowedUser);
+        }
+    }
+
+    @Override
+    public void unfollowUser(User user, User unfollowedUser) {
+        List<String> followedUsers = user.getFollowedUsers();
+        followedUsers.remove(unfollowedUser.getId());
+        Map<String, Object> updatedUser = new HashMap<>();
+        updatedUser.put("followedUsers", followedUsers);
+
+        List<String> followers = unfollowedUser.getFollowers();
+        followers.remove(user.getId());
+        Map<String, Object> updatedFollowedUser = new HashMap<>();
+        updatedFollowedUser.put("followers", followers);
+
+        //Firebase requires this check
+        if (user.getId() != null && !user.getId().isEmpty()) {
+            db.collection("Users").document(user.getId()).update(updatedUser);
+            db.collection("Users").document(unfollowedUser.getId()).update(updatedFollowedUser);
         }
     }
 }
