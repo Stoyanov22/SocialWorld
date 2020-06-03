@@ -23,6 +23,13 @@ public class PostEntity implements Serializable {
         this.date = date;
     }
 
+    public PostEntity(String id, String userId, String text, Date date) {
+        this.id = id;
+        this.userId = userId;
+        this.text = text;
+        this.date = date;
+    }
+
     public PostEntity(String id, String userId, String picture, String text, Date date, List<String> userLikes) {
         this.id = id;
         this.userId = userId;

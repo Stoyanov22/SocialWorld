@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.paging.PagedList;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -64,32 +65,6 @@ public class HomeFragment extends Fragment {
         postsLayoutManager = new LinearLayoutManager(requireContext());
         postsRecView.setLayoutManager(postsLayoutManager);
 
-//        posts = new ArrayList<>();
-//        db.collection("Posts").get()
-//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        for (QueryDocumentSnapshot postSnapshot : Objects.requireNonNull(task.getResult())) {
-//                            posts.add(postSnapshot.toObject(PostEntity.class));
-//                        }
-//                        postAdapter = new PostAdapter(posts);
-//                        postAdapter.setOnPostItemClickListener(new PostAdapter.OnPostItemClickListener() {
-//                            @Override
-//                            public void onEditClick(int position) {
-//
-//                            }
-//                        });
-//
-//                        postsRecView.setAdapter(postAdapter);
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-//                    }
-//                });
-
         // Query from FirebaseFirestore
         Query query = db.collection("Posts");
 
@@ -113,7 +88,14 @@ public class HomeFragment extends Fragment {
 
         // Adapter
         postAdapter = new PostAdapter(options);
+//        postAdapter.setOnPostItemClickListener(new PostAdapter.OnPostItemClickListener() {
+//            @Override
+//            public void onEditClick(int position) {
+//
+//            }
+//        });
         postsRecView.setAdapter(postAdapter);
+        postsRecView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
 
 //        homeViewModel =
 //                ViewModelProviders.of(this).get(HomeViewModel.class);
@@ -125,5 +107,8 @@ public class HomeFragment extends Fragment {
 //            }
 //        });
         return view;
+    }
+
+    public interface OnNewsFeedInteractionListener {
     }
 }

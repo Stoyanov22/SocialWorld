@@ -4,8 +4,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,14 +15,15 @@ import com.firebase.ui.firestore.paging.FirestorePagingOptions;
 import com.firebase.ui.firestore.paging.LoadingState;
 import com.socialworld.mobile.R;
 import com.socialworld.mobile.entities.PostEntity;
+import com.socialworld.mobile.models.GlideApp;
 
 // TODO: Use FirestorePagingAdapter
-public class PostAdapter extends FirestorePagingAdapter<PostEntity, PostAdapter.PostViewHolder> implements Filterable {
+public class PostAdapter extends FirestorePagingAdapter<PostEntity, PostAdapter.PostViewHolder>{
     private FirestorePagingOptions<PostEntity> posts;
     private OnPostItemClickListener mListener;
 
     public interface OnPostItemClickListener {
-        void onEditClick(int position);
+//        void onEditClick(int position);
     }
 
     public void setOnPostItemClickListener(OnPostItemClickListener listener) {
@@ -33,11 +33,15 @@ public class PostAdapter extends FirestorePagingAdapter<PostEntity, PostAdapter.
     public static class PostViewHolder extends RecyclerView.ViewHolder {
         public TextView username;
         public TextView text;
+        public TextView date;
+        public ImageView image;
         public PostViewHolder(@NonNull View itemView, final OnPostItemClickListener listener) {
             super(itemView);
 
-            username = itemView.findViewById(R.id.post_username);
-            text = itemView.findViewById(R.id.post_text);
+            username = itemView.findViewById(R.id.post_item_username);
+            text = itemView.findViewById(R.id.post_item_text);
+            date = itemView.findViewById(R.id.post_item_date);
+            image = itemView.findViewById(R.id.post_item_image);
         }
     }
 
@@ -58,6 +62,13 @@ public class PostAdapter extends FirestorePagingAdapter<PostEntity, PostAdapter.
     protected void onBindViewHolder(@NonNull PostViewHolder holder, int position, @NonNull PostEntity model) {
         holder.username.setText(model.getUserId());
         holder.text.setText(model.getText());
+        holder.date.setText(model.getDate().toString());
+        if (model.getPicture() != null) {
+            GlideApp
+                    .with(holder.image.getContext())
+                    .load(model.getPicture())
+                    .into(holder.image);
+        }
     }
 
     @Override
@@ -82,33 +93,20 @@ public class PostAdapter extends FirestorePagingAdapter<PostEntity, PostAdapter.
         }
     }
 
-    //    @Override
-//    public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
-//        PostEntity post = posts.get(position);
-//
-//        holder.text.setText(post.getText());
-//        holder.username.setText(post.getUserId());
-//    }
-
 //    @Override
-//    public int getItemCount() {
-//        return posts.size();
+//    public Filter getFilter() {
+//        return postsFilter;
 //    }
-
-    @Override
-    public Filter getFilter() {
-        return postsFilter;
-    }
-
-    private Filter postsFilter = new Filter() {
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            return null;
-        }
-
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-
-        }
-    };
+//
+//    private Filter postsFilter = new Filter() {
+//        @Override
+//        protected FilterResults performFiltering(CharSequence constraint) {
+//            return null;
+//        }
+//
+//        @Override
+//        protected void publishResults(CharSequence constraint, FilterResults results) {
+//
+//        }
+//    };
 }

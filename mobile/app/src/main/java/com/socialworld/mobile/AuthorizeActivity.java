@@ -36,7 +36,7 @@ public class AuthorizeActivity extends AppCompatActivity implements LoginFragmen
         firebaseAuth = FirebaseAuth.getInstance();
 
         AlertDialog.Builder builderLoading = new AlertDialog.Builder(AuthorizeActivity.this);
-        builderLoading.setCancelable(false); // if you want user to wait for some process to finish,
+        builderLoading.setCancelable(false);
         builderLoading.setView(R.layout.loading_dialog);
         loadingDialog = builderLoading.create();
 
@@ -55,7 +55,7 @@ public class AuthorizeActivity extends AppCompatActivity implements LoginFragmen
         if (!isPasswordValid(password)) {
             return;
         }
-        loadingDialog.show();
+        showLoading();
         firebaseAuth.signInWithEmailAndPassword(emailInput.getText().toString(), password)
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
@@ -67,7 +67,7 @@ public class AuthorizeActivity extends AppCompatActivity implements LoginFragmen
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        loadingDialog.hide();
+                        hideLoading();
                         Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
@@ -91,7 +91,7 @@ public class AuthorizeActivity extends AppCompatActivity implements LoginFragmen
         if (!isPasswordValid(password)) {
             return;
         }
-        loadingDialog.show();
+        showLoading();
         firebaseAuth.createUserWithEmailAndPassword(emailInput.getText().toString(), password)
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
@@ -109,7 +109,7 @@ public class AuthorizeActivity extends AppCompatActivity implements LoginFragmen
                                 .addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        loadingDialog.hide();
+                                        hideLoading();
                                         Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                                     }
                                 });
@@ -118,7 +118,7 @@ public class AuthorizeActivity extends AppCompatActivity implements LoginFragmen
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        loadingDialog.hide();
+                        hideLoading();
                         Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
@@ -129,12 +129,12 @@ public class AuthorizeActivity extends AppCompatActivity implements LoginFragmen
         if (!isEmailValid()) {
             return;
         }
-        loadingDialog.show();
+        showLoading();
         firebaseAuth.sendPasswordResetEmail(emailInput.getText().toString())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        loadingDialog.hide();
+                        hideLoading();
                         Toast.makeText(getApplicationContext(), R.string.reset_pass_email_sent, Toast.LENGTH_LONG).show();
                         FragmentManager fragmentManager = getSupportFragmentManager();
                         fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
@@ -144,10 +144,18 @@ public class AuthorizeActivity extends AppCompatActivity implements LoginFragmen
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        loadingDialog.hide();
+                        hideLoading();
                         Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
+    }
+
+    private void showLoading() {
+        loadingDialog.show();
+    }
+
+    private void hideLoading() {
+        loadingDialog.hide();
     }
 
     private boolean isEmailValid() {

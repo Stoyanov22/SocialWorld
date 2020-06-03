@@ -1,23 +1,31 @@
 package com.socialworld.mobile;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.socialworld.mobile.entities.PostEntity;
 import com.socialworld.mobile.entities.UserEntity;
-import com.socialworld.mobile.ui.myPosts.AddNewPostDialog;
-import com.socialworld.mobile.ui.myProfile.EditMyProfileFragment;
+import com.socialworld.mobile.ui.home.HomeFragment;
+import com.socialworld.mobile.ui.myPosts.MyPostsFragment;
+import com.socialworld.mobile.ui.myProfile.MyProfileFragment;
 import com.socialworld.mobile.ui.myProfile.MyProfileViewModel;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -27,15 +35,19 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-public class HomeActivity extends AppCompatActivity implements EditMyProfileFragment.OnUpdateMyProfileInteractionListener, AddNewPostDialog.OnAddNewPostInteractionListener {
+import java.util.Date;
 
+public class HomeActivity extends AppCompatActivity implements HomeFragment.OnNewsFeedInteractionListener, MyPostsFragment.OnMyPostsInteractionListener, MyProfileFragment.OnMyProfileInteractionListener {
     private AppBarConfiguration mAppBarConfiguration;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore db;
+    private FirebaseStorage firebaseStorage;
 
     private UserEntity user;
     private String userUid;
+
+    private AlertDialog loadingDialog;
 
     private MyProfileViewModel myProfileViewModel;
 
@@ -44,32 +56,36 @@ public class HomeActivity extends AppCompatActivity implements EditMyProfileFrag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        myProfileViewModel = new ViewModelProvider(this).get(MyProfileViewModel.class);
-        db = FirebaseFirestore.getInstance();
-
         firebaseAuth = FirebaseAuth.getInstance();
         if (firebaseAuth.getCurrentUser() == null) {
             Intent intent = new Intent(getApplicationContext(), AuthorizeActivity.class);
             startActivity(intent);
             finish();
-        } else {
-            userUid = firebaseAuth.getCurrentUser().getUid();
-            db.collection("Users").document(userUid).get()
-                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                        @Override
-                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-                            user = documentSnapshot.toObject(UserEntity.class);
-                            myProfileViewModel.setUser(user);
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    });
-
         }
+        userUid = firebaseAuth.getCurrentUser().getUid();
+        db = FirebaseFirestore.getInstance();
+        firebaseStorage = FirebaseStorage.getInstance();
+        myProfileViewModel = new ViewModelProvider(this).get(MyProfileViewModel.class);
+
+        db.collection("Users").document(userUid).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        user = documentSnapshot.toObject(UserEntity.class);
+                        myProfileViewModel.setUser(user);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
+
+        AlertDialog.Builder builderLoading = new AlertDialog.Builder(HomeActivity.this);
+        builderLoading.setCancelable(false);
+        builderLoading.setView(R.layout.loading_dialog);
+        loadingDialog = builderLoading.create();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -94,13 +110,6 @@ public class HomeActivity extends AppCompatActivity implements EditMyProfileFrag
         NavigationUI.setupWithNavController(navigationView, navController);
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.toolbar_profile, menu);
-//        return true;
-//    }
-
     @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -108,49 +117,123 @@ public class HomeActivity extends AppCompatActivity implements EditMyProfileFrag
                 || super.onSupportNavigateUp();
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.logout:
-//                Intent intent = new Intent(getApplicationContext(), AuthorizeActivity.class);
-//                firebaseAuth.signOut();
-//                startActivity(intent);
-//                finish();
-//                break;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
+    private void showLoading() {
+        if (!loadingDialog.isShowing()) {
+            loadingDialog.show();
+        }
+    }
+
+    private void hideLoading() {
+        if (loadingDialog.isShowing()) {
+            loadingDialog.hide();
+        }
+    }
 
     @Override
-    public void onUpdateMyProfileInteraction() {
-        db.collection("Users").document(userUid).set(myProfileViewModel.getUser(), SetOptions.merge())
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
+    public void onUpdateMyProfileInteraction(Uri imgUri) {
+        showLoading();
+        firebaseStorage.getReference().child("ProfilePictures").child(userUid).putFile(imgUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
-                    public void onSuccess(Void aVoid) {
-
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        taskSnapshot.getStorage().getDownloadUrl()
+                                .addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Uri> task) {
+                                        if (task.isSuccessful() && task.getResult() != null) {
+                                            myProfileViewModel.getUser().setPicture(task.getResult().toString());
+                                        } else {
+                                            Toast.makeText(getApplicationContext(), R.string.failed_upload_profile_pic, Toast.LENGTH_LONG).show();
+                                        }
+                                        onUpdateMyProfileInteraction();
+                                    }
+                                });
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-
+                        Toast.makeText(getApplicationContext(), R.string.failed_upload_profile_pic, Toast.LENGTH_LONG).show();
+                        onUpdateMyProfileInteraction();
                     }
                 });
     }
 
     @Override
-    public void addNewPost(PostEntity post) {
-        db.collection("Posts").document(post.getId()).set(post)
+    public void onUpdateMyProfileInteraction() {
+        showLoading();
+        db.collection("Users").document(userUid).set(myProfileViewModel.getUser(), SetOptions.merge())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(getApplicationContext(), "Post added", Toast.LENGTH_LONG).show();
+                        hideLoading();
+                        Toast.makeText(getApplicationContext(), R.string.profile_updated, Toast.LENGTH_LONG).show();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-//                        loadingDialog.hide();
+                        hideLoading();
+                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
+
+    }
+
+    @Override
+    public void onCreateNewPostInteraction(final String text, Uri imgUri) {
+        showLoading();
+        final long time = System.currentTimeMillis();
+        final String postId = userUid + time;
+
+        if (imgUri != null) {
+            firebaseStorage.getReference().child("Posts").child(userUid).child(postId).putFile(imgUri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            taskSnapshot.getStorage().getDownloadUrl()
+                                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            onCreateNewPostInteraction(new PostEntity(postId, userUid, uri.toString(), text, new Date()));
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            hideLoading();
+                                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            hideLoading();
+                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    });
+        } else {
+            onCreateNewPostInteraction(new PostEntity(postId, userUid, text, new Date()));
+        }
+    }
+
+    @Override
+    public void onCreateNewPostInteraction(PostEntity post) {
+        showLoading();
+        db.collection("Posts").document(post.getId()).set(post)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        hideLoading();
+                        Toast.makeText(getApplicationContext(), R.string.post_added, Toast.LENGTH_LONG).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        hideLoading();
                         Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
