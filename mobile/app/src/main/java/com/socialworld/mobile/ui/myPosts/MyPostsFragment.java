@@ -1,5 +1,6 @@
 package com.socialworld.mobile.ui.myPosts;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.socialworld.mobile.R;
+import com.socialworld.mobile.entities.PostEntity;
 
 public class MyPostsFragment extends Fragment {
 //    private FirebaseFirestore db;
@@ -52,8 +54,14 @@ public class MyPostsFragment extends Fragment {
         return view;
     }
 
-    public void openAddNewPostDialog() {
+    private void openAddNewPostDialog() {
         AddNewPostDialog newPostDialog = new AddNewPostDialog();
         newPostDialog.show(requireActivity().getSupportFragmentManager(), "New Post");
+    }
+
+    public interface OnMyPostsInteractionListener {
+        void onCreateNewPostInteraction(final String text, Uri imgUri);
+
+        void onCreateNewPostInteraction(PostEntity post);
     }
 }
