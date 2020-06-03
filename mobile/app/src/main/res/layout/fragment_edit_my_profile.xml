@@ -10,7 +10,7 @@
         android:id="@+id/edit_profile_image"
         android:layout_width="170dp"
         android:layout_height="170dp"
-        android:contentDescription="@string/profile_image_desc"
+        android:contentDescription="@string/profile_pic"
         android:padding="17dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

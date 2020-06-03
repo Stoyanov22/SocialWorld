@@ -1,11 +1,13 @@
 package com.socialworld.mobile.ui.myProfile;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.socialworld.mobile.AuthorizeActivity;
 import com.socialworld.mobile.R;
 import com.socialworld.mobile.entities.UserEntity;
+import com.socialworld.mobile.models.GlideApp;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -28,6 +31,7 @@ public class MyProfileFragment extends Fragment {
 
     private MyProfileViewModel myProfileViewModel;
 
+    private ImageView profileImgView;
     private TextView nameTv;
     private TextView countryTv;
     private TextView dateOfBirthTv;
@@ -50,13 +54,14 @@ public class MyProfileFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_my_profile, container, false);
 
+        profileImgView = root.findViewById(R.id.my_profile_image);
         nameTv = root.findViewById(R.id.my_profile_name);
         countryTv = root.findViewById(R.id.my_profile_country);
         dateOfBirthTv = root.findViewById(R.id.my_profile_birthday);
         numFollowersTv = root.findViewById(R.id.my_profile_num_followers);
         numFollowingTv = root.findViewById(R.id.my_profile_num_following);
 
-        myProfileViewModel.getUserLiveData().observe(getViewLifecycleOwner(), new Observer<UserEntity>() {
+        myProfileViewModel.getUserLiveData().observeForever(new Observer<UserEntity>() {
             @Override
             public void onChanged(UserEntity userEntity) {
                 if (userEntity != null) {
@@ -70,6 +75,12 @@ public class MyProfileFragment extends Fragment {
                         final String myFormat = "dd/MM/yyyy";
                         final SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.UK);
                         dateOfBirthTv.setText(sdf.format(userEntity.getDateOfBirth()));
+                    }
+                    if (userEntity.getPicture() != null) {
+                        GlideApp
+                                .with(requireContext())
+                                .load(userEntity.getPicture())
+                                .into(profileImgView);
                     }
                     // TODO get the count of followers and following users
                     numFollowersTv.setText("100");
@@ -103,5 +114,11 @@ public class MyProfileFragment extends Fragment {
                 findNavController(v).navigate(R.id.action_nav_my_profile_to_nav_edit_profile);
             }
         });
+    }
+
+    public interface OnMyProfileInteractionListener {
+        void onUpdateMyProfileInteraction(Uri imgUri);
+
+        void onUpdateMyProfileInteraction();
     }
 }

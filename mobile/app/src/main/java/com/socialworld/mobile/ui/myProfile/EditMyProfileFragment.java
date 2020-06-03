@@ -32,11 +32,15 @@ import com.socialworld.mobile.R;
 import com.socialworld.mobile.entities.UserEntity;
 import com.socialworld.mobile.models.GlideApp;
 
+import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
+
+import com.socialworld.mobile.ui.myProfile.MyProfileFragment.OnMyProfileInteractionListener;
 
 import static android.app.Activity.RESULT_OK;
 import static androidx.navigation.Navigation.findNavController;
@@ -47,7 +51,7 @@ public class EditMyProfileFragment extends Fragment {
     private static final int PICK_IMAGE = 1;
 
     private MyProfileViewModel myProfileViewModel;
-    private ImageView profileImage;
+    private ImageView profileImgView;
     private TextView changePhotoTv;
     private EditText nameEditTxt;
 
@@ -56,9 +60,9 @@ public class EditMyProfileFragment extends Fragment {
 
     private Spinner countrySpinner;
 
-    private StorageReference profilePicRef;
+    private Uri imageUri;
 
-    private OnUpdateMyProfileInteractionListener mListener;
+    private OnMyProfileInteractionListener mListener;
 
     public EditMyProfileFragment() {
         // Required empty public constructor
@@ -68,8 +72,6 @@ public class EditMyProfileFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         myProfileViewModel = new ViewModelProvider(requireActivity()).get(MyProfileViewModel.class);
-
-        profilePicRef = FirebaseStorage.getInstance().getReference().child("ProfilePictures");
     }
 
     @Override
@@ -77,7 +79,7 @@ public class EditMyProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_edit_my_profile, container, false);
-        profileImage = view.findViewById(R.id.edit_profile_image);
+        profileImgView = view.findViewById(R.id.edit_profile_image);
         changePhotoTv = view.findViewById(R.id.change_photo_text);
         nameEditTxt = view.findViewById(R.id.edit_text_name);
         dateOfBirthEditTxt = view.findViewById(R.id.edit_date_of_birth);
@@ -109,6 +111,12 @@ public class EditMyProfileFragment extends Fragment {
                     if (userEntity.getCountryCode() != null) {
                         countrySpinner.setSelection(countryAdapter.getPosition(userEntity.getCountryCode()));
                     }
+                    if (userEntity.getPicture() != null) {
+                        GlideApp
+                                .with(requireContext())
+                                .load(userEntity.getPicture())
+                                .into(profileImgView);
+                    }
                 }
             }
         });
@@ -135,7 +143,7 @@ public class EditMyProfileFragment extends Fragment {
             }
         });
 
-        profileImage.setOnClickListener(new View.OnClickListener() {
+        profileImgView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 changeProfilePhoto();
@@ -160,17 +168,17 @@ public class EditMyProfileFragment extends Fragment {
     }
 
     private void changeProfilePhoto() {
-        final CharSequence[] options = {"Capture Photo", "Choose from Gallery", "Cancel"};
+        final CharSequence[] options = {getResources().getString(R.string.capture_photo), getResources().getString(R.string.choose_from_gallery), getResources().getString(R.string.cancel)};
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setTitle("Profile picture");
+        builder.setTitle(R.string.profile_pic);
 
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (options[which].equals("Capture Photo")) {
+                if (options[which].equals(options[0])) {
                     Intent capturePhoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(capturePhoto, CAPTURE_IMAGE);
-                } else if (options[which].equals("Choose from Gallery")) {
+                } else if (options[which].equals(options[1])) {
                     Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(pickPhoto, PICK_IMAGE);
                 } else {
@@ -186,9 +194,12 @@ public class EditMyProfileFragment extends Fragment {
         user.setName(nameEditTxt.getText().toString());
         user.setDateOfBirth(birthCalendar.getTime());
         user.setCountryCode(countrySpinner.getSelectedItem().toString());
-//        user.setPicture("");
         if (mListener != null) {
-            mListener.onUpdateMyProfileInteraction();
+            if (imageUri != null) {
+                mListener.onUpdateMyProfileInteraction(imageUri);
+            } else {
+                mListener.onUpdateMyProfileInteraction();
+            }
         }
     }
 
@@ -200,124 +211,38 @@ public class EditMyProfileFragment extends Fragment {
         switch (requestCode) {
             case CAPTURE_IMAGE:
                 Bitmap image = (Bitmap) data.getExtras().get("data");
-                profileImage.setImageBitmap(image);
-//                Bitmap photo = (Bitmap) data.getExtras().get("data");
-//                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-//                photo.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-//                String path = MediaStore.Images.Media.insertImage(, photo, "Title", null);
-////                Uri tempUri = getImageUri(requireContext(), image);
-//
-//                //File object of camera image
-//                File file = new File(Environment.getExternalStorageDirectory(), "MyPhoto.jpg");
-//
-//                //Uri of camera image
-//                Uri uri = FileProvider.getUriForFile(requireContext(), requireContext().getPackageName() + ".provider", file);
-//                profileImage.setImageURI(uri);
-
-//                createDirectoryAndSaveFile(image, "new_image_soc_world.jpeg");
-
-//                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-//                image.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-//                String path = MediaStore.Images.Media.insertImage(requireContext().getContentResolver(), image, "Title", null);
-////                Uri.parse(path);
-
-//                File file = new File(Environment.getExternalStorageDirectory() + "/dirName", "new_image.jpg");
-//                if (file.exists ()) file.delete ();
-//                try {
-//                    FileOutputStream out = new FileOutputStream(file);
-//                    image.compress(Bitmap.CompressFormat.JPEG, 50, out);
-//                    out.flush();
-//                    out.close();
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-
-//                GlideApp
-//                        .with(requireContext())
-//                        .load(Uri.parse(path))
-//                        .into(profileImage);
-                break;
-            case PICK_IMAGE:
-                final Uri imageUri = data.getData();
-                if (imageUri != null) {
-                    GlideApp
-                            .with(requireContext())
-                            .load(imageUri)
-                            .into(profileImage);
-
-//                    profilePicRef.child(myProfileViewModel.getUser().getEmail()).putFile(imageUri)
-//                            .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-//                                @Override
-//                                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-//                                    if (task.isSuccessful()) {
-//                                        Toast.makeText(requireContext(), "Profile picture was saved", Toast.LENGTH_LONG).show();
-//
-//                                    }
-//                                }
-//                            });
+                if (image != null) {
+                    imageUri = getImageUri(image);
                 }
                 break;
+            case PICK_IMAGE:
+                imageUri = data.getData();
+                break;
+        }
+        loadPictureInImageView();
+    }
+
+    private void loadPictureInImageView() {
+        if (imageUri != null) {
+            GlideApp
+                    .with(requireContext())
+                    .load(imageUri)
+                    .into(profileImgView);
         }
     }
 
-//    private void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName) {
-
-//        String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-//        String pictureFile = "ZOFTINO_" + timeStamp;
-//        File storageDir = Environment.getExternalStorageDirectory();
-//        File image = null;
-//        try {
-//            image = File.createTempFile(pictureFile,  ".jpg", storageDir);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        pictureFilePath = image.getAbsolutePath();
-//
-//        File direct = new File(Environment.getExternalStorageDirectory() + "/DirName");
-//
-//        if (!direct.exists()) {
-//            File wallpaperDirectory = new File("/sdcard/DirName/");
-//            wallpaperDirectory.mkdirs();
-//        }
-//
-//        File file = new File("/sdcard/DirName/", fileName);
-//        if (file.exists()) {
-//            file.delete();
-//        }
-//        try {
-//            FileOutputStream out = new FileOutputStream(file);
-//            imageToSave.compress(Bitmap.CompressFormat.JPEG, 100, out);
-//            out.flush();
-//            out.close();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        Uri fileUri = Uri.fromFile(image);
-//
-//        profilePicRef.child(myProfileViewModel.getUser().getEmail()).putFile(fileUri)
-//                            .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-//                                @Override
-//                                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-//                                    if (task.isSuccessful()) {
-//                                        Toast.makeText(requireContext(), "Profile picture was saved", Toast.LENGTH_LONG).show();
-//
-//                                    }
-//                                }
-//                            });
-//    }
-
-//    public Uri getImageUri(Context inContext, Bitmap inImage) {
-//        Bitmap OutImage = Bitmap.createScaledBitmap(inImage, 1000, 1000,true);
-//        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), OutImage, "Title", null);
-//        return Uri.parse(path);
-//    }
+    private Uri getImageUri(Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(requireActivity().getContentResolver(), inImage, UUID.randomUUID().toString() + ".png", "drawing");
+        return Uri.parse(path);
+    }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnUpdateMyProfileInteractionListener) {
-            mListener = (OnUpdateMyProfileInteractionListener) context;
+        if (context instanceof OnMyProfileInteractionListener) {
+            mListener = (OnMyProfileInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnForgottenPasswordInteractionListener");
@@ -329,9 +254,4 @@ public class EditMyProfileFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
-    public interface OnUpdateMyProfileInteractionListener {
-        void onUpdateMyProfileInteraction();
-    }
-
 }
