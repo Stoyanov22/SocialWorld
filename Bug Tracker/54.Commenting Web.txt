@@ -1,0 +1,5 @@
+Every user should be able to comment on a post on his news feed. When he comments we add a comment entity into the database.
+Later this comment has to be visible to all users following this post.
+
+Asignee : IS
+Done : 100%;

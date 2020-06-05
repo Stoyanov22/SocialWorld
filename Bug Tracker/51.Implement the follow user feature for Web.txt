@@ -1,0 +1,4 @@
+The users have to be able to follow and unfollow other users. The link has to be stored in each of the user's profiles.
+
+Asignee : IS
+Done : 100%;

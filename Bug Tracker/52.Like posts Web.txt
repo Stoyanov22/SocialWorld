@@ -1,0 +1,5 @@
+Every post should have the ability to be liked. If a post is liked once from one user it can only be disliked.
+For each like/dislike we update the post entity in the database with adding/removing the userId from the List of likes.
+
+Asignee : IS
+Done : 100%;

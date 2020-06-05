@@ -1,0 +1,5 @@
+When we select a user we should be able to open his profile, see his info and posts and follow/unfollow him.
+This is fundamental for a social network.
+
+Asignee : IS
+Done : 100%;

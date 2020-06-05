@@ -1,0 +1,5 @@
+We need a Explore page were the user can search for other users. Probably later search by other criterias than user name will
+be available. Also we may think of implementing search for posts.
+
+Asignee : IS
+Done : 100%;

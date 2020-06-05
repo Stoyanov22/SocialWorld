@@ -1,0 +1,5 @@
+We need to fix all the links on pages that are inside a directory. For example every user will have url as follows : 
+"domain/profile/userId". All hrefs have to be amended to start with "../"
+
+Asignee : IS
+Done : 100%;

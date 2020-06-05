@@ -1,0 +1,6 @@
+A comment entity has to be implemented in the system and into the database. The entity has to contain the text of the comment,
+the postId, the userId and the date. All the mentioned fields have to be required. Other properties could be added in future
+as well.
+
+Asignee : IS
+Done : 100%;
