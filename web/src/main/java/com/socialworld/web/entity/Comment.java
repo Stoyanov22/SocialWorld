@@ -15,6 +15,10 @@ public class Comment {
 
     private Date date;
 
+    public Comment() {
+
+    }
+
     public Comment(String id, String text, String postId, String userId, Date date) {
         this.id = id;
         this.text = text;

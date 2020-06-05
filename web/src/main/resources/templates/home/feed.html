@@ -19,7 +19,7 @@
         <!-- TODO: Width to be relative -->
         <a href="index" class="logo"><img src="images/logo.png" alt="logo" height="100"></a>
         <nav id="nav">
-<!--        TODO: To be changed with icons-->
+            <!--        TODO: To be changed with icons-->
             <a href="explore">Explore</a>
             <a href="friends">Friends list</a>
             <a href="my_profile">My Profile</a>
@@ -33,27 +33,33 @@
                 <input type="hidden" id="uid" th:value="${user.id}">
                 <input type="hidden" id="pictureUrl" name="pictureUrl">
                 <input type="file" name="postPhoto" id="postPhoto" accept="image/*">
-                <textarea rows="3" required name="postText" id="postText" placeholder="What is on your mind ?"></textarea>
+                <textarea rows="3" required name="postText" id="postText"
+                          placeholder="What is on your mind ?"></textarea>
                 <input type="submit" id="postButton" value="Post">
             </form>
         </div>
+        <hr>
         <div th:each="post : ${posts}" th:id="${'post' + post.id}" class="card">
             <h3 th:text="${userService.getUserById(post.userId).name}"></h3>
             <h2 th:text="${post.text}"></h2>
             <h5 th:text="${post.date}"></h5>
             <img th:src="${post.picture}" style="height:200px;">
             <h6 th:text="${#lists.size(post.userLikes)}"></h6>
-            <img src="images/tick.png" th:id="${post.id}" class="like" alt="like" >
-            <input type="text" id="comment" name="comment">
-            <input type="submit" id="submitComment" value="Comment">
+            <img src="images/tick.png" th:id="${post.id}" class="like" alt="like">
+            <input type="text" th:id="${'c' + post.id}" name="comment">
+            <input type="submit" th:id="${post.id}" class="submitComment" value="Comment">
+            <div class="comments-list" th:each="comment : ${commentService.getCommentsByPost(post.id)}">
+                <div class="comment">
+                    <h5 th:text="${userService.getUserById(comment.userId).name}"></h5>
+                    <h5 th:text="${comment.text}"></h5>
+                </div>
+            </div>
         </div>
     </div>
     <div class="rightcolumn">
         <div class="card">
             <h2 th:text="${user.name}"></h2>
             <img th:src="${user.picture}" style="height:100px;">
-            <h4>Last Post:</h4>
-            <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
             <a href="/logout" id="logout">Logout</a>
         </div>
         <div class="card">
@@ -72,5 +78,6 @@
 <script src="js/firebaseLogout.js"></script>
 <script src="js/createPost.js"></script>
 <script src="js/like.js"></script>
+<script src="js/comment.js"></script>
 </body>
 </html>

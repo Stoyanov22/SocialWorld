@@ -5,6 +5,7 @@ import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
 import com.socialworld.web.entity.Post;
 import com.socialworld.web.entity.User;
+import com.socialworld.web.service.CommentService;
 import com.socialworld.web.service.PostService;
 import com.socialworld.web.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class HomeController {
 
     @Autowired
     private PostService postService;
+
+    @Autowired
+    private CommentService commentService;
 
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
@@ -78,6 +82,7 @@ public class HomeController {
         model.addObject("posts", posts);
         model.addObject("user", user);
         model.addObject("userService", userService);
+        model.addObject("commentService", commentService);
         model.setViewName("home/feed");
         return model;
     }
