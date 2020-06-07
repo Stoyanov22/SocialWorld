@@ -1093,3 +1093,8 @@ input[type="submit"].disabled, input[type="submit"]:disabled, input[type="reset"
     width: 100px;
     height: 100px;
 }
+
+.card {
+    margin: 10px;
+    background-color: beige;
+}

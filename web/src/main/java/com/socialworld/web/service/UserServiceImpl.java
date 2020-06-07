@@ -42,6 +42,7 @@ public class UserServiceImpl implements UserService {
                 return null;
             }
         } catch (InterruptedException | ExecutionException e) {
+            System.out.println("Couldn't take user with ID : " + id);
             return null;
         }
     }
