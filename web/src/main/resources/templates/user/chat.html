@@ -23,10 +23,10 @@
 
 <div class="row">
     <div th:each="message : ${chat}" class="chat">
-        <div th:if="${message.fromUserId.equals(fromUser.id)}" class="chat-message-right">
+        <div th:if="${message.fromUserId.equals(fromUser.id)}" class="chat-message-mine">
             <p th:text="${message.content}"></p>
         </div>
-        <div th:unless="${message.fromUserId.equals(fromUser.id)}" class="chat-message-left">
+        <div th:unless="${message.fromUserId.equals(fromUser.id)}" class="chat-message-others">
             <p th:text="${message.content}"></p>
         </div>
     </div>

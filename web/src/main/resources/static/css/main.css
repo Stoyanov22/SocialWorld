@@ -1098,3 +1098,14 @@ input[type="submit"].disabled, input[type="submit"]:disabled, input[type="reset"
     margin: 10px;
     background-color: beige;
 }
+
+/* Chat */
+.chat-message-others{
+    color: black;
+    background-color:rgba(0, 60, 0, 0.5)
+}
+
+.chat-message-mine{
+    color: black;
+    background-color:rgba(0, 0, 60, 0.5)
+}
