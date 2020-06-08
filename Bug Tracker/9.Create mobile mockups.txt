@@ -1,6 +1,6 @@
 We need to create expected visual representations of the screens in the android application.
 
-Asignee : AK
+Assignee : AK
 
 Link : https://marvelapp.com/dei01h4
 

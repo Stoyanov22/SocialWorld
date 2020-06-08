@@ -1,0 +1,5 @@
+We need to make some changes in UserEntity.
+ * Name should not be empty. On Register the user will add a new username from a text field. Also when he edits his profile we should not allow him to save empty string.
+ * We should add a boolean parameter to determine if the user is active. We decided not to delete a user, when he deactivates his profile. (Firebase charges money for each write/delete in the database!)
+
+Assignee: AK
