@@ -49,6 +49,7 @@
             <div th:unless="${isFollowed}">
                 <input type="button" id="follow" value="Follow">
             </div>
+            <a th:href="${'/chat/' + user.id}">Open Chat</a>
         </div>
     </div>
 </div>

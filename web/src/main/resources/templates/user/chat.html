@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${'Chat with' + toUser.name}"></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="../css/main.css"/>
+    <script src="../js/jquery.min.js"></script>
+</head>
+<body>
+<!-- Header -->
+<header class="navigationHeader">
+    <div class="inner">
+        <!-- TODO: Width to be relative -->
+        <a href="../index" class="logo"><img src="../images/logo.png" alt="logo" height="100"></a>
+        <nav id="nav">
+            <a href="/explore">Explore</a>
+            <a href="/friends">Friends list</a>
+            <a href="/my_profile">My Profile</a>
+        </nav>
+    </div>
+</header>
+
+<div class="row">
+    <div th:each="message : ${chat}" class="chat">
+        <div th:if="${message.fromUserId.equals(fromUser.id)}" class="chat-message-right">
+            <p th:text="${message.content}"></p>
+        </div>
+        <div th:unless="${message.fromUserId.equals(fromUser.id)}" class="chat-message-left">
+            <p th:text="${message.content}"></p>
+        </div>
+    </div>
+</div>
+<div class="newChat">
+    <input type="hidden" id="toUser" th:value="${toUser.id}">
+    <input type="text" id="content" name="content">
+    <input type="submit" id="submitMessage" value="Send">
+</div>
+<script src="../js/chat.js"></script>
+</body>
+</html>
