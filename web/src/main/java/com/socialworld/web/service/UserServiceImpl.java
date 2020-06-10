@@ -107,7 +107,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void followUser(User user, User followedUser) {
         List<String> followedUsers = user.getFollowedUsers();
-        if(followedUsers == null){
+        if (followedUsers == null) {
             followedUsers = new ArrayList<>();
         }
         followedUsers.add(followedUser.getId());
@@ -115,7 +115,7 @@ public class UserServiceImpl implements UserService {
         updatedUser.put("followedUsers", followedUsers);
 
         List<String> followers = followedUser.getFollowers();
-        if(followers == null){
+        if (followers == null) {
             followers = new ArrayList<>();
         }
         followers.add(user.getId());
@@ -146,5 +146,15 @@ public class UserServiceImpl implements UserService {
             db.collection("Users").document(user.getId()).update(updatedUser);
             db.collection("Users").document(unfollowedUser.getId()).update(updatedFollowedUser);
         }
+    }
+
+    @Override
+    public List<User> getFollowedUsers(User user) {
+        List<String> userIds = user.getFollowedUsers();
+        List<User> result = new ArrayList<>();
+        for (String userId : userIds) {
+            result.add(getUserById(userId));
+        }
+        return result;
     }
 }
