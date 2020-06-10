@@ -1,82 +1,84 @@
 <!DOCTYPE HTML>
 <html>
-	<head>
-		<title>SocialWorld</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link rel="stylesheet" href="css/main.css" />
-		<script src="js/jquery.min.js"></script>
-		<!--FIREBASE-->
-		<!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
-		<script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-app.js"></script>
-		<!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
-		<script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-analytics.js"></script>
-		<!--    FirebaseUI  -->
-		<script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
-		<link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css"/>
-	</head>
-	<body>
-		<!-- Header -->
-			<header id="header">
-				<div class="inner">
-					<!-- TODO: Width to be relative -->
-					<a href="index" class="logo"><img src="images/logo.png" alt="logo" height="100"></a>
-				</div>
-			</header>
+<head>
+    <title>SocialWorld</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <script src="js/jquery.min.js"></script>
+    <!--FIREBASE-->
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-app.js"></script>
+    <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-analytics.js"></script>
+    <!--    FirebaseUI  -->
+    <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css"/>
+    <link rel="stylesheet" href="css/main.css"/>
+</head>
+<body>
+<!-- Header -->
+<header id="header">
+    <div class="inner">
+        <!-- TODO: Width to be relative -->
+        <a href="index" class="logo"><img src="images/logo.png" alt="logo" height="100"></a>
+    </div>
+</header>
 
-		<!-- Banner -->
-			<section id="banner">
-				<video autoplay muted loop id="myVideo">
-					<source src="images/video.mp4" type="video/mp4">
-				</video>
-				<div class="inner">
-					<header>
-						<h1>Welcome to SocialWorld</h1>
-						<h3>The better social media</h3>
-					</header>
-					<br/>
-					<footer>
-						<p id="login" class="button">Login</p>
-                        <!-- TODO:Fix the layout of the form -->
-                        <div id="loginForm" class="hiddenForm">
-                            <div id="firebaseui-auth-container"></div>
-                        </div>
-					</footer>
-				</div>
-			</section>
+<!-- Banner -->
+<section id="banner">
+    <video autoplay muted loop id="myVideo">
+        <source src="images/video.mp4" type="video/mp4">
+    </video>
+    <div class="inner">
+        <header>
+            <h1>Welcome to SocialWorld</h1>
+            <h3>The better social media</h3>
+        </header>
+        <br/>
+        <footer>
+            <p id="login" class="button">Login</p>
+            <div id="loginForm" class="hiddenForm">
+                <div id="firebaseui-auth-container"></div>
+            </div>
+        </footer>
+    </div>
+</section>
 
-		<!-- Three -->
-			<section id="three" class="wrapper align-center">
-				<div class="inner">
-					<div class="flex flex-2">
-						<article>
-							<div class="image round">
-								<!-- TODO: Width to be relative -->
-								<img src="images/iliyan.PNG" alt="Pic 01" width="150" />
-							</div>
-							<header>
-								<h3>Iliyan Stoyanov</h3>
-							</header>
-							<p>Web Developer and Lead of the project</p>
-						</article>
-						<article>
-							<div class="image round">
-								<!-- TODO: Width to be relative -->
-								<img src="images/atanas.PNG" alt="Pic 02" width="150" />
-							</div>
-							<header>
-								<h3>Atanas Katsarov</h3>
-							</header>
-							<p>Android developer and designer</p>
-						</article>
-					</div>
-				</div>
-			</section>
-		<!-- Add Firebase products that you want to use -->
-		<script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-auth.js"></script>
-		<script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-firestore.js"></script>
+<!-- Three -->
+<section id="three" class="wrapper align-center">
+    <div class="inner">
+        <div class="flex flex-2">
+            <article>
+                <div class="image round">
+                    <img src="images/iliyan.PNG" alt="Pic 01" width="150"/>
+                </div>
+                <header>
+                    <h3>Iliyan Stoyanov</h3>
+                </header>
+                <p>Web Developer and Lead of the project</p>
+            </article>
+            <article>
+                <div class="image round">
+                    <img src="images/atanas.PNG" alt="Pic 02" width="150"/>
+                </div>
+                <header>
+                    <h3>Atanas Katsarov</h3>
+                </header>
+                <p>Android developer and designer</p>
+            </article>
+        </div>
+    </div>
+</section>
+<hr>
+<section class="inner wrapper align-center">
+    <h2>Why SocialWorld</h2>
+    <p>We are the only social media that doesn't use your personal data for financial benefits. We like to work with openness and transparency to our users. You can feel safe and enjoy your experience in the virtual social world.</p>
+</section>
+<!-- Add Firebase products that you want to use -->
+<script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-firestore.js"></script>
 
-		<script src="js/firebaseInit.js"></script>
-		<script src="js/firebaseLogin.js"></script>
-	</body>
+<script src="js/firebaseInit.js"></script>
+<script src="js/firebaseLogin.js"></script>
+</body>
 </html>
