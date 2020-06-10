@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Explore</title>
+    <title>Followed</title>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="stylesheet" href="css/main.css"/>
     <script src="js/jquery.min.js"></script>
@@ -20,12 +20,6 @@
         </nav>
     </div>
 </header>
-<div class="row">
-    <form action="/explore", method="post">
-        <input type="text" required id="search-field" class="search-field" name="searchInput" >
-        <input type="submit" id="submit-search" value="Search">
-    </form>
-</div>
 <div class="row">
     <a th:each="user : ${users}" th:href="${'profile/' + user.id}" th:text="${user.name}"></a>
 </div>

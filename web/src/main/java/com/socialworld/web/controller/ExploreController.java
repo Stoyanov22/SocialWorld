@@ -39,4 +39,18 @@ public class ExploreController {
         model.setViewName("explore/explore");
         return model;
     }
+
+    @RequestMapping(value = {"/followed"}, method = RequestMethod.GET)
+    public ModelAndView followed(HttpSession session) {
+        ModelAndView model = new ModelAndView();
+        if (Objects.nonNull(session.getAttribute("uid"))) {
+            User user = userService.getUserById(session.getAttribute("uid").toString());
+            List<User> users = userService.getFollowedUsers(user);
+            model.addObject("users", users);
+            model.setViewName("explore/followed");
+            return model;
+        }
+        model.setViewName("home/index");
+        return model;
+    }
 }
