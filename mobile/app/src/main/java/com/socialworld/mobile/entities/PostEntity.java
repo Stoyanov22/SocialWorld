@@ -1,10 +1,14 @@
 package com.socialworld.mobile.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 import java.util.List;
 
+/**
+ * @author Atanas Katsarov
+ */
 public class PostEntity implements Serializable {
     private String id;
     private String userId;
@@ -13,14 +17,22 @@ public class PostEntity implements Serializable {
     private Date date;
     private List<String> userLikes;
 
-    public PostEntity() {}
+    /**
+     * Default Constructor
+     */
+    public PostEntity() {
+    }
 
+    /**
+     * Initialization constructor
+     */
     public PostEntity(String id, String userId, String picture, String text, Date date) {
         this.id = id;
         this.userId = userId;
         this.picture = picture;
         this.text = text;
         this.date = date;
+        this.userLikes = new ArrayList<>();
     }
 
     public PostEntity(String id, String userId, String text, Date date) {
@@ -28,6 +40,7 @@ public class PostEntity implements Serializable {
         this.userId = userId;
         this.text = text;
         this.date = date;
+        this.userLikes = new ArrayList<>();
     }
 
     public PostEntity(String id, String userId, String picture, String text, Date date, List<String> userLikes) {
@@ -37,6 +50,21 @@ public class PostEntity implements Serializable {
         this.text = text;
         this.date = date;
         this.userLikes = userLikes;
+    }
+
+    /**
+     * Copy constructor
+     */
+    public PostEntity(PostEntity source) {
+        this.id = source.id;
+        this.userId = source.userId;
+        this.picture = source.picture;
+        this.text = source.text;
+        this.date = new Date(source.date.getTime());
+        this.userLikes = new ArrayList<>();
+        if (source.userLikes != null) {
+            this.userLikes.addAll(source.userLikes);
+        }
     }
 
     public String getId() {
@@ -97,7 +125,7 @@ public class PostEntity implements Serializable {
                 Objects.equals(picture, that.picture) &&
                 Objects.equals(text, that.text) &&
                 date.equals(that.date) &&
-                Objects.equals(userLikes, that.userLikes);
+                userLikes.equals(that.userLikes);
     }
 
     @Override
