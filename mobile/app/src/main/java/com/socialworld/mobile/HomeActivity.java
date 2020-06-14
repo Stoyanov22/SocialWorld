@@ -3,6 +3,9 @@ package com.socialworld.mobile;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -13,12 +16,15 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.firestore.auth.User;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.socialworld.mobile.entities.PostEntity;
 import com.socialworld.mobile.entities.UserEntity;
+import com.socialworld.mobile.models.FollowedUsersViewModel;
+import com.socialworld.mobile.models.GlideApp;
 import com.socialworld.mobile.ui.home.HomeFragment;
 import com.socialworld.mobile.ui.myPosts.MyPostsFragment;
 import com.socialworld.mobile.ui.myProfile.MyProfileFragment;
@@ -26,6 +32,7 @@ import com.socialworld.mobile.ui.myProfile.MyProfileViewModel;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -36,6 +43,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import java.util.Date;
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity implements HomeFragment.OnNewsFeedInteractionListener, MyPostsFragment.OnMyPostsInteractionListener, MyProfileFragment.OnMyProfileInteractionListener {
     private AppBarConfiguration mAppBarConfiguration;
@@ -49,7 +57,12 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnNe
 
     private AlertDialog loadingDialog;
 
+    private ImageView navImgView;
+    private TextView navUsernameTv;
+    private TextView navEmailTv;
+
     private MyProfileViewModel myProfileViewModel;
+    private FollowedUsersViewModel followedUsersViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +75,17 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnNe
             startActivity(intent);
             finish();
         }
+
         userUid = firebaseAuth.getCurrentUser().getUid();
         db = FirebaseFirestore.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
         myProfileViewModel = new ViewModelProvider(this).get(MyProfileViewModel.class);
+        followedUsersViewModel = new ViewModelProvider(this).get(FollowedUsersViewModel.class);
+
+        View navView = getLayoutInflater().inflate(R.layout.nav_header_home, null);
+        navImgView = navView.findViewById(R.id.nav_header_profile_pic);
+        navUsernameTv = navView.findViewById(R.id.nav_header_username);
+        navEmailTv = navView.findViewById(R.id.nav_header_profile_email);
 
         db.collection("Users").document(userUid).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -73,6 +93,22 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnNe
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         user = documentSnapshot.toObject(UserEntity.class);
                         myProfileViewModel.setUser(user);
+                        if (user.getFollowedUsers() != null && user.getFollowedUsers().size() > 0) {
+                            db.collection("Users").whereIn("id", user.getFollowedUsers()).get()
+                                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                            List<UserEntity> userList = queryDocumentSnapshots.toObjects(UserEntity.class);
+                                            followedUsersViewModel.setFollowedUsers(userList);
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -81,6 +117,26 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnNe
                         Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
+
+        myProfileViewModel.getUserLiveData().observe(this, new Observer<UserEntity>() {
+            @Override
+            public void onChanged(UserEntity userEntity) {
+                if (userEntity != null) {
+                    if (userEntity.getName() != null) {
+                        navUsernameTv.setText(userEntity.getName());
+                    }
+                    if (userEntity.getEmail() != null) {
+                        navEmailTv.setText(userEntity.getEmail());
+                    }
+                    if (userEntity.getPicture() != null) {
+                        GlideApp
+                                .with(getApplicationContext())
+                                .load(userEntity.getPicture())
+                                .into(navImgView);
+                    }
+                }
+            }
+        });
 
         AlertDialog.Builder builderLoading = new AlertDialog.Builder(HomeActivity.this);
         builderLoading.setCancelable(false);
@@ -125,7 +181,7 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnNe
 
     private void hideLoading() {
         if (loadingDialog.isShowing()) {
-            loadingDialog.hide();
+            loadingDialog.dismiss();
         }
     }
 
@@ -177,7 +233,6 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnNe
                         Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
-
     }
 
     @Override
