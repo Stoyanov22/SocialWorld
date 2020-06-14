@@ -14,13 +14,20 @@ import com.firebase.ui.firestore.paging.FirestorePagingAdapter;
 import com.firebase.ui.firestore.paging.FirestorePagingOptions;
 import com.firebase.ui.firestore.paging.LoadingState;
 import com.socialworld.mobile.R;
-import com.socialworld.mobile.entities.PostEntity;
+import com.socialworld.mobile.entities.NewsFeedPost;
 import com.socialworld.mobile.models.GlideApp;
 
-// TODO: Use FirestorePagingAdapter
-public class PostAdapter extends FirestorePagingAdapter<PostEntity, PostAdapter.PostViewHolder>{
-    private FirestorePagingOptions<PostEntity> posts;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
+/**
+ * @author Atanas Katsarov
+ */
+public class PostsAdapter extends FirestorePagingAdapter<NewsFeedPost, PostsAdapter.PostViewHolder> {
+    private FirestorePagingOptions<NewsFeedPost> posts;
     private OnPostItemClickListener mListener;
+
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.UK);
 
     public interface OnPostItemClickListener {
 //        void onEditClick(int position);
@@ -35,6 +42,7 @@ public class PostAdapter extends FirestorePagingAdapter<PostEntity, PostAdapter.
         public TextView text;
         public TextView date;
         public ImageView image;
+
         public PostViewHolder(@NonNull View itemView, final OnPostItemClickListener listener) {
             super(itemView);
 
@@ -45,7 +53,7 @@ public class PostAdapter extends FirestorePagingAdapter<PostEntity, PostAdapter.
         }
     }
 
-    public PostAdapter(FirestorePagingOptions<PostEntity> posts) {
+    public PostsAdapter(FirestorePagingOptions<NewsFeedPost> posts) {
         super(posts);
         this.posts = posts;
     }
@@ -59,15 +67,23 @@ public class PostAdapter extends FirestorePagingAdapter<PostEntity, PostAdapter.
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull PostViewHolder holder, int position, @NonNull PostEntity model) {
-        holder.username.setText(model.getUserId());
+    protected void onBindViewHolder(@NonNull PostViewHolder holder, int position, @NonNull NewsFeedPost model) {
+        if (model.getUsername() != null) {
+            holder.username.setText(model.getUsername());
+        } else {
+            holder.username.setText(R.string.unknown_user);
+        }
         holder.text.setText(model.getText());
-        holder.date.setText(model.getDate().toString());
+        holder.date.setText(sdf.format(model.getDate()));
         if (model.getPicture() != null) {
             GlideApp
                     .with(holder.image.getContext())
                     .load(model.getPicture())
                     .into(holder.image);
+        } else {
+            GlideApp
+                    .with(holder.image.getContext())
+                    .clear(holder.image);
         }
     }
 
