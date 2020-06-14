@@ -84,7 +84,7 @@ public class AuthorizeActivity extends AppCompatActivity implements LoginFragmen
     }
 
     @Override
-    public void onNewRegisterInteraction(String password) {
+    public void onNewRegisterInteraction(final String username, String password) {
         if (!isEmailValid()) {
             return;
         }
@@ -96,8 +96,8 @@ public class AuthorizeActivity extends AppCompatActivity implements LoginFragmen
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
-                        UserEntity user = new UserEntity(firebaseAuth.getCurrentUser().getUid(), emailInput.getText().toString());
-                        db.collection("Users").document(firebaseAuth.getCurrentUser().getUid()).set(user)
+                        UserEntity user = new UserEntity(authResult.getUser().getUid(), emailInput.getText().toString(), username);
+                        db.collection("Users").document(authResult.getUser().getUid()).set(user)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
@@ -151,11 +151,15 @@ public class AuthorizeActivity extends AppCompatActivity implements LoginFragmen
     }
 
     private void showLoading() {
-        loadingDialog.show();
+        if (!loadingDialog.isShowing()) {
+            loadingDialog.show();
+        }
     }
 
     private void hideLoading() {
-        loadingDialog.hide();
+        if (loadingDialog.isShowing()) {
+            loadingDialog.dismiss();
+        }
     }
 
     private boolean isEmailValid() {
