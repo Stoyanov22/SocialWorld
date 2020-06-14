@@ -61,7 +61,7 @@ public class MyProfileFragment extends Fragment {
         numFollowersTv = root.findViewById(R.id.my_profile_num_followers);
         numFollowingTv = root.findViewById(R.id.my_profile_num_following);
 
-        myProfileViewModel.getUserLiveData().observeForever(new Observer<UserEntity>() {
+        myProfileViewModel.getUserLiveData().observe(getViewLifecycleOwner(), new Observer<UserEntity>() {
             @Override
             public void onChanged(UserEntity userEntity) {
                 if (userEntity != null) {
@@ -82,9 +82,12 @@ public class MyProfileFragment extends Fragment {
                                 .load(userEntity.getPicture())
                                 .into(profileImgView);
                     }
-                    // TODO get the count of followers and following users
-                    numFollowersTv.setText("100");
-                    numFollowingTv.setText("50");
+                    if (userEntity.getFollowedUsers() != null) {
+                        numFollowingTv.setText(String.valueOf(userEntity.getFollowedUsers().size()));
+                    }
+                    if (userEntity.getFollowers() != null) {
+                        numFollowersTv.setText(String.valueOf(userEntity.getFollowers().size()));
+                    }
                 }
             }
         });
@@ -94,10 +97,7 @@ public class MyProfileFragment extends Fragment {
         root.findViewById(R.id.logout_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(requireContext(), AuthorizeActivity.class);
-                firebaseAuth.signOut();
-                startActivity(intent);
-                requireActivity().finish();
+                onLogoutUser();
             }
         });
 
@@ -114,6 +114,13 @@ public class MyProfileFragment extends Fragment {
                 findNavController(v).navigate(R.id.action_nav_my_profile_to_nav_edit_profile);
             }
         });
+    }
+
+    private void onLogoutUser() {
+        Intent intent = new Intent(requireContext(), AuthorizeActivity.class);
+        firebaseAuth.signOut();
+        startActivity(intent);
+        requireActivity().finish();
     }
 
     public interface OnMyProfileInteractionListener {

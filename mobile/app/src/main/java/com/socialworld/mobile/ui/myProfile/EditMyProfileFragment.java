@@ -26,8 +26,6 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.socialworld.mobile.R;
 import com.socialworld.mobile.entities.UserEntity;
 import com.socialworld.mobile.models.GlideApp;
@@ -170,7 +168,7 @@ public class EditMyProfileFragment extends Fragment {
     private void changeProfilePhoto() {
         final CharSequence[] options = {getResources().getString(R.string.capture_photo), getResources().getString(R.string.choose_from_gallery), getResources().getString(R.string.cancel)};
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setTitle(R.string.profile_pic);
+        builder.setTitle(R.string.change_profile_pic);
 
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
@@ -196,6 +194,7 @@ public class EditMyProfileFragment extends Fragment {
         user.setCountryCode(countrySpinner.getSelectedItem().toString());
         if (mListener != null) {
             if (imageUri != null) {
+                user.setPicture(imageUri.toString());
                 mListener.onUpdateMyProfileInteraction(imageUri);
             } else {
                 mListener.onUpdateMyProfileInteraction();
