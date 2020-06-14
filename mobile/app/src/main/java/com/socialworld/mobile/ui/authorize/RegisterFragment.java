@@ -17,6 +17,7 @@ import com.socialworld.mobile.R;
 
 public class RegisterFragment extends Fragment {
 
+    private EditText username;
     private EditText password;
     private EditText passwordRepeat;
     private CheckBox termsCheckBox;
@@ -45,6 +46,7 @@ public class RegisterFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_register, container, false);
 
+        username = view.findViewById(R.id.username);
         password = view.findViewById(R.id.password);
         passwordRepeat = view.findViewById(R.id.password_repeat);
         termsCheckBox = view.findViewById(R.id.terms_check_box);
@@ -52,6 +54,10 @@ public class RegisterFragment extends Fragment {
         view.findViewById(R.id.btn_register).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (username.getText().length() == 0) {
+                    Toast.makeText(requireContext(), R.string.username_can_not_be_empty, Toast.LENGTH_LONG).show();
+                    return;
+                }
                 if (!passwordRepeat.getText().toString().equals(password.getText().toString())) {
                     Toast.makeText(requireContext(), R.string.passwords_mismatch, Toast.LENGTH_LONG).show();
                     return;
@@ -61,16 +67,16 @@ public class RegisterFragment extends Fragment {
                     return;
                 }
 
-                onNewRegisterPressed(password.getText().toString());
+                onNewRegisterPressed(username.getText().toString(), password.getText().toString());
             }
         });
 
         return view;
     }
 
-    private void onNewRegisterPressed(String password) {
+    private void onNewRegisterPressed(String username, String password) {
         if (mListener != null) {
-            mListener.onNewRegisterInteraction(password);
+            mListener.onNewRegisterInteraction(username, password);
         }
     }
 
@@ -92,6 +98,6 @@ public class RegisterFragment extends Fragment {
     }
 
     public interface OnNewRegisterInteractionListener {
-        void onNewRegisterInteraction(String password);
+        void onNewRegisterInteraction(String username, String password);
     }
 }
