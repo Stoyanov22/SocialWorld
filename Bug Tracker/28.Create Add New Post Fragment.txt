@@ -4,4 +4,4 @@ It will be accessed from MyPostsFragment (37)
 
 Assignee: AK
 
-Done: 75%
+Done: 100%

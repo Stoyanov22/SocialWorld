@@ -1,6 +1,7 @@
 We need to configure a fragment where the user can see all posts he added.
-From there the user will be able to add new post (28).
+From there the user will be able to add new post (Reference to ticket 28).
+Will use FirestoreRecyclerAdapter. This way the page will be updated in real-time, but the RecyclerView will be populated with all posts.
 
 Assignee: AK
 
-Done: 25%
+Done: 45%

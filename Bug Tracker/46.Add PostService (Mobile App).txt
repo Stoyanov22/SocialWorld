@@ -1,3 +1,5 @@
 We need to configure service in the Android App for handling business logic of Posts
 
 Assignee: AK
+
+Will drop this issue for now

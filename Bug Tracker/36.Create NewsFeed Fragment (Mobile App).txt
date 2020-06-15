@@ -1,4 +1,8 @@
-We need to create News Feed fragment. It needs to display the latests posts of the profiles the user has followed. Also from there we will have an option to create new post (Related to 28.)
+We need to create News Feed fragment. It needs to display the latests posts of the profiles the user has followed.
+We won't be able to create new post from this fragment. 
+Using FirestorePagingAdapter to load only the needed information.
 
 
 Assignee: AK
+
+Done: 75%

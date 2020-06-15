@@ -1,4 +1,7 @@
-We need a fragment in the Android App for showing the User's Profile information. From there the user will have the possibility to edit his profile.
+We need a fragment in the Android App for showing the User's Profile information.
+From there the user will have the possibility to edit his profile.
+
+39.1. Add Gender
 
 Assignee: AK
 
