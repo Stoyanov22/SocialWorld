@@ -30,8 +30,7 @@ public class PostController {
     public void comment(HttpSession session, @RequestParam String postId, @RequestParam String text) {
         String userId = session.getAttribute("uid").toString();
         Date date = new Date();
-        Comment comment = new Comment(userId + date.getTime(), text, postId, userId, date);
+        Comment comment = new Comment(userId + System.currentTimeMillis(), text, postId, userId, date);
         commentService.addComment(comment);
     }
-
 }
