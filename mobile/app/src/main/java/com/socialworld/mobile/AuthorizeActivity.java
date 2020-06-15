@@ -20,6 +20,9 @@ import com.socialworld.mobile.ui.authorize.ForgotPasswordFragment;
 import com.socialworld.mobile.ui.authorize.LoginFragment;
 import com.socialworld.mobile.ui.authorize.RegisterFragment;
 
+/**
+ * @author Atanas Katsarov
+ */
 public class AuthorizeActivity extends AppCompatActivity implements LoginFragment.OnLoginInteractionListener, RegisterFragment.OnNewRegisterInteractionListener, ForgotPasswordFragment.OnForgottenPasswordInteractionListener {
 
     private FirebaseAuth firebaseAuth;

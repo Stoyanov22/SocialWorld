@@ -23,7 +23,7 @@ import java.util.Locale;
 /**
  * @author Atanas Katsarov
  */
-public class PostsAdapter extends FirestorePagingAdapter<NewsFeedPost, PostsAdapter.PostViewHolder> {
+public class NewsFeedPostsAdapter extends FirestorePagingAdapter<NewsFeedPost, NewsFeedPostsAdapter.PostViewHolder> {
     private FirestorePagingOptions<NewsFeedPost> posts;
     private OnPostItemClickListener mListener;
 
@@ -53,7 +53,7 @@ public class PostsAdapter extends FirestorePagingAdapter<NewsFeedPost, PostsAdap
         }
     }
 
-    public PostsAdapter(FirestorePagingOptions<NewsFeedPost> posts) {
+    public NewsFeedPostsAdapter(FirestorePagingOptions<NewsFeedPost> posts) {
         super(posts);
         this.posts = posts;
     }

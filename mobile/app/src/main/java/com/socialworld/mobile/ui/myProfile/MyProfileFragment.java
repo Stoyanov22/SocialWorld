@@ -27,6 +27,9 @@ import java.util.Locale;
 
 import static androidx.navigation.Navigation.findNavController;
 
+/**
+ * @author Atanas Katsarov
+ */
 public class MyProfileFragment extends Fragment {
 
     private MyProfileViewModel myProfileViewModel;

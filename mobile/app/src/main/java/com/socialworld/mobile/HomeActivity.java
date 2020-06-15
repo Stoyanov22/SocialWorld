@@ -45,6 +45,9 @@ import androidx.appcompat.widget.Toolbar;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author Atanas Katsarov
+ */
 public class HomeActivity extends AppCompatActivity implements HomeFragment.OnNewsFeedInteractionListener, MyPostsFragment.OnMyPostsInteractionListener, MyProfileFragment.OnMyProfileInteractionListener {
     private AppBarConfiguration mAppBarConfiguration;
 

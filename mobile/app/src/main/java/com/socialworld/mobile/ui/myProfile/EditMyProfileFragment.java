@@ -43,6 +43,9 @@ import com.socialworld.mobile.ui.myProfile.MyProfileFragment.OnMyProfileInteract
 import static android.app.Activity.RESULT_OK;
 import static androidx.navigation.Navigation.findNavController;
 
+/**
+ * @author Atanas Katsarov
+ */
 public class EditMyProfileFragment extends Fragment {
 
     private static final int CAPTURE_IMAGE = 0;

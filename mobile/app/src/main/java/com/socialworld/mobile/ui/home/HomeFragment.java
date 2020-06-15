@@ -21,18 +21,20 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.socialworld.mobile.R;
-import com.socialworld.mobile.adapters.PostsAdapter;
+import com.socialworld.mobile.adapters.NewsFeedPostsAdapter;
 import com.socialworld.mobile.entities.NewsFeedPost;
 import com.socialworld.mobile.entities.PostEntity;
 import com.socialworld.mobile.entities.UserCollection;
-import com.socialworld.mobile.entities.UserEntity;
 import com.socialworld.mobile.models.FollowedUsersViewModel;
 import com.socialworld.mobile.ui.myProfile.MyProfileViewModel;
 
+/**
+ * @author Atanas Katsarov
+ */
 public class HomeFragment extends Fragment {
     private RecyclerView postsRecView;
     private RecyclerView.LayoutManager postsLayoutManager;
-    private PostsAdapter postsAdapter;
+    private NewsFeedPostsAdapter newsFeedPostsAdapter;
     private MyProfileViewModel myProfileViewModel;
     private FollowedUsersViewModel followedUsersViewModel;
 
@@ -82,8 +84,8 @@ public class HomeFragment extends Fragment {
                             })
                             .build();
                     // Adapter
-                    postsAdapter = new PostsAdapter(options);
-                    postsRecView.setAdapter(postsAdapter);
+                    newsFeedPostsAdapter = new NewsFeedPostsAdapter(options);
+                    postsRecView.setAdapter(newsFeedPostsAdapter);
                     postsRecView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
                 }
             }

@@ -11,6 +11,9 @@ import android.view.ViewGroup;
 
 import com.socialworld.mobile.R;
 
+/**
+ * @author Atanas Katsarov
+ */
 public class ForgotPasswordFragment extends Fragment {
     private OnForgottenPasswordInteractionListener mListener;
 

@@ -15,6 +15,9 @@ import android.widget.Toast;
 
 import com.socialworld.mobile.R;
 
+/**
+ * @author Atanas Katsarov
+ */
 public class RegisterFragment extends Fragment {
 
     private EditText username;

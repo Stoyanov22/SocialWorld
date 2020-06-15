@@ -12,7 +12,9 @@ import android.widget.EditText;
 
 import com.socialworld.mobile.R;
 
-
+/**
+ * @author Atanas Katsarov
+ */
 public class LoginFragment extends Fragment {
     private EditText passwordEditText;
 

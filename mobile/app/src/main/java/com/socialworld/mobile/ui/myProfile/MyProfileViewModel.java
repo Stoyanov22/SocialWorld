@@ -6,6 +6,9 @@ import androidx.lifecycle.ViewModel;
 
 import com.socialworld.mobile.entities.UserEntity;
 
+/**
+ * @author Atanas Katsarov
+ */
 public class MyProfileViewModel extends ViewModel {
 
     private MutableLiveData<UserEntity> mUser;

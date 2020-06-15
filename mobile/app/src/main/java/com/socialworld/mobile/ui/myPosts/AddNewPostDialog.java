@@ -27,6 +27,9 @@ import com.socialworld.mobile.ui.myPosts.MyPostsFragment.OnMyPostsInteractionLis
 
 import static android.app.Activity.RESULT_OK;
 
+/**
+ * @author Atanas Katsarov
+ */
 public class AddNewPostDialog extends AppCompatDialogFragment {
     private static final int PICK_IMAGE = 1;
 

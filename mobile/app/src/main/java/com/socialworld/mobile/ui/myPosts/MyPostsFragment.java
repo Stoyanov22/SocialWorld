@@ -12,24 +12,24 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.paging.PagedList;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.firebase.ui.firestore.paging.FirestorePagingOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.socialworld.mobile.R;
-import com.socialworld.mobile.adapters.PostsAdapter;
+import com.socialworld.mobile.adapters.NewsFeedPostsAdapter;
 import com.socialworld.mobile.entities.PostEntity;
 import com.socialworld.mobile.entities.UserEntity;
 import com.socialworld.mobile.ui.myProfile.MyProfileViewModel;
 
+/**
+ * @author Atanas Katsarov
+ */
 public class MyPostsFragment extends Fragment {
     private RecyclerView myPostsRecView;
     private RecyclerView.LayoutManager myPostsLayoutManager;
-    private PostsAdapter myPostsAdapter;
+    private NewsFeedPostsAdapter myNewsFeedPostsAdapter;
     private MyProfileViewModel myProfileViewModel;
 
     private FirebaseFirestore db;
