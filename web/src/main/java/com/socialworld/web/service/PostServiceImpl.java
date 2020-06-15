@@ -48,7 +48,6 @@ public class PostServiceImpl implements PostService {
                         for (QueryDocumentSnapshot post : snapshotPosts) {
                             result.add(post.toObject(Post.class));
                         }
-                        return result;
                     } else {
                         return null;
                     }
@@ -56,7 +55,7 @@ public class PostServiceImpl implements PostService {
                     return null;
                 }
             }
-            result.sort((Comparator.comparing(Post::getDate)));
+            result.sort((Comparator.comparing(Post::getDate).reversed()));
             return result;
         } else {
             return null;
