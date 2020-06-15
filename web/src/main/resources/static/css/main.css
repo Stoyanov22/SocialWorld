@@ -644,8 +644,8 @@ input[type="submit"], input[type="reset"], input[type="button"], button, .button
 	border: 0;
 	cursor: pointer;
 	display: inline-block;
-	font-size: .75em;
-	font-weight: 400;
+	font-size: 1em;
+	font-weight: 800;
 	height: 3.75em;
 	line-height: 3.85em;
 	letter-spacing: 2px;
@@ -789,13 +789,13 @@ input[type="submit"].disabled, input[type="submit"]:disabled, input[type="reset"
 /* Banner */
 
 #myVideo {
-    position: absolute; 
-    right: 0; 
+    position: absolute;
+    right: 0;
     bottom: 0;
-    min-width: 100%; 
+    min-width: 100%;
     min-height: 100%;
-    width: auto; 
-    height: auto; 
+    width: auto;
+    height: auto;
     z-index: -100;
     background-size: cover;
     overflow: hidden;
@@ -1168,4 +1168,32 @@ input[type="submit"].disabled, input[type="submit"]:disabled, input[type="reset"
 .chat-message-mine{
     color: black;
     background-color:rgba(0, 0, 60, 0.5)
+}
+
+/* Post */
+.post-form {
+    margin : 10px;
+}
+
+.post-text {
+    width: 80%;
+    display: inline-block;
+    float: left;
+}
+
+/* File input */
+.post-photo {
+    width: 10%;
+    display: inline-block;
+    margin-left: 5px;
+}
+
+.post-photo > input {
+    visibility:hidden;
+    width:0;
+    height:0
+}
+
+.post-button {
+    width: 30%;
 }

@@ -17,7 +17,7 @@
 <header class="navigationHeader">
     <div class="inner">
         <!-- TODO: Width to be relative -->
-        <a href="index" class="logo"><img src="images/logo.png" alt="logo" height="100"></a>
+        <a href="" class="logo"><img src="images/logo.png" alt="logo" height="100"></a>
         <nav id="nav">
             <a href="explore">Explore</a>
             <a href="followed">Followed</a>
@@ -28,13 +28,21 @@
 <div class="row">
     <div class="leftcolumn">
         <div class="create-post">
-            <form action="/createPost" method="post">
+            <form action="/createPost" method="post" class="post-form">
+                <h2 th:text="${user.name}"></h2>
                 <input type="hidden" id="uid" th:value="${user.id}">
                 <input type="hidden" id="pictureUrl" name="pictureUrl">
-                <input type="file" name="postPhoto" id="postPhoto" accept="image/*">
-                <textarea rows="3" required name="postText" id="postText"
+                <textarea rows="3" required name="postText" id="postText" class="post-text"
                           placeholder="What is on your mind ?"></textarea>
-                <input type="submit" id="postButton" value="Post">
+                <div class="post-photo">
+                    <label for="postPhoto">
+                        <img src="images/upload.png" alt="Upload Photo" height="100">
+                    </label>
+
+                    <input id="postPhoto" type="file" name="postPhoto" accept="image/*"/>
+                </div>
+
+                <input type="submit" id="postButton" class="post-button" value="Post">
             </form>
         </div>
         <hr>
