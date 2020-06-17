@@ -1119,13 +1119,6 @@ input[type="submit"].disabled, input[type="submit"]:disabled, input[type="reset"
   padding-left: 20px;
 }
 
-/* Add a card effect for articles */
-.card {
-  background-color: white;
-  padding: 20px;
-  margin-top: 20px;
-}
-
 /* Clear floats after the columns */
 .row:after {
   content: "";
@@ -1148,15 +1141,57 @@ input[type="submit"].disabled, input[type="submit"]:disabled, input[type="reset"
     margin-top: 50px;
 }
 
-/* Like */
-.like {
-    width: 100px;
-    height: 100px;
-}
+/* Card */
 
 .card {
-    margin: 10px;
+    background-color: white;
+    padding: 20px;
+    margin-top: 20px;
     background-color: beige;
+}
+
+.card-user-photo {
+    max-height: 100px;
+    display: inline-block;
+    max-width: 30%;
+}
+
+.card-user-name {
+    display: inline-block;
+    width: 70%;
+}
+
+.card-post-picture {
+    max-height: 20em;
+    max-width: 20em;
+}
+
+.card-post-likes {
+    display: inline-block;
+}
+
+.like {
+    display: inline-block;
+    width: 5em;
+    height: 5em;
+}
+
+.comment-input {
+    display: inline-block !important;
+    width: 75% !important;
+}
+
+.submitComment {
+    display: inline-block;
+}
+
+.card-comment-user {
+    display: inline-block;
+    font-weight: 600;
+}
+
+.card-comment-text {
+    display: inline-block;
 }
 
 /* Chat */
