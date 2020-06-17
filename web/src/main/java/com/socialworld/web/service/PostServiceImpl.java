@@ -94,8 +94,9 @@ public class PostServiceImpl implements PostService {
         if (likes != null) {
             if(likes.contains(userId)){
                 likes.remove(userId);
+            } else {
+                likes.add(userId);
             }
-            likes.add(userId);
         } else {
             likes = new ArrayList<>();
             likes.add(userId);
