@@ -1176,13 +1176,25 @@ input[type="submit"].disabled, input[type="submit"]:disabled, input[type="reset"
     height: 5em;
 }
 
+.likes-container {
+    width: 15%;
+    display: inline-block;
+}
+
+.comment-input-container {
+    width: 80%;
+    display: inline-block;
+}
+
 .comment-input {
     display: inline-block !important;
-    width: 75% !important;
+    width: 60% !important;
 }
 
 .submitComment {
-    display: inline-block;
+    display: inline-block !important;
+    width: 30%;
+    text-align: left !important;
 }
 
 .card-comment-user {
@@ -1192,6 +1204,12 @@ input[type="submit"].disabled, input[type="submit"]:disabled, input[type="reset"
 
 .card-comment-text {
     display: inline-block;
+}
+
+@media screen and (max-width: 920px) {
+	.likes-container, .comment-input-container {
+        width:100%;
+	}
 }
 
 /* Chat */
