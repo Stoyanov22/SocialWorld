@@ -102,7 +102,8 @@ public class HomeController {
             model.setViewName("home/index");
             return model;
         }
-        Post post = new Post(postText, pictureUrl, new Date(), new ArrayList<>(), session.getAttribute("uid").toString());
+        String uid = session.getAttribute("uid").toString();
+        Post post = new Post(uid + System.currentTimeMillis(), postText, pictureUrl, new Date(), new ArrayList<>(), uid);
         postService.addPost(post);
         model.setViewName("redirect:/feed");
         return model;

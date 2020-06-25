@@ -52,7 +52,7 @@ public class ChatController {
     public void chat(HttpSession session, @RequestParam String content, @RequestParam String toUserId) {
         String userId = session.getAttribute("uid").toString();
         Date date = new Date();
-        Chat chat = new Chat(userId + toUserId + date.getTime(), content, date, userId, toUserId);
+        Chat chat = new Chat(userId + toUserId + System.currentTimeMillis(), content, date, userId, toUserId);
         chatService.addChat(chat);
     }
 }

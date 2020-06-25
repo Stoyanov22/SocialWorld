@@ -2,8 +2,8 @@ package com.socialworld.web.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Objects;
 import java.util.List;
+import java.util.Objects;
 
 public class Post implements Serializable {
 
@@ -23,13 +23,8 @@ public class Post implements Serializable {
 
     }
 
-    public Post(Date date) {
-        this.date = date;
-    }
-
-    //Creation constructor - sets ID
-    public Post(String text, String picture, Date date, List<String> userLikes, String userId){
-        this.id = String.valueOf(Objects.hash(text, picture, date, userLikes, userId));
+    public Post(String id, String text, String picture, Date date, List<String> userLikes, String userId) {
+        this.id = id;
         this.text = text;
         this.picture = picture;
         this.date = date;
