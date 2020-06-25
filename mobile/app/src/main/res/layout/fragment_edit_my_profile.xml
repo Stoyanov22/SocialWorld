@@ -112,6 +112,8 @@
         android:layout_marginStart="9dp"
         android:layout_marginEnd="9dp"
         android:textSize="18sp"
+        android:drawableStart="@drawable/ic_calendar"
+        android:drawablePadding="7dp"
         app:layout_constraintBottom_toBottomOf="@+id/date_of_birth_lbl"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/date_of_birth_lbl"

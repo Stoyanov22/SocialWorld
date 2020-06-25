@@ -125,7 +125,7 @@ public class HomeFragment extends Fragment {
 //            }
 //        })
 
-//        postsAdapter.setOnPostItemClickListener(new PostsAdapter.OnPostItemClickListener() {
+//        postsAdapter.setOnNewsFeedPostClickListener(new PostsAdapter.OnNewsFeedPostClickListener() {
 //            @Override
 //            public void onEditClick(int position) {
 //
