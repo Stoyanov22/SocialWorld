@@ -42,14 +42,16 @@ public class NewsFeedPostsAdapter extends FirestorePagingAdapter<NewsFeedPost, N
         public TextView text;
         public TextView date;
         public ImageView image;
+        public ImageView profileImg;
 
         public NewsFeedPostViewHolder(@NonNull View itemView, final OnNewsFeedPostClickListener listener) {
             super(itemView);
 
-            username = itemView.findViewById(R.id.post_username);
-            text = itemView.findViewById(R.id.post_text);
-            date = itemView.findViewById(R.id.post_date);
-            image = itemView.findViewById(R.id.post_image);
+            username = itemView.findViewById(R.id.feed_post_username);
+            profileImg = itemView.findViewById(R.id.feed_post_profile_img);
+            text = itemView.findViewById(R.id.feed_post_text);
+            date = itemView.findViewById(R.id.feed_post_date);
+            image = itemView.findViewById(R.id.feed_post_image);
         }
     }
 
@@ -75,6 +77,18 @@ public class NewsFeedPostsAdapter extends FirestorePagingAdapter<NewsFeedPost, N
         }
         holder.text.setText(model.getText());
         holder.date.setText(sdf.format(model.getDate()));
+        if (model.getProfilePic() != null) {
+            GlideApp
+                    .with(holder.profileImg.getContext())
+                    .load(model.getProfilePic())
+                    .fitCenter()
+                    .circleCrop()
+                    .into(holder.profileImg);
+        } else {
+            GlideApp
+                    .with(holder.image.getContext())
+                    .clear(holder.profileImg);
+        }
         if (model.getPicture() != null) {
             GlideApp
                     .with(holder.image.getContext())

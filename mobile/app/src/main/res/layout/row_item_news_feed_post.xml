@@ -6,36 +6,44 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-<!--    <ImageView-->
-<!--        android:id="@+id/profile_image"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
+    <ImageView
+        android:id="@+id/feed_post_profile_img"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginEnd="7dp"
+        android:contentDescription="@string/profile_pic"
+        android:src="@mipmap/ic_launcher_round"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
-        android:id="@+id/post_username"
-        android:layout_width="match_parent"
+        android:id="@+id/feed_post_username"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="7dp"
         android:layout_marginEnd="7dp"
-        android:layout_marginTop="9dp"
         android:textSize="17sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/feed_post_profile_img"
+        app:layout_constraintTop_toTopOf="@+id/feed_post_profile_img"
+        app:layout_constraintBottom_toBottomOf="@+id/feed_post_profile_img"/>
 
     <ImageView
-        android:id="@+id/post_image"
+        android:id="@+id/feed_post_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:contentDescription="@string/pic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/post_username" />
+        app:layout_constraintTop_toBottomOf="@+id/feed_post_profile_img" />
 
     <TextView
-        android:id="@+id/post_text"
+        android:id="@+id/feed_post_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="7dp"
@@ -44,17 +52,54 @@
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/post_image" />
+        app:layout_constraintTop_toBottomOf="@+id/feed_post_image" />
+
+    <ImageView
+        android:id="@+id/feed_like_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginEnd="9dp"
+        android:src="@drawable/ic_like_unmarked"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/feed_post_text" />
 
     <TextView
-        android:id="@+id/post_date"
+        android:id="@+id/feed_likes_num"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="9dp"
+        android:layout_marginEnd="9dp"
+        android:textSize="12sp"
+        android:text="Likes: 21"
+        app:layout_constraintStart_toEndOf="@+id/feed_like_img"
+        app:layout_constraintEnd_toStartOf="@+id/feed_post_date"
+        app:layout_constraintTop_toTopOf="@+id/feed_like_img"
+        app:layout_constraintBottom_toBottomOf="@+id/feed_like_img"/>
+
+    <TextView
+        android:id="@+id/feed_post_date"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="7dp"
         android:layout_marginEnd="7dp"
+        android:textSize="12sp"
+        app:layout_constraintTop_toTopOf="@+id/feed_like_img"
+        app:layout_constraintBottom_toBottomOf="@+id/feed_like_img"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/post_text" />
+        android:layout_marginStart="7dp"
+        android:layout_marginEnd="7dp"
+        android:paddingBottom="7dp"
+        android:textSize="12sp"
+        android:text="Comments"
+        app:layout_constraintTop_toBottomOf="@id/feed_like_img"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
