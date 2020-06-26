@@ -6,5 +6,6 @@
     <color name="colorLoadingBackground">#CCb5b5b5</color>
     <color name="colorToolbarBackground">#B9C4CF</color>
     <color name="colorDarkLabel">#131313</color>
-    <color name="colorAuthorizeButtonsDarkBlue">#6cc091</color>
+    <color name="colorAuthorizeButtonsGreen">#6cc091</color>
+    <color name="colorWhiteText">#FFFFFF</color>
 </resources>
