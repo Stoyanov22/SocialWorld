@@ -25,6 +25,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.socialworld.mobile.R;
 import com.socialworld.mobile.entities.UserEntity;
@@ -160,6 +161,10 @@ public class EditMyProfileFragment extends Fragment {
         updateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (nameEditTxt.getText().length() == 0) {
+                    Toast.makeText(requireContext(), R.string.username_can_not_be_empty, Toast.LENGTH_LONG).show();
+                    return;
+                }
                 updateProfileButtonPressed();
                 findNavController(v).navigate(R.id.action_nav_edit_profile_to_nav_my_profile);
             }
