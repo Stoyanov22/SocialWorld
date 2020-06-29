@@ -1137,8 +1137,27 @@ input[type="submit"].disabled, input[type="submit"]:disabled, input[type="reset"
 /* Search */
 .search-field {
     height: 50px;
-    width: 60%;
     margin-top: 50px;
+}
+
+.user-card {
+    border: 1px solid black;
+    border-radius: 30px;
+    height: 10%;
+    width: 100%;
+    display: block;
+    margin-top: 10px;
+}
+
+.user-card img {
+    margin: 20px;
+    display: inline-block;
+    max-height: 100px;
+    vertical-align: middle;
+}
+
+.user-card h3 {
+    display: inline-block;
 }
 
 /* Card */
