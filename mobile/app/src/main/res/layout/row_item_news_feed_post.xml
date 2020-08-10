@@ -15,7 +15,8 @@
         android:layout_marginStart="7dp"
         android:layout_marginEnd="7dp"
         android:contentDescription="@string/profile_pic"
-        android:src="@mipmap/ic_launcher_round"
+        app:srcCompat="@drawable/ic_account_circle"
+        android:background="@drawable/shape_circle_img_border"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
@@ -25,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="7dp"
         android:layout_marginEnd="7dp"
-        android:textSize="17sp"
+        android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/feed_post_profile_img"
@@ -61,7 +62,7 @@
         android:layout_marginTop="7dp"
         android:layout_marginStart="7dp"
         android:layout_marginEnd="9dp"
-        android:src="@drawable/ic_like_unmarked"
+        app:srcCompat="@drawable/ic_like_unmarked"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/feed_post_text" />
 

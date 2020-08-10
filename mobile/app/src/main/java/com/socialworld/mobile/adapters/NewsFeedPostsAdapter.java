@@ -81,7 +81,6 @@ public class NewsFeedPostsAdapter extends FirestorePagingAdapter<NewsFeedPost, N
             GlideApp
                     .with(holder.profileImg.getContext())
                     .load(model.getProfilePic())
-                    .fitCenter()
                     .circleCrop()
                     .into(holder.profileImg);
         } else {

@@ -4,18 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="7dp"
     tools:context=".ui.myProfile.EditMyProfileFragment">
 
     <ImageView
         android:id="@+id/edit_profile_image"
-        android:layout_width="170dp"
-        android:layout_height="170dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:contentDescription="@string/profile_pic"
-        android:padding="17dp"
+        android:background="@drawable/shape_img_view_border"
+        android:layout_margin="17dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/ic_launcher_round" />
+        app:srcCompat="@drawable/ic_account_circle" />
 
     <TextView
         android:id="@+id/change_photo_text"
@@ -23,6 +25,7 @@
         android:layout_height="wrap_content"
         android:text="@string/change_profile_picture"
         android:textSize="21sp"
+        android:layout_marginTop="14dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_profile_image" />
@@ -157,6 +160,8 @@
         android:layout_marginTop="35dp"
         android:layout_marginEnd="40dp"
         android:text="@string/update_profile"
+        android:textColor="@color/colorWhiteText"
+        android:background="@drawable/btn_dark_green_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/date_of_birth_lbl" />

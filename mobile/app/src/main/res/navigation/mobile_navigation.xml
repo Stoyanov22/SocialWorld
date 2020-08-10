@@ -10,10 +10,6 @@
         android:name="com.socialworld.mobile.ui.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" >
-
-<!--        <action-->
-<!--            android:id="@+id/action_HomeFragment_to_HomeSecondFragment"-->
-<!--            app:destination="@id/nav_home_second" />-->
     </fragment>
 <!--    <fragment-->
 <!--        android:id="@+id/nav_home_second"-->
@@ -55,5 +51,12 @@
             app:destination="@id/nav_my_profile"
             app:popUpTo="@+id/nav_my_profile"
             app:popUpToInclusive="true"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_find_users"
+        android:name="com.socialworld.mobile.ui.findUsers.FindUsersFragment"
+        android:label="@string/menu_find_users"
+        tools:layout="@layout/fragment_find_users">
     </fragment>
 </navigation>

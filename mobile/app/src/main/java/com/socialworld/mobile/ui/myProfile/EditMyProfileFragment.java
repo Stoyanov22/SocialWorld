@@ -117,6 +117,7 @@ public class EditMyProfileFragment extends Fragment {
                         GlideApp
                                 .with(requireContext())
                                 .load(userEntity.getPicture())
+                                .centerCrop()
                                 .into(profileImgView);
                     }
                 }
@@ -234,6 +235,7 @@ public class EditMyProfileFragment extends Fragment {
             GlideApp
                     .with(requireContext())
                     .load(imageUri)
+                    .centerCrop()
                     .into(profileImgView);
         }
     }

@@ -78,17 +78,35 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnNe
             startActivity(intent);
             finish();
         }
+        AlertDialog.Builder builderLoading = new AlertDialog.Builder(HomeActivity.this);
+        builderLoading.setCancelable(false);
+        builderLoading.setView(R.layout.loading_dialog);
+        loadingDialog = builderLoading.create();
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        mAppBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.nav_home, R.id.nav_my_posts, R.id.nav_my_profile, R.id.nav_find_users)
+                .setDrawerLayout(drawer)
+                .build();
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+        NavigationUI.setupWithNavController(navigationView, navController);
+
+        View navHeaderView = navigationView.getHeaderView(0);
+        navImgView = navHeaderView.findViewById(R.id.nav_header_profile_pic);
+        navUsernameTv = navHeaderView.findViewById(R.id.nav_header_username);
+        navEmailTv = navHeaderView.findViewById(R.id.nav_header_profile_email);
 
         userUid = firebaseAuth.getCurrentUser().getUid();
         db = FirebaseFirestore.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
         myProfileViewModel = new ViewModelProvider(this).get(MyProfileViewModel.class);
         followedUsersViewModel = new ViewModelProvider(this).get(FollowedUsersViewModel.class);
-
-        View navView = getLayoutInflater().inflate(R.layout.nav_header_home, null);
-        navImgView = navView.findViewById(R.id.nav_header_profile_pic);
-        navUsernameTv = navView.findViewById(R.id.nav_header_username);
-        navEmailTv = navView.findViewById(R.id.nav_header_profile_email);
 
         db.collection("Users").document(userUid).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -125,48 +143,13 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnNe
             @Override
             public void onChanged(UserEntity userEntity) {
                 if (userEntity != null) {
-                    if (userEntity.getName() != null) {
-                        navUsernameTv.setText(userEntity.getName());
-                    }
-                    if (userEntity.getEmail() != null) {
-                        navEmailTv.setText(userEntity.getEmail());
-                    }
-                    if (userEntity.getPicture() != null) {
-                        GlideApp
-                                .with(getApplicationContext())
-                                .load(userEntity.getPicture())
-                                .into(navImgView);
-                    }
+                    updateNavigationHeader(userEntity);
                 }
             }
         });
 
-        AlertDialog.Builder builderLoading = new AlertDialog.Builder(HomeActivity.this);
-        builderLoading.setCancelable(false);
-        builderLoading.setView(R.layout.loading_dialog);
-        loadingDialog = builderLoading.create();
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-//        FloatingActionButton fab = findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
-//            }
-//        });
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_my_posts, R.id.nav_my_profile)
-                .setDrawerLayout(drawer)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
     }
 
     @Override
@@ -185,6 +168,22 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnNe
     private void hideLoading() {
         if (loadingDialog.isShowing()) {
             loadingDialog.dismiss();
+        }
+    }
+
+    private void updateNavigationHeader(UserEntity user) {
+        if (user.getName() != null) {
+            navUsernameTv.setText(user.getName());
+        }
+        if (user.getEmail() != null) {
+            navEmailTv.setText(user.getEmail());
+        }
+        if (user.getPicture() != null) {
+            GlideApp
+                    .with(getApplicationContext())
+                    .load(user.getPicture())
+                    .circleCrop()
+                    .into(navImgView);
         }
     }
 
@@ -221,6 +220,7 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnNe
     @Override
     public void onUpdateMyProfileInteraction() {
         showLoading();
+        updateNavigationHeader(myProfileViewModel.getUser());
         db.collection("Users").document(userUid).set(myProfileViewModel.getUser(), SetOptions.merge())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

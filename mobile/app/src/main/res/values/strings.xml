@@ -58,11 +58,16 @@
     <string name="please_add_pic_or_text">Please add picture or text for the post</string>
     <string name="post_added">Post added</string>
 
+    <string name="search">Search</string>
+    <string name="please_input_username">Please input username</string>
+
+    <string name="follow">Follow</string>
+    <string name="unfollow">Unfollow</string>
+
     <string name="unknown_user">Unknown User</string>
 
     <string name="menu_home">Home</string>
     <string name="menu_my_posts">My Posts</string>
     <string name="menu_profile">My Profile</string>
-
-    <string name="home_second">Home Second</string>
+    <string name="menu_find_users">Find Users</string>
 </resources>

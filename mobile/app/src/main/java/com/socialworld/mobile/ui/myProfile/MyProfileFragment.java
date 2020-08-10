@@ -83,6 +83,7 @@ public class MyProfileFragment extends Fragment {
                         GlideApp
                                 .with(requireContext())
                                 .load(userEntity.getPicture())
+                                .centerCrop()
                                 .into(profileImgView);
                     }
                     if (userEntity.getFollowedUsers() != null) {
