@@ -27,7 +27,10 @@
     </form>
 </div>
 <div class="row">
-    <a th:each="user : ${users}" th:href="${'profile/' + user.id}" th:text="${user.name}"></a>
+    <a th:each="user : ${users}" class="user-card" th:href="${'profile/' + user.id}">
+        <img th:src="${user.picture}">
+        <h3 th:text="${user.name}"></h3>
+    </a>
 </div>
 </body>
 </html>
