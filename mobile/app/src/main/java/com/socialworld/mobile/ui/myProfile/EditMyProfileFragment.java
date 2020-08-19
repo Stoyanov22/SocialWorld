@@ -37,12 +37,16 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.UUID;
 
 import com.socialworld.mobile.ui.myProfile.MyProfileFragment.OnMyProfileInteractionListener;
 
 import static android.app.Activity.RESULT_OK;
 import static androidx.navigation.Navigation.findNavController;
+import static com.socialworld.mobile.entities.CountryConstants.getCountriesMap;
+import static com.socialworld.mobile.entities.GenderConstants.getGendersMap;
 
 /**
  * @author Atanas Katsarov
@@ -60,6 +64,7 @@ public class EditMyProfileFragment extends Fragment {
     private Calendar birthCalendar;
     private EditText dateOfBirthEditTxt;
 
+    private Spinner genderSpinner;
     private Spinner countrySpinner;
 
     private Uri imageUri;
@@ -85,13 +90,22 @@ public class EditMyProfileFragment extends Fragment {
         changePhotoTv = view.findViewById(R.id.change_photo_text);
         nameEditTxt = view.findViewById(R.id.edit_text_name);
         dateOfBirthEditTxt = view.findViewById(R.id.edit_date_of_birth);
+        genderSpinner = view.findViewById(R.id.edit_gender_spinner);
         countrySpinner = view.findViewById(R.id.edit_country_spinner);
 
-        final List<String> countryOptions = new ArrayList<>();
-        for (String country : Locale.getISOCountries()) {
-            Locale locale = new Locale("en", country);
-            countryOptions.add(locale.getDisplayCountry());
-        }
+//        int indexCountry = 0;
+//        for (String country : Locale.getISOCountries()) {
+//            Locale locale = new Locale("en", country);
+//            countryOptions.add(locale.getDisplayCountry());
+//            countryCodesMap.put(indexCountry, locale.getCountry());
+//            indexCountry++;
+//        }
+        final SortedMap<Integer, String> genderMap = new TreeMap<>(getGendersMap());
+        final List<String> genderOptions = new ArrayList<>(genderMap.values());
+        final ArrayAdapter<String> genderAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, genderOptions);
+        genderSpinner.setAdapter(genderAdapter);
+        final SortedMap<Integer, String> countriesMap = new TreeMap<>(getCountriesMap());
+        final List<String> countryOptions = new ArrayList<>(countriesMap.values());
         final ArrayAdapter<String> countryAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, countryOptions);
         countrySpinner.setAdapter(countryAdapter);
 
@@ -110,8 +124,11 @@ public class EditMyProfileFragment extends Fragment {
                         birthCalendar.setTime(userEntity.getDateOfBirth());
                         dateOfBirthEditTxt.setText(sdf.format(birthCalendar.getTime()));
                     }
-                    if (userEntity.getCountryCode() != null) {
-                        countrySpinner.setSelection(countryAdapter.getPosition(userEntity.getCountryCode()));
+                    if (userEntity.getGenderId() != null) {
+                        genderSpinner.setSelection(userEntity.getGenderId());
+                    }
+                    if (userEntity.getCountryId() != null) {
+                        countrySpinner.setSelection(userEntity.getCountryId());
                     }
                     if (userEntity.getPicture() != null) {
                         GlideApp
@@ -200,7 +217,8 @@ public class EditMyProfileFragment extends Fragment {
         UserEntity user = myProfileViewModel.getUser();
         user.setName(nameEditTxt.getText().toString());
         user.setDateOfBirth(birthCalendar.getTime());
-        user.setCountryCode(countrySpinner.getSelectedItem().toString());
+        user.setGenderId(genderSpinner.getSelectedItemPosition());
+        user.setCountryId(countrySpinner.getSelectedItemPosition());
         if (mListener != null) {
             if (imageUri != null) {
                 user.setPicture(imageUri.toString());

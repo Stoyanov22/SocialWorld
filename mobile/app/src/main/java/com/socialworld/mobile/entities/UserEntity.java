@@ -15,7 +15,7 @@ public class UserEntity implements Serializable {
     private String name;
     private String picture;
     private Date dateOfBirth;
-    private String countryCode;
+    private Integer countryId;
     private Integer genderId;
     private boolean isEnabled;
     private List<String> followers;
@@ -39,13 +39,13 @@ public class UserEntity implements Serializable {
         this.followedUsers = new ArrayList<>();
     }
 
-    public UserEntity(String id, String email, String name, String picture, Date dateOfBirth, Integer genderId, String countryCode) {
+    public UserEntity(String id, String email, String name, String picture, Date dateOfBirth, Integer genderId, Integer countryId) {
         this.id = id;
         this.email = email;
         this.name = name;
         this.picture = picture;
         this.dateOfBirth = dateOfBirth;
-        this.countryCode = countryCode;
+        this.countryId = countryId;
         this.genderId = genderId;
         this.isEnabled = true;
         this.followers = new ArrayList<>();
@@ -61,7 +61,7 @@ public class UserEntity implements Serializable {
         this.name = source.name;
         this.picture = source.picture;
         this.dateOfBirth = new Date(source.dateOfBirth.getTime());
-        this.countryCode = source.countryCode;
+        this.countryId = source.countryId;
         this.genderId = source.genderId;
         this.isEnabled = source.isEnabled;
         this.followers = new ArrayList<>();
@@ -114,12 +114,12 @@ public class UserEntity implements Serializable {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public String getCountryCode() {
-        return countryCode;
+    public Integer getCountryId() {
+        return countryId;
     }
 
-    public void setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
+    public void setCountryId(Integer countryId) {
+        this.countryId = countryId;
     }
 
     public Integer getGenderId() {
@@ -165,7 +165,7 @@ public class UserEntity implements Serializable {
                 name.equals(that.name) &&
                 Objects.equals(picture, that.picture) &&
                 Objects.equals(dateOfBirth, that.dateOfBirth) &&
-                Objects.equals(countryCode, that.countryCode) &&
+                Objects.equals(countryId, that.countryId) &&
                 Objects.equals(genderId, that.genderId) &&
                 Objects.equals(followers, that.followers) &&
                 Objects.equals(followedUsers, that.followedUsers);
@@ -173,7 +173,7 @@ public class UserEntity implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, name, picture, dateOfBirth, countryCode, genderId, isEnabled, followers, followedUsers);
+        return Objects.hash(id, email, name, picture, dateOfBirth, countryId, genderId, isEnabled, followers, followedUsers);
     }
 
     @Override
@@ -184,7 +184,7 @@ public class UserEntity implements Serializable {
                 ", name='" + name + '\'' +
                 ", picture='" + picture + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
-                ", countryCode='" + countryCode + '\'' +
+                ", countryId=" + countryId +
                 ", genderId=" + genderId +
                 ", isEnabled=" + isEnabled +
                 ", followers=" + followers +

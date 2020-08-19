@@ -3,6 +3,7 @@ package com.socialworld.mobile.ui.myProfile;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,8 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import static androidx.navigation.Navigation.findNavController;
+import static com.socialworld.mobile.entities.CountryConstants.getCountryName;
+import static com.socialworld.mobile.entities.GenderConstants.getGenderName;
 
 /**
  * @author Atanas Katsarov
@@ -36,6 +39,7 @@ public class MyProfileFragment extends Fragment {
 
     private ImageView profileImgView;
     private TextView nameTv;
+    private TextView genderTv;
     private TextView countryTv;
     private TextView dateOfBirthTv;
     private TextView numFollowersTv;
@@ -59,6 +63,7 @@ public class MyProfileFragment extends Fragment {
 
         profileImgView = root.findViewById(R.id.my_profile_image);
         nameTv = root.findViewById(R.id.my_profile_name);
+        genderTv = root.findViewById(R.id.my_profile_gender);
         countryTv = root.findViewById(R.id.my_profile_country);
         dateOfBirthTv = root.findViewById(R.id.my_profile_birthday);
         numFollowersTv = root.findViewById(R.id.my_profile_num_followers);
@@ -71,8 +76,19 @@ public class MyProfileFragment extends Fragment {
                     if (userEntity.getName() != null) {
                         nameTv.setText(userEntity.getName());
                     }
-                    if (userEntity.getCountryCode() != null) {
-                        countryTv.setText(userEntity.getCountryCode());
+                    if (userEntity.getGenderId() != null) {
+                        try {
+                            genderTv.setText(getGenderName(userEntity.getGenderId()));
+                        } catch (Exception e) {
+                            Log.d("GENDER CONSTANT LOG", "Error with genders: " + e.getMessage());
+                        }
+                    }
+                    if (userEntity.getCountryId() != null) {
+                        try {
+                            countryTv.setText(getCountryName(userEntity.getCountryId()));
+                        } catch (Exception e) {
+                            Log.d("GENDER CONSTANT LOG", "Error with genders: " + e.getMessage());
+                        }
                     }
                     if (userEntity.getDateOfBirth() != null) {
                         final String myFormat = "dd/MM/yyyy";

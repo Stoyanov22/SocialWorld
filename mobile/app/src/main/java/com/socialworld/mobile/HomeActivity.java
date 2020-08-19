@@ -77,77 +77,77 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnNe
             Intent intent = new Intent(getApplicationContext(), AuthorizeActivity.class);
             startActivity(intent);
             finish();
-        }
-        AlertDialog.Builder builderLoading = new AlertDialog.Builder(HomeActivity.this);
-        builderLoading.setCancelable(false);
-        builderLoading.setView(R.layout.loading_dialog);
-        loadingDialog = builderLoading.create();
+        } else {
+            AlertDialog.Builder builderLoading = new AlertDialog.Builder(HomeActivity.this);
+            builderLoading.setCancelable(false);
+            builderLoading.setView(R.layout.loading_dialog);
+            loadingDialog = builderLoading.create();
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_my_posts, R.id.nav_my_profile, R.id.nav_find_users)
-                .setDrawerLayout(drawer)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
+            Toolbar toolbar = findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+            DrawerLayout drawer = findViewById(R.id.drawer_layout);
+            NavigationView navigationView = findViewById(R.id.nav_view);
+            // Passing each menu ID as a set of Ids because each
+            // menu should be considered as top level destinations.
+            mAppBarConfiguration = new AppBarConfiguration.Builder(
+                    R.id.nav_home, R.id.nav_my_posts, R.id.nav_my_profile, R.id.nav_find_users)
+                    .setDrawerLayout(drawer)
+                    .build();
+            NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+            NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+            NavigationUI.setupWithNavController(navigationView, navController);
 
-        View navHeaderView = navigationView.getHeaderView(0);
-        navImgView = navHeaderView.findViewById(R.id.nav_header_profile_pic);
-        navUsernameTv = navHeaderView.findViewById(R.id.nav_header_username);
-        navEmailTv = navHeaderView.findViewById(R.id.nav_header_profile_email);
+            View navHeaderView = navigationView.getHeaderView(0);
+            navImgView = navHeaderView.findViewById(R.id.nav_header_profile_pic);
+            navUsernameTv = navHeaderView.findViewById(R.id.nav_header_username);
+            navEmailTv = navHeaderView.findViewById(R.id.nav_header_profile_email);
 
-        userUid = firebaseAuth.getCurrentUser().getUid();
-        db = FirebaseFirestore.getInstance();
-        firebaseStorage = FirebaseStorage.getInstance();
-        myProfileViewModel = new ViewModelProvider(this).get(MyProfileViewModel.class);
-        followedUsersViewModel = new ViewModelProvider(this).get(FollowedUsersViewModel.class);
+            userUid = firebaseAuth.getCurrentUser().getUid();
+            db = FirebaseFirestore.getInstance();
+            firebaseStorage = FirebaseStorage.getInstance();
+            myProfileViewModel = new ViewModelProvider(this).get(MyProfileViewModel.class);
+            followedUsersViewModel = new ViewModelProvider(this).get(FollowedUsersViewModel.class);
 
-        db.collection("Users").document(userUid).get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        user = documentSnapshot.toObject(UserEntity.class);
-                        myProfileViewModel.setUser(user);
-                        if (user.getFollowedUsers() != null && user.getFollowedUsers().size() > 0) {
-                            db.collection("Users").whereIn("id", user.getFollowedUsers()).get()
-                                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                        @Override
-                                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                            List<UserEntity> userList = queryDocumentSnapshots.toObjects(UserEntity.class);
-                                            followedUsersViewModel.setFollowedUsers(userList);
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                                        }
-                                    });
+            db.collection("Users").document(userUid).get()
+                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            user = documentSnapshot.toObject(UserEntity.class);
+                            myProfileViewModel.setUser(user);
+                            if (user.getFollowedUsers() != null && user.getFollowedUsers().size() > 0) {
+                                db.collection("Users").whereIn("id", user.getFollowedUsers()).get()
+                                        .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                                List<UserEntity> userList = queryDocumentSnapshots.toObjects(UserEntity.class);
+                                                followedUsersViewModel.setFollowedUsers(userList);
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                                            }
+                                        });
+                            }
                         }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                });
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    });
 
-        myProfileViewModel.getUserLiveData().observe(this, new Observer<UserEntity>() {
-            @Override
-            public void onChanged(UserEntity userEntity) {
-                if (userEntity != null) {
-                    updateNavigationHeader(userEntity);
+            myProfileViewModel.getUserLiveData().observe(this, new Observer<UserEntity>() {
+                @Override
+                public void onChanged(UserEntity userEntity) {
+                    if (userEntity != null) {
+                        updateNavigationHeader(userEntity);
+                    }
                 }
-            }
-        });
-
+            });
+        }
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
     }
