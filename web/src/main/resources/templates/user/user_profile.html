@@ -12,11 +12,11 @@
 <header class="navigationHeader">
     <div class="inner">
         <!-- TODO: Width to be relative -->
-        <a href="feed" class="logo"><img src="../images/logo.png" alt="logo" height="100"></a>
+        <a href="../feed" class="logo"><img src="../images/logo.png" alt="logo" height="100"></a>
         <nav id="nav">
-            <a href="/explore">Explore</a>
-            <a href="/followed">Followed</a>
-            <a href="/my_profile">My Profile</a>
+            <a href="../explore">Explore</a>
+            <a href="../followed">Followed</a>
+            <a href="../my_profile">My Profile</a>
         </nav>
     </div>
 </header>
@@ -25,13 +25,32 @@
     <div class="leftcolumn">
         <h1> Posts </h1>
         <div th:each="post : ${posts}" th:id="${'post' + post.id}" class="card">
-            <h2 th:text="${post.text}"></h2>
-            <h5 th:text="${post.date}"></h5>
-            <img th:src="${post.picture}" style="height:200px;">
-            <h6 th:text="${#lists.size(post.userLikes)}"></h6>
-            <img src="images/tick.png" th:id="${post.id}" class="like" alt="like" >
-            <input type="text" id="comment" name="comment">
-            <input type="submit" id="submitComment" value="Comment">
+            <img th:src="${userService.getUserById(post.userId).picture}" alt="photo" class="card-user-photo">
+            <h3 th:text="${userService.getUserById(post.userId).name}" class="card-user-name"></h3>
+            <h5 th:text="${#dates.format(post.date, 'dd-MMM-yyyy')}"></h5>
+            <h4 th:text="${post.text}"></h4>
+            <img th:src="${post.picture}" class="card-post-picture">
+            <br/>
+            <div class="likes-container">
+                <div th:if="${#lists.contains(post.userLikes, user.id)}">
+                    <img src="images/tickBlack.png" th:id="${post.id}" class="like" alt="like">
+                </div>
+                <div th:unless="${#lists.contains(post.userLikes, user.id)}">
+                    <img src="images/tick.png" th:id="${post.id}" class="like" alt="like">
+                </div>
+                <h5 th:text="${#lists.size(post.userLikes)} + ' likes'" class="card-post-likes"></h5>
+            </div>
+            <div class="comment-input-container">
+                <input type="text" th:id="${'c' + post.id}" name="comment" placeholder="Add comment"
+                       class="comment-input">
+                <input type="submit" th:id="${post.id}" class="submitComment" value="Comment">
+            </div>
+            <div class="comments-list" th:each="comment : ${commentService.getCommentsByPost(post.id)}">
+                <div class="comment">
+                    <h5 th:text="${userService.getUserById(comment.userId).name} + ': '" class="card-comment-user"></h5>
+                    <h6 th:text="${comment.text}" class="card-comment-text"></h6>
+                </div>
+            </div>
         </div>
     </div>
     <div class="rightcolumn">
@@ -55,5 +74,6 @@
 </div>
 <script src="../js/followUser.js"></script>
 <script src="../js/like.js"></script>
+<script src="../js/comment.js"></script>
 </body>
 </html>

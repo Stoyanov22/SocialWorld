@@ -6,6 +6,7 @@ import com.socialworld.web.entity.CountryConstants;
 import com.socialworld.web.entity.GenderConstants;
 import com.socialworld.web.entity.Post;
 import com.socialworld.web.entity.User;
+import com.socialworld.web.service.CommentService;
 import com.socialworld.web.service.PostService;
 import com.socialworld.web.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,9 @@ public class UserController {
 
     @Autowired
     private PostService postService;
+
+    @Autowired
+    private CommentService commentService;
 
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
@@ -133,6 +137,8 @@ public class UserController {
                 model.addObject("gender", GenderConstants.getGenderName(user.getGenderId()));
                 model.addObject("country", CountryConstants.getCountryName(user.getCountryId()));
                 model.addObject("posts", posts);
+                model.addObject("userService", userService);
+                model.addObject("commentService", commentService);
                 if (user.getFollowers() != null && user.getFollowers().contains(session.getAttribute("uid").toString())) {
                     model.addObject("isFollowed", true);
                 } else {
