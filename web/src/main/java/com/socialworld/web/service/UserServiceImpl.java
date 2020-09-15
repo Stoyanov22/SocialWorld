@@ -157,4 +157,14 @@ public class UserServiceImpl implements UserService {
         }
         return result;
     }
+
+    @Override
+    public List<User> getFollowers(User user) {
+        List<String> userIds = user.getFollowers();
+        List<User> result = new ArrayList<>();
+        for (String userId : userIds) {
+            result.add(getUserById(userId));
+        }
+        return result;
+    }
 }

@@ -25,4 +25,6 @@ public interface UserService {
     void unfollowUser(User user, User unfollowedUser);
 
     List<User> getFollowedUsers(User user);
+
+    List<User> getFollowers(User user);
 }
