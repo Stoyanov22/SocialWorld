@@ -7,10 +7,7 @@ import com.google.firebase.cloud.FirestoreClient;
 import com.socialworld.web.entity.User;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 @Service
@@ -164,6 +161,23 @@ public class UserServiceImpl implements UserService {
         List<User> result = new ArrayList<>();
         for (String userId : userIds) {
             result.add(getUserById(userId));
+        }
+        return result;
+    }
+
+    @Override
+    public Set<User> getAmountOfRandomUsers(int amount){
+        List<QueryDocumentSnapshot> dbUsers = null;
+        try {
+            dbUsers = db.collection("Users").get().get().getDocuments();
+        } catch (InterruptedException | ExecutionException e) {
+            return null;
+        }
+        Random rand = new Random();
+        Set<User> result = new HashSet<>();
+        for(int i=0; i<amount; i++){
+            int n = rand.nextInt(dbUsers.size()-1);
+            result.add(dbUsers.get(n).toObject(User.class));
         }
         return result;
     }

@@ -24,6 +24,7 @@ public class ExploreController {
         ModelAndView model = new ModelAndView();
         if (Objects.nonNull(session.getAttribute("uid"))) {
             model.addObject("users", null);
+            model.addObject("randUsers", userService.getAmountOfRandomUsers(10));
             model.setViewName("explore/explore");
             return model;
         }
@@ -59,7 +60,7 @@ public class ExploreController {
         ModelAndView model = new ModelAndView();
         if (Objects.nonNull(session.getAttribute("uid"))) {
             User user = userService.getUserById(session.getAttribute("uid").toString());
-            List<User> users = userService.getFollowedUsers(user);
+            List<User> users = userService.getFollowers(user);
             model.addObject("users", users);
             model.setViewName("explore/followed");
             return model;

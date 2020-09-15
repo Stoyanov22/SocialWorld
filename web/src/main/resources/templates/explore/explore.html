@@ -21,7 +21,7 @@
     </div>
 </header>
 <div class="row">
-    <form action="/explore", method="post">
+    <form action="/explore" method="post">
         <input type="text" required id="search-field" class="search-field" name="searchInput" >
         <input type="submit" id="submit-search" value="Search">
     </form>
@@ -32,5 +32,11 @@
         <h3 th:text="${user.name}"></h3>
     </a>
 </div>
+<div th:if="${users == null}" class="row">
+    <a th:each="user : ${randUsers}" class="user-card" th:href="${'profile/' + user.id}">
+        <img th:src="${user.picture}">
+        <h3 th:text="${user.name}"></h3>
+    </a></div>
+<div class="row"></div>
 </body>
 </html>

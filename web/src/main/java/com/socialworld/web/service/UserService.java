@@ -3,6 +3,7 @@ package com.socialworld.web.service;
 import com.socialworld.web.entity.User;
 
 import java.util.List;
+import java.util.Set;
 
 public interface UserService {
 
@@ -27,4 +28,6 @@ public interface UserService {
     List<User> getFollowedUsers(User user);
 
     List<User> getFollowers(User user);
+
+    Set<User> getAmountOfRandomUsers(int amount);
 }
