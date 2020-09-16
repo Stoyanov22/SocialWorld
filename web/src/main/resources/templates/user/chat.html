@@ -20,7 +20,7 @@
         </nav>
     </div>
 </header>
-
+<h2 th:text="${'Chat with ' + toUser.name}"></h2>
 <div class="row">
     <div th:each="message : ${chat}" class="chat">
         <div th:if="${message.fromUserId.equals(fromUser.id)}" class="chat-message-mine">

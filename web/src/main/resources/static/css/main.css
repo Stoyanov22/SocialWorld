@@ -1241,9 +1241,21 @@ input[type="submit"].disabled, input[type="submit"]:disabled, input[type="reset"
     background-color:rgba(0, 60, 0, 0.5)
 }
 
+.chat-message-others p{
+    margin: 0;
+    font-size: 1.2em;
+    margin-left: 50px;
+}
+
 .chat-message-mine{
     color: black;
     background-color:rgba(0, 0, 60, 0.5)
+}
+
+.chat-message-mine p{
+    margin: 0;
+    margin-left: 50px;
+    font-size: 1.2em;
 }
 
 /* Post */
