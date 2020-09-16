@@ -10,5 +10,6 @@ $(document).ready(function(){
                  toUserId: toUserId
              },
          });
+         $(this).parent().prev('.row').last('.chat').append('<div class="chat"><div class="chat-message-mine"><p>' + content + '</p></div></div>');
     });
 });

@@ -50,6 +50,10 @@ body {
 	}
 }
 
+.hidden {
+    visibility: hidden;
+}
+
 /* Type */
 
 body, input, select, textarea {
