@@ -23,6 +23,7 @@
 
 <div class="row">
     <div class="leftcolumn">
+        <h5 class="hidden" id="uName" th:text="${currentUserName.name}"></h5>
         <h1> Posts </h1>
         <div th:each="post : ${posts}" th:id="${'post' + post.id}" class="card">
             <img th:src="${userService.getUserById(post.userId).picture}" alt="photo" class="card-user-photo">
@@ -33,10 +34,10 @@
             <br/>
             <div class="likes-container">
                 <div th:if="${#lists.contains(post.userLikes, user.id)}">
-                    <img src="images/tickBlack.png" th:id="${post.id}" class="like" alt="like">
+                    <img src="../images/tickBlack.png" th:id="${post.id}" class="like" alt="like">
                 </div>
                 <div th:unless="${#lists.contains(post.userLikes, user.id)}">
-                    <img src="images/tick.png" th:id="${post.id}" class="like" alt="like">
+                    <img src="../images/tick.png" th:id="${post.id}" class="like" alt="like">
                 </div>
                 <h5 th:text="${#lists.size(post.userLikes)} + ' likes'" class="card-post-likes"></h5>
             </div>
@@ -45,8 +46,8 @@
                        class="comment-input">
                 <input type="submit" th:id="${post.id}" class="submitComment" value="Comment">
             </div>
-            <div class="comments-list" th:each="comment : ${commentService.getCommentsByPost(post.id)}">
-                <div class="comment">
+            <div class="comments-list" >
+                <div class="comment" th:each="comment : ${commentService.getCommentsByPost(post.id)}">
                     <h5 th:text="${userService.getUserById(comment.userId).name} + ': '" class="card-comment-user"></h5>
                     <h6 th:text="${comment.text}" class="card-comment-text"></h6>
                 </div>

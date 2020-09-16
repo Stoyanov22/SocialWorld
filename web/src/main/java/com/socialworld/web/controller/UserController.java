@@ -133,6 +133,7 @@ public class UserController {
             User user = userService.getUserById(userId);
             if (user != null) {
                 List<Post> posts = postService.getPostsByUserId(user.getId());
+                model.addObject("currentUserName", userService.getUserById(session.getAttribute("uid").toString()));
                 model.addObject("user", user);
                 model.addObject("gender", GenderConstants.getGenderName(user.getGenderId()));
                 model.addObject("country", CountryConstants.getCountryName(user.getCountryId()));

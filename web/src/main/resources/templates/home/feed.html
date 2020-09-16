@@ -29,7 +29,7 @@
     <div class="leftcolumn">
         <div class="create-post">
             <form action="/createPost" method="post" class="post-form">
-                <h2 th:text="${user.name}"></h2>
+                <h2 id="uName" th:text="${user.name}"></h2>
                 <input type="hidden" id="uid" th:value="${user.id}">
                 <input type="hidden" id="pictureUrl" name="pictureUrl">
                 <textarea rows="3" required name="postText" id="postText" class="post-text"
@@ -67,8 +67,8 @@
                        class="comment-input">
                 <input type="submit" th:id="${post.id}" class="submitComment" value="Comment">
             </div>
-            <div class="comments-list" th:each="comment : ${commentService.getCommentsByPost(post.id)}">
-                <div class="comment">
+            <div class="comments-list">
+                <div class="comment" th:each="comment : ${commentService.getCommentsByPost(post.id)"}>
                     <h5 th:text="${userService.getUserById(comment.userId).name} + ': '" class="card-comment-user"></h5>
                     <h6 th:text="${comment.text}" class="card-comment-text"></h6>
                 </div>
