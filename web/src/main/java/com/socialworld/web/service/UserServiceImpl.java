@@ -5,6 +5,7 @@ import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.firebase.cloud.FirestoreClient;
 import com.socialworld.web.entity.User;
+import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -21,7 +22,9 @@ public class UserServiceImpl implements UserService {
             List<QueryDocumentSnapshot> dbUsers = db.collection("Users").get().get().getDocuments();
             List<User> result = new ArrayList<>();
             for (DocumentSnapshot user : dbUsers) {
-                result.add(user.toObject(User.class));
+                if (BooleanUtils.isTrue(user.getBoolean("isEnabled"))) {
+                    result.add(user.toObject(User.class));
+                }
             }
             return result;
         } catch (InterruptedException | ExecutionException e) {
@@ -82,7 +85,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void removeUserById(String id) {
-        db.collection("Users").document(id).delete();
+        User user = getUserById(id);
+        Map<String, Object> deactivatedUser = new HashMap<>();
+        deactivatedUser.put("isEnabled", false);
+        //Firebase requires this check
+        if (user.getId() != null && !user.getId().isEmpty()) {
+            db.collection("Users").document(user.getId()).update(deactivatedUser);
+        }
     }
 
     @Override
@@ -91,7 +100,8 @@ public class UserServiceImpl implements UserService {
         try {
             List<QueryDocumentSnapshot> queryDocumentSnapshots = db.collection("Users").get().get().getDocuments();
             for (DocumentSnapshot document : queryDocumentSnapshots) {
-                if (document.getString("name").toLowerCase().contains(name.toLowerCase())) {
+                if (document.getString("name").toLowerCase().contains(name.toLowerCase()) &&
+                        BooleanUtils.isTrue(document.getBoolean("isEnabled"))) {
                     result.add(document.toObject(User.class));
                 }
             }
@@ -166,7 +176,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Set<User> getAmountOfRandomUsers(int amount){
+    public Set<User> getAmountOfRandomUsers(int amount) {
         List<QueryDocumentSnapshot> dbUsers = null;
         try {
             dbUsers = db.collection("Users").get().get().getDocuments();
@@ -175,9 +185,11 @@ public class UserServiceImpl implements UserService {
         }
         Random rand = new Random();
         Set<User> result = new HashSet<>();
-        for(int i=0; i<amount; i++){
-            int n = rand.nextInt(dbUsers.size()-1);
-            result.add(dbUsers.get(n).toObject(User.class));
+        for (int i = 0; i < amount; i++) {
+            int n = rand.nextInt(dbUsers.size() - 1);
+            if (BooleanUtils.isTrue(dbUsers.get(n).getBoolean("isEnabled"))){
+                result.add(dbUsers.get(n).toObject(User.class));
+            }
         }
         return result;
     }

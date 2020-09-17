@@ -28,6 +28,8 @@ public class User {
 
     private List<String> followers;
 
+    private boolean isEnabled;
+
 
     public User() {
 
@@ -38,6 +40,7 @@ public class User {
         this.email = email;
         followedUsers = new ArrayList<>();
         followers = new ArrayList<>();
+        this.isEnabled = true;
     }
 
     public User(String id, String email, String name) {
@@ -46,6 +49,7 @@ public class User {
         this.name = name;
         followedUsers = new ArrayList<>();
         followers = new ArrayList<>();
+        this.isEnabled = true;
     }
 
     public User(String id, String email, String name, Date dateOfBirth, int genderId, int countryId, String picture) {
@@ -56,6 +60,7 @@ public class User {
         this.genderId = genderId;
         this.countryId = countryId;
         this.picture = picture;
+        this.isEnabled = true;
     }
 
     public String getId() {
@@ -130,6 +135,14 @@ public class User {
         this.followers = followers;
     }
 
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -159,4 +172,6 @@ public class User {
     public int hashCode() {
         return Objects.hash(id, email, name, countryId, dateOfBirth, genderId);
     }
+
+
 }
