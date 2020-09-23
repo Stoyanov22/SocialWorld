@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
             List<QueryDocumentSnapshot> dbUsers = db.collection("Users").get().get().getDocuments();
             List<User> result = new ArrayList<>();
             for (DocumentSnapshot user : dbUsers) {
-                if (BooleanUtils.isTrue(user.getBoolean("isEnabled"))) {
+                if (BooleanUtils.isTrue(user.getBoolean("enabled"))) {
                     result.add(user.toObject(User.class));
                 }
             }
@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
     public void removeUserById(String id) {
         User user = getUserById(id);
         Map<String, Object> deactivatedUser = new HashMap<>();
-        deactivatedUser.put("isEnabled", false);
+        deactivatedUser.put("enabled", false);
         //Firebase requires this check
         if (user.getId() != null && !user.getId().isEmpty()) {
             db.collection("Users").document(user.getId()).update(deactivatedUser);
@@ -101,7 +101,7 @@ public class UserServiceImpl implements UserService {
             List<QueryDocumentSnapshot> queryDocumentSnapshots = db.collection("Users").get().get().getDocuments();
             for (DocumentSnapshot document : queryDocumentSnapshots) {
                 if (document.getString("name").toLowerCase().contains(name.toLowerCase()) &&
-                        BooleanUtils.isTrue(document.getBoolean("isEnabled"))) {
+                        BooleanUtils.isTrue(document.getBoolean("enabled"))) {
                     result.add(document.toObject(User.class));
                 }
             }
@@ -187,7 +187,7 @@ public class UserServiceImpl implements UserService {
         Set<User> result = new HashSet<>();
         for (int i = 0; i < amount; i++) {
             int n = rand.nextInt(dbUsers.size() - 1);
-            if (BooleanUtils.isTrue(dbUsers.get(n).getBoolean("isEnabled"))){
+            if (BooleanUtils.isTrue(dbUsers.get(n).getBoolean("enabled"))){
                 result.add(dbUsers.get(n).toObject(User.class));
             }
         }
