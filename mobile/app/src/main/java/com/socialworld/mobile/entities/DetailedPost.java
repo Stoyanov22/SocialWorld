@@ -6,20 +6,20 @@ import java.util.Objects;
 /**
  * @author Atanas Katsarov
  */
-public class NewsFeedPost extends PostEntity {
+public class DetailedPost extends PostEntity {
     private String username;
     private String profilePic;
 
     /**
      * Default constructor
      */
-    public NewsFeedPost() {
+    public DetailedPost() {
     }
 
     /**
      * Initialization constructor
      */
-    public NewsFeedPost(PostEntity post, UserEntity user) {
+    public DetailedPost(PostEntity post, UserEntity user) {
         super(post);
         if (user != null) {
             this.username = user.getName();
@@ -27,13 +27,13 @@ public class NewsFeedPost extends PostEntity {
         }
     }
 
-    public NewsFeedPost(PostEntity post, String username, String profilePic) {
+    public DetailedPost(PostEntity post, String username, String profilePic) {
         super(post);
         this.username = username;
         this.profilePic = profilePic;
     }
 
-    public NewsFeedPost(String id, String userId, String picture, String text, Date date, UserEntity user) {
+    public DetailedPost(String id, String userId, String picture, String text, Date date, UserEntity user) {
         super(id, userId, picture, text, date);
         if (user != null) {
             this.username = user.getName();
@@ -41,7 +41,7 @@ public class NewsFeedPost extends PostEntity {
         }
     }
 
-    public NewsFeedPost(String id, String userId, String picture, String text, Date date, String username, String profilePic) {
+    public DetailedPost(String id, String userId, String picture, String text, Date date, String username, String profilePic) {
         super(id, userId, picture, text, date);
         this.username = username;
         this.profilePic = profilePic;
@@ -50,7 +50,7 @@ public class NewsFeedPost extends PostEntity {
     /**
      * Copy constructor
      */
-    public NewsFeedPost(NewsFeedPost source) {
+    public DetailedPost(DetailedPost source) {
         super(source);
         this.username = source.username;
         this.profilePic = source.profilePic;
@@ -77,7 +77,7 @@ public class NewsFeedPost extends PostEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        NewsFeedPost that = (NewsFeedPost) o;
+        DetailedPost that = (DetailedPost) o;
         return username.equals(that.username) &&
                 Objects.equals(profilePic, that.profilePic);
     }
