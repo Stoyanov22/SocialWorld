@@ -29,5 +29,5 @@ public interface UserService {
 
     List<User> getFollowers(User user);
 
-    Set<User> getAmountOfRandomUsers(int amount);
+    Set<User> getRandomUsers(int amount);
 }

@@ -24,7 +24,7 @@ public class ExploreController {
         ModelAndView model = new ModelAndView();
         if (Objects.nonNull(session.getAttribute("uid"))) {
             model.addObject("users", null);
-            model.addObject("randUsers", userService.getAmountOfRandomUsers(10));
+            model.addObject("randUsers", userService.getRandomUsers(10));
             model.setViewName("explore/explore");
             return model;
         }

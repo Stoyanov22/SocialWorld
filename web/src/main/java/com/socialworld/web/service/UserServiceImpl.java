@@ -176,7 +176,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Set<User> getAmountOfRandomUsers(int amount) {
+    public Set<User> getRandomUsers(int amount) {
         List<QueryDocumentSnapshot> dbUsers = null;
         try {
             dbUsers = db.collection("Users").get().get().getDocuments();
