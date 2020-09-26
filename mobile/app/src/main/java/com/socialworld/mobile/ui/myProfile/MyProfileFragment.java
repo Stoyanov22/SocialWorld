@@ -158,6 +158,8 @@ public class MyProfileFragment extends Fragment {
 
         void onLogoutUserInteraction();
 
+        void onDisableProfileInteraction();
+
         void onFollowUserInteraction(List<UserEntity> followedUsers, UserEntity userFollowed);
 
         String onGetMyUserUid();

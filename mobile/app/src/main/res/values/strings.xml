@@ -27,6 +27,12 @@
     <string name="date_format_hint">DD/MM/YYYY</string>
     <string name="username_hint">Enter Username</string>
     <string name="update_profile">Update Profile</string>
+    <string name="disable_profile">Disable Profile</string>
+    <string name="disable_profile_warning">Are you sure you want to disable your profile?</string>
+    <string name="disabled_profile_notification">Profile disabled. You can activate your profile by logging in.</string>
+
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
     <string name="profile_pic">Profile Picture</string>
     <string name="change_profile_pic">Change Profile Picture</string>

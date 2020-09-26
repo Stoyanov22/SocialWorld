@@ -92,6 +92,8 @@ public class EditMyProfileFragment extends Fragment {
         dateOfBirthEditTxt = view.findViewById(R.id.edit_date_of_birth);
         genderSpinner = view.findViewById(R.id.edit_gender_spinner);
         countrySpinner = view.findViewById(R.id.edit_country_spinner);
+        final Button updateBtn = view.findViewById(R.id.btn_update_profile);
+        final TextView disableProfileTv = view.findViewById(R.id.edit_disable_profile);
 
 //        int indexCountry = 0;
 //        for (String country : Locale.getISOCountries()) {
@@ -175,7 +177,6 @@ public class EditMyProfileFragment extends Fragment {
                 changeProfilePhoto();
             }
         });
-        Button updateBtn = view.findViewById(R.id.btn_update_profile);
         updateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -185,6 +186,27 @@ public class EditMyProfileFragment extends Fragment {
                 }
                 updateProfileButtonPressed();
                 findNavController(v).navigate(R.id.action_nav_edit_profile_to_nav_my_profile);
+            }
+        });
+
+        disableProfileTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+                builder.setMessage(R.string.disable_profile_warning)
+                        .setTitle(R.string.disable_profile);
+
+                builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        mListener.onDisableProfileInteraction();
+                    }
+                });
+                builder.setNegativeButton(R.string.no, null);
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
 

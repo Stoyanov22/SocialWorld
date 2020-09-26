@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -225,6 +226,7 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnPo
                                         } else {
                                             Toast.makeText(getApplicationContext(), R.string.failed_upload_profile_pic, Toast.LENGTH_LONG).show();
                                         }
+                                        hideLoading();
                                         onUpdateMyProfileInteraction();
                                     }
                                 });
@@ -234,6 +236,7 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnPo
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(getApplicationContext(), R.string.failed_upload_profile_pic, Toast.LENGTH_LONG).show();
+                        hideLoading();
                         onUpdateMyProfileInteraction();
                     }
                 });
@@ -241,19 +244,17 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnPo
 
     @Override
     public void onUpdateMyProfileInteraction() {
-        showLoading();
         updateNavigationHeader(myProfileViewModel.getUser());
         db.collection("Users").document(userUid).set(myProfileViewModel.getUser(), SetOptions.merge())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        hideLoading();
+                        Log.d("PROFILE_LOG", "Profile updated");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        hideLoading();
                         Log.d("PROFILE_LOG", "Error when trying to update profile information: " + e.getMessage());
                     }
                 });
@@ -263,6 +264,28 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnPo
     public void onLogoutUserInteraction() {
         firebaseAuth.signOut();
         goToAuthorizeActivity();
+    }
+
+    @Override
+    public void onDisableProfileInteraction() {
+        showLoading();
+        myProfileViewModel.getUser().setEnabled(false);
+        db.collection("Users").document(userUid).set(myProfileViewModel.getUser(), SetOptions.merge())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        hideLoading();
+                        Toast.makeText(getApplicationContext(), R.string.disabled_profile_notification, Toast.LENGTH_LONG).show();
+                        onLogoutUserInteraction();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        hideLoading();
+                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 
     @Override
