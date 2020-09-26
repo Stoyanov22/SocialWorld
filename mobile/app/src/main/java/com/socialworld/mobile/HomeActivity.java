@@ -3,6 +3,7 @@ package com.socialworld.mobile;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,15 +19,17 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
-import com.google.firebase.firestore.auth.User;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.UploadTask;
+import com.socialworld.mobile.entities.CommentEntity;
+import com.socialworld.mobile.entities.DetailedPost;
 import com.socialworld.mobile.entities.PostEntity;
 import com.socialworld.mobile.entities.UserEntity;
 import com.socialworld.mobile.models.FollowedUsersViewModel;
 import com.socialworld.mobile.models.GlideApp;
 import com.socialworld.mobile.ui.home.HomeFragment;
 import com.socialworld.mobile.ui.myPosts.MyPostsFragment;
+import com.socialworld.mobile.models.DetailedPostViewModel;
 import com.socialworld.mobile.ui.myProfile.MyProfileFragment;
 import com.socialworld.mobile.ui.myProfile.MyProfileViewModel;
 
@@ -42,20 +45,23 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import static androidx.navigation.Navigation.findNavController;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 /**
  * @author Atanas Katsarov
  */
-public class HomeActivity extends AppCompatActivity implements HomeFragment.OnNewsFeedInteractionListener, MyPostsFragment.OnMyPostsInteractionListener, MyProfileFragment.OnMyProfileInteractionListener {
+public class HomeActivity extends AppCompatActivity implements HomeFragment.OnPostInteractionListener, MyPostsFragment.OnMyPostsInteractionListener, MyProfileFragment.OnMyProfileInteractionListener {
     private AppBarConfiguration mAppBarConfiguration;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore db;
     private FirebaseStorage firebaseStorage;
 
-    private UserEntity user;
+    //    private UserEntity user;
     private String userUid;
 
     private AlertDialog loadingDialog;
@@ -67,6 +73,8 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnNe
     private MyProfileViewModel myProfileViewModel;
     private FollowedUsersViewModel followedUsersViewModel;
 
+    private DetailedPostViewModel detailedPostViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,9 +82,7 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnNe
 
         firebaseAuth = FirebaseAuth.getInstance();
         if (firebaseAuth.getCurrentUser() == null) {
-            Intent intent = new Intent(getApplicationContext(), AuthorizeActivity.class);
-            startActivity(intent);
-            finish();
+            goToAuthorizeActivity();
         } else {
             AlertDialog.Builder builderLoading = new AlertDialog.Builder(HomeActivity.this);
             builderLoading.setCancelable(false);
@@ -108,14 +114,24 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnNe
             myProfileViewModel = new ViewModelProvider(this).get(MyProfileViewModel.class);
             followedUsersViewModel = new ViewModelProvider(this).get(FollowedUsersViewModel.class);
 
+            detailedPostViewModel = new ViewModelProvider(this).get(DetailedPostViewModel.class);
+
             db.collection("Users").document(userUid).get()
                     .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                         @Override
                         public void onSuccess(DocumentSnapshot documentSnapshot) {
-                            user = documentSnapshot.toObject(UserEntity.class);
+                            final UserEntity user = documentSnapshot.toObject(UserEntity.class);
+                            if (user == null) {
+                                return;
+                            }
+                            // if user was disabled and on login it is enabled again
                             myProfileViewModel.setUser(user);
+                            if (!myProfileViewModel.getUser().isEnabled()) {
+                                myProfileViewModel.getUser().setEnabled(true);
+                                onUpdateMyProfileInteraction();
+                            }
                             if (user.getFollowedUsers() != null && user.getFollowedUsers().size() > 0) {
-                                db.collection("Users").whereIn("id", user.getFollowedUsers()).get()
+                                db.collection("Users").whereEqualTo("enabled", true).whereIn("id", user.getFollowedUsers()).get()
                                         .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                             @Override
                                             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -126,7 +142,7 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnNe
                                         .addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
-                                                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                                                Log.d("PROFILE_LOG", "Error when trying to get followed users info: " + e.getMessage());
                                             }
                                         });
                             }
@@ -135,7 +151,7 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnNe
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                            Log.d("PROFILE_LOG", "Error when trying to get profile information: " + e.getMessage());
                         }
                     });
 
@@ -187,6 +203,12 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnNe
         }
     }
 
+    private void goToAuthorizeActivity() {
+        Intent intent = new Intent(getApplicationContext(), AuthorizeActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
     @Override
     public void onUpdateMyProfileInteraction(Uri imgUri) {
         showLoading();
@@ -226,16 +248,34 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnNe
                     @Override
                     public void onSuccess(Void aVoid) {
                         hideLoading();
-                        Toast.makeText(getApplicationContext(), R.string.profile_updated, Toast.LENGTH_LONG).show();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         hideLoading();
-                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        Log.d("PROFILE_LOG", "Error when trying to update profile information: " + e.getMessage());
                     }
                 });
+    }
+
+    @Override
+    public void onLogoutUserInteraction() {
+        firebaseAuth.signOut();
+        goToAuthorizeActivity();
+    }
+
+    @Override
+    public void onFollowUserInteraction(List<UserEntity> followedUsers, UserEntity user) {
+        db.collection("Users").document(user.getId()).set(user);
+        followedUsersViewModel.setFollowedUsers(followedUsers);
+        myProfileViewModel.getUser().setFollowedUsers(followedUsersViewModel.getFollowedUsers().getUserIdsList());
+        onUpdateMyProfileInteraction();
+    }
+
+    @Override
+    public String onGetMyUserUid() {
+        return userUid;
     }
 
     @Override
@@ -260,7 +300,7 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnNe
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
                                             hideLoading();
-                                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                                            Log.d("POST_LOG", "Error when trying to create new post: " + e.getMessage());
                                         }
                                     });
                         }
@@ -269,7 +309,7 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnNe
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             hideLoading();
-                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                            Log.d("POST_LOG", "Error when trying to create new post: " + e.getMessage());
                         }
                     });
         } else {
@@ -292,8 +332,81 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnNe
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         hideLoading();
-                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        Log.d("POST_LOG", "Error when trying to create new post: " + e.getMessage());
                     }
                 });
+    }
+
+    @Override
+    public void onOpenMyPostDetailsInteraction(DocumentSnapshot postSnapshot) {
+        PostEntity post = postSnapshot.toObject(PostEntity.class);
+        if (post != null) {
+            detailedPostViewModel.setDetailedPost(new DetailedPost(post, myProfileViewModel.getUser()));
+            findNavController(this, R.id.nav_host_fragment).navigate(R.id.action_nav_my_posts_to_nav_post_details);
+        }
+    }
+
+    @Override
+    public void onPostCommentInteraction(String text, String postId) {
+        final long time = System.currentTimeMillis();
+        final String commentId = userUid + time;
+
+        db.collection("Comments").document(commentId).set(new CommentEntity(commentId, userUid, postId, text, new Date()))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("COMMENT_LOG", "Comment added");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("COMMENT_LOG", "Error when trying to create new comment: " + e.getMessage());
+                        hideLoading();
+                    }
+                });
+    }
+
+    @Override
+    public void onOpenPostDetailsInteraction(DocumentSnapshot postSnapshot) {
+        PostEntity post = postSnapshot.toObject(PostEntity.class);
+        if (post != null) {
+            detailedPostViewModel.setDetailedPost(new DetailedPost(post, followedUsersViewModel.getFollowedUsers().getUserMap().get(post.getUserId())));
+            findNavController(this, R.id.nav_host_fragment).navigate(R.id.action_nav_home_to_post_details);
+        }
+    }
+
+    @Override
+    public void onLikeOfPostInteraction(PostEntity post, boolean isLiked) {
+        if (post != null) {
+            if (post.getUserLikes() == null) {
+                post.setUserLikes(new ArrayList<String>());
+            }
+            if (isLiked) {
+                if (!post.getUserLikes().contains(userUid)) {
+                    post.getUserLikes().add(userUid);
+                }
+            } else {
+                post.getUserLikes().remove(userUid);
+            }
+            db.collection("Posts").document(post.getId()).set(post)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d("POST_LIKE", "Post liked/unliked");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d("POST_LOG", "Error when trying like post: " + e.getMessage());
+                        }
+                    });
+        }
+    }
+
+    @Override
+    public boolean isPostLikedInteraction(List<String> userLikes) {
+        return userLikes.contains(userUid);
     }
 }
