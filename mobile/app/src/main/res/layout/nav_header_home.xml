@@ -16,8 +16,8 @@
     <ImageView
         android:layout_width="75dp"
         android:layout_height="75dp"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
         app:srcCompat="@drawable/ic_account_circle"
+        android:background="@drawable/shape_circle_img_border"
         android:contentDescription="@string/nav_header_desc"
         android:id="@+id/nav_header_profile_pic" />
 
