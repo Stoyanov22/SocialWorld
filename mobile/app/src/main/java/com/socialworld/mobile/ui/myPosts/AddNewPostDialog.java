@@ -132,6 +132,7 @@ public class AddNewPostDialog extends AppCompatDialogFragment {
                     GlideApp
                             .with(requireContext())
                             .load(postImgUri)
+                            .centerCrop()
                             .into(postImgView);
                 }
                 break;
@@ -146,7 +147,7 @@ public class AddNewPostDialog extends AppCompatDialogFragment {
             mListener = (OnMyPostsInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnAddNewPostInteractionListener");
+                    + " must implement OnMyPostsInteractionListener");
         }
     }
 
