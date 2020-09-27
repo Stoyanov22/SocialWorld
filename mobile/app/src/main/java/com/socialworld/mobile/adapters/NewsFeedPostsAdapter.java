@@ -14,50 +14,48 @@ import com.firebase.ui.firestore.paging.FirestorePagingAdapter;
 import com.firebase.ui.firestore.paging.FirestorePagingOptions;
 import com.firebase.ui.firestore.paging.LoadingState;
 import com.socialworld.mobile.R;
-import com.socialworld.mobile.entities.NewsFeedPost;
+import com.socialworld.mobile.entities.DetailedPost;
 import com.socialworld.mobile.models.GlideApp;
+import com.socialworld.mobile.ui.home.HomeFragment.OnPostInteractionListener;
 
-import java.text.SimpleDateFormat;
-import java.util.Locale;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Atanas Katsarov
  */
-public class NewsFeedPostsAdapter extends FirestorePagingAdapter<NewsFeedPost, NewsFeedPostsAdapter.NewsFeedPostViewHolder> {
-    private FirestorePagingOptions<NewsFeedPost> posts;
-    private OnNewsFeedPostClickListener mListener;
-
-    private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.UK);
-
-    public interface OnNewsFeedPostClickListener {
-//        void onEditClick(int position);
-    }
-
-    public void setOnNewsFeedPostClickListener(OnNewsFeedPostClickListener listener) {
-        mListener = listener;
-    }
+public class NewsFeedPostsAdapter extends FirestorePagingAdapter<DetailedPost, NewsFeedPostsAdapter.NewsFeedPostViewHolder> {
+    private FirestorePagingOptions<DetailedPost> posts;
+    private OnPostInteractionListener mListener;
+    private Set<String> postsLikedIds;
+    private Set<String> postsUnlikedIds;
 
     public static class NewsFeedPostViewHolder extends RecyclerView.ViewHolder {
         public TextView username;
         public TextView text;
-        public TextView date;
         public ImageView image;
         public ImageView profileImg;
+        public ImageView likeImg;
+        public TextView likesNum;
 
-        public NewsFeedPostViewHolder(@NonNull View itemView, final OnNewsFeedPostClickListener listener) {
+        public NewsFeedPostViewHolder(@NonNull View itemView, final OnPostInteractionListener listener) {
             super(itemView);
 
             username = itemView.findViewById(R.id.feed_post_username);
             profileImg = itemView.findViewById(R.id.feed_post_profile_img);
             text = itemView.findViewById(R.id.feed_post_text);
-            date = itemView.findViewById(R.id.feed_post_date);
             image = itemView.findViewById(R.id.feed_post_image);
+            likeImg = itemView.findViewById(R.id.feed_like_img);
+            likesNum = itemView.findViewById(R.id.feed_likes_num);
         }
     }
 
-    public NewsFeedPostsAdapter(FirestorePagingOptions<NewsFeedPost> posts) {
+    public NewsFeedPostsAdapter(FirestorePagingOptions<DetailedPost> posts, OnPostInteractionListener listener) {
         super(posts);
         this.posts = posts;
+        mListener = listener;
+        postsLikedIds = new HashSet<>();
+        postsUnlikedIds = new HashSet<>();
     }
 
     @NonNull
@@ -69,14 +67,13 @@ public class NewsFeedPostsAdapter extends FirestorePagingAdapter<NewsFeedPost, N
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull NewsFeedPostViewHolder holder, int position, @NonNull NewsFeedPost model) {
+    protected void onBindViewHolder(@NonNull final NewsFeedPostViewHolder holder, final int position, @NonNull final DetailedPost model) {
         if (model.getUsername() != null) {
             holder.username.setText(model.getUsername());
         } else {
             holder.username.setText(R.string.unknown_user);
         }
         holder.text.setText(model.getText());
-        holder.date.setText(sdf.format(model.getDate()));
         if (model.getProfilePic() != null) {
             GlideApp
                     .with(holder.profileImg.getContext())
@@ -98,6 +95,63 @@ public class NewsFeedPostsAdapter extends FirestorePagingAdapter<NewsFeedPost, N
                     .with(holder.image.getContext())
                     .clear(holder.image);
         }
+        View.OnClickListener postClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onOpenPostDetailsInteraction(getItem(position));
+            }
+        };
+        holder.image.setOnClickListener(postClickListener);
+        holder.text.setOnClickListener(postClickListener);
+
+        int numberOfLikes = 0;
+        if (model.getUserLikes() != null) {
+            numberOfLikes = model.getUserLikes().size();
+            final boolean isLikedBefore = mListener.isPostLikedInteraction(model.getUserLikes());
+            if (postsLikedIds.contains(model.getId())) {
+                numberOfLikes++;
+                holder.likeImg.setImageResource(R.drawable.ic_like_marked);
+            } else if (postsUnlikedIds.contains(model.getId())) {
+                numberOfLikes--;
+                holder.likeImg.setImageResource(R.drawable.ic_like_unmarked);
+            } else if (isLikedBefore) {
+                holder.likeImg.setImageResource(R.drawable.ic_like_marked);
+            } else {
+                holder.likeImg.setImageResource(R.drawable.ic_like_unmarked);
+            }
+
+            holder.likeImg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int numLikes = model.getUserLikes().size();
+                    boolean isLiked;
+                    postsLikedIds.remove(model.getId());
+                    postsUnlikedIds.remove(model.getId());
+                    if (mListener.isPostLikedInteraction(model.getUserLikes())) {
+                        isLiked = false;
+                        numLikes--;
+                        if (isLikedBefore) {
+                            postsUnlikedIds.add(model.getId());
+                        }
+                        holder.likeImg.setImageResource(R.drawable.ic_like_unmarked);
+                    } else {
+                        isLiked = true;
+                        numLikes++;
+                        if (!isLikedBefore) {
+                            postsLikedIds.add(model.getId());
+                        }
+                        holder.likeImg.setImageResource(R.drawable.ic_like_marked);
+                    }
+
+                    if (numLikes < 0) {
+                        numLikes = 0;
+                    }
+                    mListener.onLikeOfPostInteraction(model, isLiked);
+                    holder.likesNum.setText(String.valueOf(numLikes));
+                }
+            });
+        }
+        holder.likesNum.setText(String.valueOf(numberOfLikes));
     }
 
     @Override
@@ -121,21 +175,4 @@ public class NewsFeedPostsAdapter extends FirestorePagingAdapter<NewsFeedPost, N
                 break;
         }
     }
-
-//    @Override
-//    public Filter getFilter() {
-//        return postsFilter;
-//    }
-//
-//    private Filter postsFilter = new Filter() {
-//        @Override
-//        protected FilterResults performFiltering(CharSequence constraint) {
-//            return null;
-//        }
-//
-//        @Override
-//        protected void publishResults(CharSequence constraint, FilterResults results) {
-//
-//        }
-//    };
 }

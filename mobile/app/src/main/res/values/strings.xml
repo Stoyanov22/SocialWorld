@@ -63,10 +63,23 @@
     <string name="search">Search</string>
     <string name="please_input_username">Please input username</string>
 
+    <string name="not_following_anyone">You aren\'t following anyone yet</string>
+
     <string name="follow">Follow</string>
     <string name="unfollow">Unfollow</string>
 
+    <string name="likes">Likes</string>
+    <string name="comments">Comments</string>
+
+    <string name="post_details">Post Details</string>
+    <string name="add_comment_hint">Add Comment…</string>
+    <string name="please_input_text">Please input text</string>
+    <string name="comment_added">Comment added</string>
+
     <string name="unknown_user">Unknown User</string>
+
+    <string name="followed">Followed</string>
+    <string name="unfollowed">Unfollowed</string>
 
     <string name="menu_home">Home</string>
     <string name="menu_my_posts">My Posts</string>

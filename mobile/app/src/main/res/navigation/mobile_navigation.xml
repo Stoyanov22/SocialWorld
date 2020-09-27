@@ -10,26 +10,37 @@
         android:name="com.socialworld.mobile.ui.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_nav_home_to_post_details"
+            app:destination="@+id/nav_post_details"/>
     </fragment>
-<!--    <fragment-->
-<!--        android:id="@+id/nav_home_second"-->
-<!--        android:name="com.socialworld.mobile.ui.home.HomeSecondFragment"-->
-<!--        android:label="@string/home_second"-->
-<!--        tools:layout="@layout/fragment_home_second">-->
-<!--        <action-->
-<!--            android:id="@+id/action_HomeSecondFragment_to_HomeFragment"-->
-<!--            app:destination="@id/nav_home" />-->
-
-<!--        <argument-->
-<!--            android:name="myArg"-->
-<!--            app:argType="string" />-->
-<!--    </fragment>-->
 
     <fragment
         android:id="@+id/nav_my_posts"
         android:name="com.socialworld.mobile.ui.myPosts.MyPostsFragment"
         android:label="@string/menu_my_posts"
-        tools:layout="@layout/fragment_my_posts" />
+        tools:layout="@layout/fragment_my_posts" >
+        <action
+            android:id="@+id/action_nav_my_posts_to_nav_post_details"
+            app:destination="@+id/nav_post_details"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_post_details"
+        android:name="com.socialworld.mobile.ui.home.PostDetailsFragment"
+        android:label="@string/post_details"
+        tools:layout="@layout/fragment_post_details">
+        <action
+            android:id="@+id/action_nav_post_details_to_nav_my_posts"
+            app:destination="@+id/nav_my_posts"
+            app:popUpTo="@+id/nav_my_posts"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_nav_post_details_to_nav_home"
+            app:destination="@+id/nav_home"
+            app:popUpTo="@+id/nav_home"
+            app:popUpToInclusive="true"/>
+    </fragment>
 
     <fragment
         android:id="@+id/nav_my_profile"
@@ -52,6 +63,7 @@
             app:popUpTo="@+id/nav_my_profile"
             app:popUpToInclusive="true"/>
     </fragment>
+
 
     <fragment
         android:id="@+id/nav_find_users"

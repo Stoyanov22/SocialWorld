@@ -1,9 +1,11 @@
 package com.socialworld.mobile.ui.home;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,21 +24,26 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.socialworld.mobile.R;
 import com.socialworld.mobile.adapters.NewsFeedPostsAdapter;
-import com.socialworld.mobile.entities.NewsFeedPost;
+import com.socialworld.mobile.entities.DetailedPost;
 import com.socialworld.mobile.entities.PostEntity;
 import com.socialworld.mobile.entities.UserCollection;
 import com.socialworld.mobile.models.FollowedUsersViewModel;
 import com.socialworld.mobile.ui.myProfile.MyProfileViewModel;
 
+import java.util.List;
+
 /**
  * @author Atanas Katsarov
  */
 public class HomeFragment extends Fragment {
+    private TextView notFollowingTv;
     private RecyclerView postsRecView;
     private RecyclerView.LayoutManager postsLayoutManager;
     private NewsFeedPostsAdapter newsFeedPostsAdapter;
-    private MyProfileViewModel myProfileViewModel;
+//    private MyProfileViewModel myProfileViewModel;
     private FollowedUsersViewModel followedUsersViewModel;
+
+    private OnPostInteractionListener mListener;
 
     private FirebaseFirestore db;
 
@@ -46,7 +53,7 @@ public class HomeFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        myProfileViewModel = new ViewModelProvider(requireActivity()).get(MyProfileViewModel.class);
+//        myProfileViewModel = new ViewModelProvider(requireActivity()).get(MyProfileViewModel.class);
         followedUsersViewModel = new ViewModelProvider(requireActivity()).get(FollowedUsersViewModel.class);
         db = FirebaseFirestore.getInstance();
     }
@@ -56,81 +63,44 @@ public class HomeFragment extends Fragment {
 //        homeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        notFollowingTv = view.findViewById(R.id.home_not_following_label);
         postsRecView = view.findViewById(R.id.home_posts_rec_view);
         postsRecView.setHasFixedSize(true);
         postsLayoutManager = new LinearLayoutManager(requireContext());
         postsRecView.setLayoutManager(postsLayoutManager);
 
         final PagedList.Config config = new PagedList.Config.Builder()
-                .setInitialLoadSizeHint(10)
+                .setInitialLoadSizeHint(3)
                 .setPageSize(3)
                 .build();
         followedUsersViewModel.getFollowedUsersLiveData().observe(getViewLifecycleOwner(), new Observer<UserCollection>() {
             @Override
             public void onChanged(final UserCollection userCollection) {
-                if (userCollection != null) {
+                if (userCollection != null && userCollection.getUserMap().size() > 0) {
+                    notFollowingTv.setVisibility(View.INVISIBLE);
                     // Query from FirebaseFirestore
                     Query query = db.collection("Posts").whereIn("userId", userCollection.getUserIdsList()).orderBy("date", Query.Direction.DESCENDING);
                     // Options
-                    FirestorePagingOptions<NewsFeedPost> options = new FirestorePagingOptions.Builder<NewsFeedPost>()
+                    FirestorePagingOptions<DetailedPost> options = new FirestorePagingOptions.Builder<DetailedPost>()
                             .setLifecycleOwner(getViewLifecycleOwner())
-                            .setQuery(query, config, new SnapshotParser<NewsFeedPost>() {
+                            .setQuery(query, config, new SnapshotParser<DetailedPost>() {
                                 @NonNull
                                 @Override
-                                public NewsFeedPost parseSnapshot(@NonNull DocumentSnapshot snapshot) {
+                                public DetailedPost parseSnapshot(@NonNull DocumentSnapshot snapshot) {
                                     PostEntity post = snapshot.toObject(PostEntity.class);
-                                    return new NewsFeedPost(post, userCollection.getUserMap().get(post.getUserId()));
+                                    return new DetailedPost(post, userCollection.getUserMap().get(post.getUserId()));
                                 }
                             })
                             .build();
                     // Adapter
-                    newsFeedPostsAdapter = new NewsFeedPostsAdapter(options);
+                    newsFeedPostsAdapter = new NewsFeedPostsAdapter(options, mListener);
                     postsRecView.setAdapter(newsFeedPostsAdapter);
                     postsRecView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
+                } else {
+                    notFollowingTv.setVisibility(View.VISIBLE);
                 }
             }
         });
-//        myProfileViewModel.getUserLiveData().observe(getViewLifecycleOwner(), new Observer<UserEntity>() {
-//            @Override
-//            public void onChanged(UserEntity userEntity) {
-//                if (userEntity != null && userEntity.getFollowedUsers() != null && userEntity.getFollowedUsers().size() > 0) {
-//                    // Query from FirebaseFirestore
-//                    Query query = db.collection("Posts").whereIn("userId", userEntity.getFollowedUsers()).orderBy("date", Query.Direction.DESCENDING);
-//                    // Options
-//                    FirestorePagingOptions<PostEntity> options = new FirestorePagingOptions.Builder<PostEntity>()
-//                            .setLifecycleOwner(getViewLifecycleOwner())
-//                            .setQuery(query, config, new SnapshotParser<PostEntity>() {
-//                                @NonNull
-//                                @Override
-//                                public PostEntity parseSnapshot(@NonNull DocumentSnapshot snapshot) {
-//                                    PostEntity post = snapshot.toObject(PostEntity.class);
-//
-//                                    return post;
-//                                }
-//                            })
-//                            .build();
-//                    // Adapter
-//                    postsAdapter = new PostsAdapter(options);
-//                    postsRecView.setAdapter(postsAdapter);
-//                    postsRecView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
-//                }
-//            }
-//        });
-//        .setQuery(query, config, new SnapshotParser<PostEntity>() {
-//            @NonNull
-//            @Override
-//            public PostEntity parseSnapshot(@NonNull DocumentSnapshot snapshot) {
-//                PostEntity post = snapshot.toObject(PostEntity.class);
-//                return post;
-//            }
-//        })
-
-//        postsAdapter.setOnNewsFeedPostClickListener(new PostsAdapter.OnNewsFeedPostClickListener() {
-//            @Override
-//            public void onEditClick(int position) {
-//
-//            }
-//        });
 
 //        homeViewModel =
 //                ViewModelProviders.of(this).get(HomeViewModel.class);
@@ -144,6 +114,31 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-    public interface OnNewsFeedInteractionListener {
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        if (context instanceof OnPostInteractionListener) {
+            mListener = (OnPostInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnPostInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    public interface OnPostInteractionListener {
+        void onPostCommentInteraction(String text, String postId);
+
+        void onOpenPostDetailsInteraction(DocumentSnapshot postSnapshot);
+
+        void onLikeOfPostInteraction(PostEntity post, boolean isLiked);
+
+        boolean isPostLikedInteraction(List<String> userLikes);
     }
 }

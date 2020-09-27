@@ -1,5 +1,6 @@
 package com.socialworld.mobile.ui.myPosts;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.socialworld.mobile.R;
@@ -33,10 +35,9 @@ public class MyPostsFragment extends Fragment {
     private RecyclerView.LayoutManager myPostsLayoutManager;
     private MyPostsAdapter myPostsAdapter;
     private MyProfileViewModel myProfileViewModel;
+    private OnMyPostsInteractionListener mListener;
 
     private FirebaseFirestore db;
-
-    private MyPostsViewModel myPostsViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,19 +67,12 @@ public class MyPostsFragment extends Fragment {
                             .setQuery(query, PostEntity.class)
                             .build();
                     // Adapter
-                    myPostsAdapter = new MyPostsAdapter(options);
+                    myPostsAdapter = new MyPostsAdapter(options, mListener);
                     myPostsRecView.setAdapter(myPostsAdapter);
                     myPostsRecView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
                 }
             }
         });
-//        myPostsViewModel = new ViewModelProvider(requireActivity()).get(MyPostsViewModel.class);
-//        myPostsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//            }
-//        });
-
 
         FloatingActionButton fab = view.findViewById(R.id.new_post_fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -95,9 +89,29 @@ public class MyPostsFragment extends Fragment {
         newPostDialog.show(requireActivity().getSupportFragmentManager(), "New Post");
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        if (context instanceof OnMyPostsInteractionListener) {
+            mListener = (OnMyPostsInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnMyPostsInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
     public interface OnMyPostsInteractionListener {
         void onCreateNewPostInteraction(final String text, Uri imgUri);
 
         void onCreateNewPostInteraction(PostEntity post);
+
+        void onOpenMyPostDetailsInteraction(DocumentSnapshot postSnapshot);
     }
 }

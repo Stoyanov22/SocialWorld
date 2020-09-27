@@ -272,7 +272,7 @@ public class EditMyProfileFragment extends Fragment {
             mListener = (OnMyProfileInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnForgottenPasswordInteractionListener");
+                    + " must implement OnMyProfileInteractionListener");
         }
     }
 

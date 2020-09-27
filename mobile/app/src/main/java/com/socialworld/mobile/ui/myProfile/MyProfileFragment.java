@@ -1,6 +1,6 @@
 package com.socialworld.mobile.ui.myProfile;
 
-import android.content.Intent;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,13 +17,12 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.socialworld.mobile.AuthorizeActivity;
 import com.socialworld.mobile.R;
 import com.socialworld.mobile.entities.UserEntity;
 import com.socialworld.mobile.models.GlideApp;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Locale;
 
 import static androidx.navigation.Navigation.findNavController;
@@ -36,6 +35,7 @@ import static com.socialworld.mobile.entities.GenderConstants.getGenderName;
 public class MyProfileFragment extends Fragment {
 
     private MyProfileViewModel myProfileViewModel;
+    private OnMyProfileInteractionListener mListener;
 
     private ImageView profileImgView;
     private TextView nameTv;
@@ -46,14 +46,10 @@ public class MyProfileFragment extends Fragment {
     private TextView numFollowingTv;
     private Button editProfileBtn;
 
-    private FirebaseAuth firebaseAuth;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         myProfileViewModel = new ViewModelProvider(requireActivity()).get(MyProfileViewModel.class);
-
-        firebaseAuth = FirebaseAuth.getInstance();
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -117,7 +113,9 @@ public class MyProfileFragment extends Fragment {
         root.findViewById(R.id.logout_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onLogoutUser();
+                if (mListener != null) {
+                    mListener.onLogoutUserInteraction();
+                }
             }
         });
 
@@ -136,16 +134,32 @@ public class MyProfileFragment extends Fragment {
         });
     }
 
-    private void onLogoutUser() {
-        Intent intent = new Intent(requireContext(), AuthorizeActivity.class);
-        firebaseAuth.signOut();
-        startActivity(intent);
-        requireActivity().finish();
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnMyProfileInteractionListener) {
+            mListener = (OnMyProfileInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnMyProfileInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 
     public interface OnMyProfileInteractionListener {
         void onUpdateMyProfileInteraction(Uri imgUri);
 
         void onUpdateMyProfileInteraction();
+
+        void onLogoutUserInteraction();
+
+        void onFollowUserInteraction(List<UserEntity> followedUsers, UserEntity userFollowed);
+
+        String onGetMyUserUid();
     }
 }
