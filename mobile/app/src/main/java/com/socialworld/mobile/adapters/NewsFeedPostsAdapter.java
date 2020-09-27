@@ -89,6 +89,7 @@ public class NewsFeedPostsAdapter extends FirestorePagingAdapter<DetailedPost, N
             GlideApp
                     .with(holder.image.getContext())
                     .load(model.getPicture())
+                    .centerCrop()
                     .into(holder.image);
         } else {
             GlideApp

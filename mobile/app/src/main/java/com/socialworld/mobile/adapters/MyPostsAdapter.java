@@ -72,6 +72,7 @@ public class MyPostsAdapter extends FirestoreRecyclerAdapter<PostEntity, MyPosts
             GlideApp
                     .with(holder.image.getContext())
                     .load(model.getPicture())
+                    .centerCrop()
                     .into(holder.image);
         } else {
             GlideApp

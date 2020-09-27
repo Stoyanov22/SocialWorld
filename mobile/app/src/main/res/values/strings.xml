@@ -81,6 +81,10 @@
     <string name="add_comment_hint">Add Comment…</string>
     <string name="please_input_text">Please input text</string>
     <string name="comment_added">Comment added</string>
+    <string name="delete_post">Delete post</string>
+    <string name="delete_post_warning">Are you sure you want to delete your post?</string>
+    <string name="delete_comment">Delete comment</string>
+    <string name="delete_comment_warning">Are you sure you want to delete your comment?</string>
 
     <string name="unknown_user">Unknown User</string>
 
