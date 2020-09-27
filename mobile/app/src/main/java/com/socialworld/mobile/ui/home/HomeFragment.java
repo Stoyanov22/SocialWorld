@@ -133,7 +133,11 @@ public class HomeFragment extends Fragment {
     }
 
     public interface OnPostInteractionListener {
-        void onPostCommentInteraction(String text, String postId);
+        void onDeletePostInteraction(String postId);
+
+        void onAddCommentInteraction(String text, String postId);
+
+        void onDeleteCommentInteraction(String commentId);
 
         void onOpenPostDetailsInteraction(DocumentSnapshot postSnapshot);
 

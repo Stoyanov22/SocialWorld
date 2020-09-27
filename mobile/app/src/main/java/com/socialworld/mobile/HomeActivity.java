@@ -370,7 +370,27 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnPo
     }
 
     @Override
-    public void onPostCommentInteraction(String text, String postId) {
+    public void onDeletePostInteraction(String postId) {
+        showLoading();
+        db.collection("Posts").document(postId).delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        findNavController(HomeActivity.this, R.id.nav_host_fragment).popBackStack();
+                        hideLoading();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        hideLoading();
+                    }
+                });
+    }
+
+    @Override
+    public void onAddCommentInteraction(String text, String postId) {
         final long time = System.currentTimeMillis();
         final String commentId = userUid + time;
 
@@ -385,6 +405,26 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnPo
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.d("COMMENT_LOG", "Error when trying to create new comment: " + e.getMessage());
+                        hideLoading();
+                    }
+                });
+    }
+
+    @Override
+    public void onDeleteCommentInteraction(String commentId) {
+        showLoading();
+        db.collection("Comments").document(commentId).delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("COMMENT_LOG", "Comment deleted");
+                        hideLoading();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                         hideLoading();
                     }
                 });
