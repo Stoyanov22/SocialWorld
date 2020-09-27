@@ -1,10 +1,12 @@
 package com.socialworld.mobile.ui.home;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -36,6 +38,7 @@ import com.socialworld.mobile.entities.UserEntity;
 import com.socialworld.mobile.models.GlideApp;
 import com.socialworld.mobile.models.DetailedPostViewModel;
 import com.socialworld.mobile.ui.home.HomeFragment.OnPostInteractionListener;
+import com.socialworld.mobile.ui.myProfile.MyProfileViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -46,10 +49,12 @@ import java.util.Locale;
 public class PostDetailsFragment extends Fragment {
 
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.UK);
+    private MyProfileViewModel myProfileViewModel;
     private DetailedPostViewModel detailedPostViewModel;
     private FirestoreRecyclerOptions<CommentEntity> options;
     private FirestoreRecyclerAdapter<CommentEntity, CommentViewHolder> commentsAdapter;
 
+    private boolean isMyPost = false;
     private OnPostInteractionListener mListener;
 
     private FirebaseFirestore db;
@@ -63,6 +68,7 @@ public class PostDetailsFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         db = FirebaseFirestore.getInstance();
+        myProfileViewModel = new ViewModelProvider(requireActivity()).get(MyProfileViewModel.class);
         detailedPostViewModel = new ViewModelProvider(requireActivity()).get(DetailedPostViewModel.class);
     }
 
@@ -74,6 +80,7 @@ public class PostDetailsFragment extends Fragment {
 
         final ImageView profileImgView = view.findViewById(R.id.post_profile_img);
         final TextView usernameTv = view.findViewById(R.id.post_username);
+        final ImageView deleteImgView = view.findViewById(R.id.post_delete);
         final ImageView postImgView = view.findViewById(R.id.post_pic);
         final TextView postTextTv = view.findViewById(R.id.post_text);
         final TextView postLikesNumTv = view.findViewById(R.id.post_likes_num);
@@ -83,11 +90,11 @@ public class PostDetailsFragment extends Fragment {
         final Button addCommentBtn = view.findViewById(R.id.post_add_comment_btn);
 
         final LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
-
         detailedPostViewModel.getPostLiveData().observe(getViewLifecycleOwner(), new Observer<DetailedPost>() {
             @Override
             public void onChanged(final DetailedPost post) {
                 if (post != null) {
+                    isMyPost = (post.getUserId() != null && myProfileViewModel.getUser() != null && post.getUserId().equals(myProfileViewModel.getUser().getId()));
                     if (post.getProfilePic() != null) {
                         GlideApp
                                 .with(requireContext())
@@ -98,10 +105,34 @@ public class PostDetailsFragment extends Fragment {
                     if (post.getUsername() != null) {
                         usernameTv.setText(post.getUsername());
                     }
+                    if (isMyPost) {
+                        deleteImgView.setVisibility(View.VISIBLE);
+                        deleteImgView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+                                builder.setMessage(R.string.delete_post_warning)
+                                        .setTitle(R.string.delete_post);
+
+                                builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                        mListener.onDeletePostInteraction(post.getId());
+                                    }
+                                });
+                                builder.setNegativeButton(R.string.no, null);
+
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
+                            }
+                        });
+                    }
                     if (post.getPicture() != null) {
                         GlideApp
                                 .with(requireContext())
                                 .load(post.getPicture())
+                                .centerCrop()
                                 .into(postImgView);
                     }
                     if (post.getText() != null) {
@@ -123,7 +154,7 @@ public class PostDetailsFragment extends Fragment {
 
                     commentsAdapter = new FirestoreRecyclerAdapter<CommentEntity, CommentViewHolder>(options) {
                         @Override
-                        protected void onBindViewHolder(@NonNull final CommentViewHolder holder, int position, @NonNull CommentEntity model) {
+                        protected void onBindViewHolder(@NonNull final CommentViewHolder holder, final int position, @NonNull CommentEntity model) {
                             db.collection("Users").document(model.getUserId()).get()
                                     .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                         @Override
@@ -134,10 +165,34 @@ public class PostDetailsFragment extends Fragment {
                                     .addOnFailureListener(new OnFailureListener() {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
-                                            Log.d("POST_DETAIL_LOG","Error when trying to get username: " + e.getMessage());
+                                            Log.d("POST_DETAIL_LOG", "Error when trying to get username: " + e.getMessage());
                                         }
                                     });
                             holder.commentText.setText(model.getText());
+                            if (isMyPost) {
+                                holder.deleteBtn.setVisibility(View.VISIBLE);
+                                holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+                                        builder.setMessage(R.string.delete_comment_warning)
+                                                .setTitle(R.string.delete_comment);
+
+                                        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                                mListener.onDeleteCommentInteraction(getSnapshots().getSnapshot(position).getId());
+                                                commentsAdapter.updateOptions(options);
+                                            }
+                                        });
+                                        builder.setNegativeButton(R.string.no, null);
+
+                                        AlertDialog dialog = builder.create();
+                                        dialog.show();
+                                    }
+                                });
+                            }
                         }
 
                         @NonNull
@@ -160,7 +215,7 @@ public class PostDetailsFragment extends Fragment {
                                 return;
                             }
 
-                            mListener.onPostCommentInteraction(addCommentEditText.getText().toString(), post.getId());
+                            mListener.onAddCommentInteraction(addCommentEditText.getText().toString(), post.getId());
                             addCommentEditText.getText().clear();
                             commentsAdapter.updateOptions(options);
                         }
@@ -193,12 +248,14 @@ public class PostDetailsFragment extends Fragment {
     public class CommentViewHolder extends RecyclerView.ViewHolder {
         public TextView username;
         public TextView commentText;
+        public ImageView deleteBtn;
 
         public CommentViewHolder(@NonNull View itemView) {
             super(itemView);
 
             username = itemView.findViewById(R.id.comment_user_label);
             commentText = itemView.findViewById(R.id.comment_text_label);
+            deleteBtn = itemView.findViewById(R.id.comment_delete);
         }
     }
 }
