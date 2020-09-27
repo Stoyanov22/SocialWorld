@@ -114,11 +114,6 @@ public class UserController {
         return model;
     }
 
-    @RequestMapping(value = {"/remove_post"}, method = RequestMethod.POST)
-    public void removePost(HttpSession session, @RequestParam String postId) {
-        postService.removePost(postId);
-    }
-
     @RequestMapping(value = {"/profile/{userId}"}, method = RequestMethod.GET)
     public ModelAndView userProfile(HttpSession session, @PathVariable String userId) {
         ModelAndView model = new ModelAndView();

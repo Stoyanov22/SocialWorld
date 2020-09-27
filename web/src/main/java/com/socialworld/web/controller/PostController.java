@@ -33,4 +33,9 @@ public class PostController {
         Comment comment = new Comment(userId + System.currentTimeMillis(), text, postId, userId, date);
         commentService.addComment(comment);
     }
+
+    @RequestMapping(value = {"/remove_post"}, method = RequestMethod.POST)
+    public void removePost(HttpSession session, @RequestParam String postId) {
+        postService.removePost(postId);
+    }
 }
