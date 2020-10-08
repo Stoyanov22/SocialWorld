@@ -23,6 +23,9 @@ import java.util.Locale;
 import static com.socialworld.mobile.entities.CountryConstants.getCountryName;
 import static com.socialworld.mobile.entities.GenderConstants.getGenderName;
 
+/**
+ * @author Atanas Katsarov
+ */
 public class UserDetailsDialog extends AppCompatDialogFragment {
     private UserEntity user;
 
