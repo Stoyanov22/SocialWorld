@@ -132,7 +132,7 @@ public class PostDetailsFragment extends Fragment {
                         GlideApp
                                 .with(requireContext())
                                 .load(post.getPicture())
-                                .centerCrop()
+                                .fitCenter()
                                 .into(postImgView);
                     }
                     if (post.getText() != null) {

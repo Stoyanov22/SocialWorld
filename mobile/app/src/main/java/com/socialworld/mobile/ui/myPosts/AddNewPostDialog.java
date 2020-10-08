@@ -132,7 +132,7 @@ public class AddNewPostDialog extends AppCompatDialogFragment {
                     GlideApp
                             .with(requireContext())
                             .load(postImgUri)
-                            .centerCrop()
+                            .fitCenter()
                             .into(postImgView);
                 }
                 break;
