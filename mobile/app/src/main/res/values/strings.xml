@@ -87,6 +87,7 @@
     <string name="delete_comment_warning">Are you sure you want to delete your comment?</string>
 
     <string name="unknown_user">Unknown User</string>
+    <string name="user_details">User Details</string>
 
     <string name="followed">Followed</string>
     <string name="unfollowed">Unfollowed</string>

@@ -162,6 +162,8 @@ public class MyProfileFragment extends Fragment {
 
         void onFollowUserInteraction(List<UserEntity> followedUsers, UserEntity userFollowed);
 
+        void onShowUserDetailsInteraction(UserEntity user);
+
         String onGetMyUserUid();
     }
 }

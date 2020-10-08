@@ -72,6 +72,15 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
             name = itemView.findViewById(R.id.user_item_name);
             followBtn = itemView.findViewById(R.id.user_item_follow_btn);
 
+            View.OnClickListener onProfileClick = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onShowUserDetailsInteraction(filteredUsersList.get(getAdapterPosition()));
+                }
+            };
+            name.setOnClickListener(onProfileClick);
+            image.setOnClickListener(onProfileClick);
+
             followBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

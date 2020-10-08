@@ -20,6 +20,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.firestore.auth.User;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.UploadTask;
 import com.socialworld.mobile.entities.CommentEntity;
@@ -28,6 +29,7 @@ import com.socialworld.mobile.entities.PostEntity;
 import com.socialworld.mobile.entities.UserEntity;
 import com.socialworld.mobile.models.FollowedUsersViewModel;
 import com.socialworld.mobile.models.GlideApp;
+import com.socialworld.mobile.ui.findUsers.UserDetailsDialog;
 import com.socialworld.mobile.ui.home.HomeFragment;
 import com.socialworld.mobile.ui.myPosts.MyPostsFragment;
 import com.socialworld.mobile.models.DetailedPostViewModel;
@@ -294,6 +296,12 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnPo
         followedUsersViewModel.setFollowedUsers(followedUsers);
         myProfileViewModel.getUser().setFollowedUsers(followedUsersViewModel.getFollowedUsers().getUserIdsList());
         onUpdateMyProfileInteraction();
+    }
+
+    @Override
+    public void onShowUserDetailsInteraction(UserEntity user) {
+        UserDetailsDialog dialog = new UserDetailsDialog(user);
+        dialog.show(getSupportFragmentManager(), "User Details");
     }
 
     @Override
