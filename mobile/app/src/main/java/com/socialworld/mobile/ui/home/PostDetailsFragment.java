@@ -165,6 +165,7 @@ public class PostDetailsFragment extends Fragment {
                                     .addOnFailureListener(new OnFailureListener() {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
+                                            holder.username.setText(R.string.unknown_user);
                                             Log.d("POST_DETAIL_LOG", "Error when trying to get username: " + e.getMessage());
                                         }
                                     });

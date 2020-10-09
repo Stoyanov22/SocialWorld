@@ -36,17 +36,17 @@ import java.util.List;
  * @author Atanas Katsarov
  */
 public class HomeFragment extends Fragment {
-    private TextView notFollowingTv;
+    private TextView messageTv;
     private RecyclerView postsRecView;
     private RecyclerView.LayoutManager postsLayoutManager;
     private NewsFeedPostsAdapter newsFeedPostsAdapter;
-//    private MyProfileViewModel myProfileViewModel;
     private FollowedUsersViewModel followedUsersViewModel;
 
     private OnPostInteractionListener mListener;
 
     private FirebaseFirestore db;
 
+//    private MyProfileViewModel myProfileViewModel;
 //    private HomeViewModel homeViewModel;
 
     @Override
@@ -63,7 +63,7 @@ public class HomeFragment extends Fragment {
 //        homeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        notFollowingTv = view.findViewById(R.id.home_not_following_label);
+        messageTv = view.findViewById(R.id.home_message);
         postsRecView = view.findViewById(R.id.home_posts_rec_view);
         postsRecView.setHasFixedSize(true);
         postsLayoutManager = new LinearLayoutManager(requireContext());
@@ -77,7 +77,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onChanged(final UserCollection userCollection) {
                 if (userCollection != null && userCollection.getUserMap().size() > 0) {
-                    notFollowingTv.setVisibility(View.INVISIBLE);
+                    messageTv.setVisibility(View.INVISIBLE);
                     // Query from FirebaseFirestore
                     Query query = db.collection("Posts").whereIn("userId", userCollection.getUserIdsList()).orderBy("date", Query.Direction.DESCENDING);
                     // Options
@@ -97,7 +97,8 @@ public class HomeFragment extends Fragment {
                     postsRecView.setAdapter(newsFeedPostsAdapter);
                     postsRecView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
                 } else {
-                    notFollowingTv.setVisibility(View.VISIBLE);
+                    messageTv.setText(R.string.not_following_anyone);
+                    messageTv.setVisibility(View.VISIBLE);
                 }
             }
         });

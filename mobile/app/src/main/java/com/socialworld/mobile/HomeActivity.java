@@ -148,6 +148,8 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnPo
                                                 Log.d("PROFILE_LOG", "Error when trying to get followed users info: " + e.getMessage());
                                             }
                                         });
+                            } else {
+                                followedUsersViewModel.setFollowedUsers(new ArrayList<UserEntity>());
                             }
                         }
                     })

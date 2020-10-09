@@ -76,7 +76,10 @@ public class FindUsersFragment extends Fragment {
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        List<UserEntity> followedUsers = new ArrayList<>(followedUsersViewModel.getFollowedUsers().getUserSet());
+                        List<UserEntity> followedUsers = new ArrayList<>();
+                        if (followedUsersViewModel.getFollowedUsers() != null) {
+                            followedUsers.addAll(followedUsersViewModel.getFollowedUsers().getUserSet());
+                        }
                         List<UserEntity> unfollowedUsers = queryDocumentSnapshots.toObjects(UserEntity.class);
                         unfollowedUsers.remove(myProfileViewModel.getUser());
                         unfollowedUsers.removeAll(followedUsers);
@@ -95,26 +98,26 @@ public class FindUsersFragment extends Fragment {
                     }
                 });
 
-                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                    @Override
-                    public boolean onQueryTextSubmit(String query) {
-                        return false;
-                    }
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
 
-                    @Override
-                    public boolean onQueryTextChange(String newText) {
-                        refreshOptionsInAdapter(newText);
-                        return false;
-                    }
-                });
-                View.OnClickListener radioButtonClickedListener = new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        refreshOptionsInAdapter(searchView.getQuery().toString());
-                    }
-                };
-                followedRadioBtn.setOnClickListener(radioButtonClickedListener);
-                unfollowedRadioBtn.setOnClickListener(radioButtonClickedListener);
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                refreshOptionsInAdapter(newText);
+                return false;
+            }
+        });
+        View.OnClickListener radioButtonClickedListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refreshOptionsInAdapter(searchView.getQuery().toString());
+            }
+        };
+        followedRadioBtn.setOnClickListener(radioButtonClickedListener);
+        unfollowedRadioBtn.setOnClickListener(radioButtonClickedListener);
         return view;
     }
 
